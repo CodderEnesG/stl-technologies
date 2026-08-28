@@ -1,0 +1,14 @@
+# Satır sonu normalizasyonu
+* text=auto eol=lf
+
+# İkili dosyalar (LFS kullanılmıyor — varlıklar küçük, doğrudan repoda)
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.ico   binary
+*.pdf   binary
+*.woff  binary
+*.woff2 binary
+*.otf   binary
+*.ttf   binary

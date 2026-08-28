@@ -1,0 +1,306 @@
+// Tüm site metinleri — Türkçe (ana kaynak).
+// Metin değişikliği = bu dosyayı düzenle. EN karşılığı: en.ts
+
+export const tr = {
+  meta: {
+    siteTitle: "STL Teknoloji",
+    home: { title: "STL Teknoloji — Oxyra, Fressi, wexta, BNK", desc: "İstanbul'da 35.000 m² tesiste üreten, dört markayı tek çatı altında toplayan teknoloji ve üretim şirketi." },
+    oxyra: { title: "Oxyra — Gaming Ekipmanları | STL Teknoloji", desc: "Oyuncu koltukları ve gaming ekipmanları. STL Teknoloji markası." },
+    fressi: { title: "Fressi — Evde İyi Hissettiren Teknoloji | STL Teknoloji", desc: "Retro tasarımlı küçük ev aletleri: kahve makineleri, kettle, tost makineleri ve daha fazlası." },
+    wexta: { title: "wexta — Valiz ve Seyahat | STL Teknoloji", desc: "İstanbul'da üretilen dayanıklı valizler. %100 yerli üretim, 20 ülkeye ihracat." },
+    bnk: { title: "BNK — Beauty Net Korea | STL Teknoloji", desc: "K-beauty cilt bakımını sade bir rutine dönüştüren marka." },
+    about: { title: "Hakkımızda | STL Teknoloji", desc: "2016'dan beri İstanbul'da üretiyoruz: 35.000 m² tesis, %100 yerli üretim, 20 ülkeye ihracat." },
+    contact: { title: "İletişim | STL Teknoloji", desc: "STL Teknoloji iletişim bilgileri: Arnavutköy / İstanbul." },
+  },
+
+  nav: {
+    brandsLabel: "Markalar",
+    about: "Hakkımızda",
+    contact: "İletişim",
+    menuAria: "Menü",
+  },
+
+  footer: {
+    tagline: "Her yolculuk bir hayalle başlar.",
+    brandsHeading: "Markalar",
+    corporateHeading: "Kurumsal",
+    contactHeading: "İletişim",
+    kvkk: "KVKK ve Aydınlatma Metni",
+    privacy: "Gizlilik ve Çerez Politikası",
+    rights: "Tüm hakları saklıdır.",
+  },
+
+  home: {
+    news: [
+      { tag: "Kurumsal", title: "2016'dan beri İstanbul'da üretiyoruz", body: "Arnavutköy'deki 35.000 m² üretim tesisimizde dört markayı tek çatı altında yönetiyoruz." },
+      { tag: "İhracat", title: "20 ülkeye ihracat", body: "Ürünlerimiz Türkiye'nin yanı sıra 20 ülkede satış noktalarında yerini alıyor." },
+      { tag: "Üretim", title: "%100 yerli üretim", body: "Valiz üretiminde Türkiye'nin önde gelen tekstil markalarına OEM çözümler sunuyoruz." },
+      { tag: "Marka", title: "Dört marka, tek disiplin", body: "Oyundan mutfağa, seyahatten cilt bakımına: her ürün aynı üretim disiplininden geçiyor." },
+    ],
+    introEyebrow: "STL Teknoloji",
+    introTitle: "Tek çatı",
+    introText:
+      "Farklı dünyalara hitap eden dört markayı aynı üretim ve tasarım disiplini altında bir araya getiriyoruz — oyundan mutfağa, seyahatten cilt bakımına.",
+    stats: [
+      { n: "4", l: "Marka" },
+      { n: "20", l: "Ülkeye ihracat" },
+      { n: "2016", l: "Kuruluş" },
+      { n: "35.000 m²", l: "Üretim tesisi" },
+    ],
+    bento: {
+      eyebrow: "Grup",
+      title: "STL Dünyası",
+      production: { kicker: "Üretim", text: "Arnavutköy'deki 35.000 m² tesisimizde konseptten üretime tek çatı." },
+      exportKicker: "İhracat",
+      exportStat: "20",
+      exportText: "ülkede satış noktaları",
+      valueKicker: "Değer",
+      valueText: "Dört farklı kategori, tek bir üretim kalitesi standardı.",
+      oem: { kicker: "OEM üretim", text: "Türkiye'nin önde gelen tekstil markaları için valiz üretiyoruz." },
+    },
+    whoWeAre: {
+      eyebrow: "Biz Kimiz",
+      title: "İstanbul'da kurulan bir valiz fabrikası.",
+      paragraphs: [
+        "2016 yılında kurulan firmamız, İstanbul'da faaliyet gösteren bir valiz fabrikasıdır. Öncelikli hedefimiz yüksek kaliteli ve dayanıklı plastik valizlerin üretimini gerçekleştirmek. Türkiye'nin en büyük tekstil firmaları için valiz üretiyor, ayrıca 20 ülkeye ihracat yapıyoruz.",
+        "Her valizimiz; işçilikteki özen, yenilikçi tasarım ve dayanıklı malzemelerin birleşimiyle üretilir. Başarımızın temelinde yerli üretim prensibi yer alıyor: üretim sürecinde en son teknolojiyi kullanarak her valizi kendi kalite standartlarımıza göre üretiyoruz.",
+      ],
+      cta: "Hakkımızda",
+      facilityCaption: "Arnavutköy üretim tesisi",
+      lineCaption: "STL üretim bandı",
+    },
+    portfolioEyebrow: "Portföy",
+    portfolioTitle: "Markalar",
+    explore: "Keşfet",
+    discoverBrand: "Markayı keşfet",
+    partnersKicker: "Satış kanalları",
+    partnersTitle: "Markalarımız Türkiye'nin önde gelen satış noktalarında.",
+    partnersNote: "Logolar temsilidir; kanal listesi güncellenecektir.",
+    ctaTitle: "Markalarımız, bayilik ve iş birlikleri için bize ulaşın.",
+    ctaButton: "İletişime geçin",
+  },
+
+  brands: {
+    oxyra: {
+      tagline: "Oyunda avantaj senin tarafında.",
+      summary: "Uzun oturuşlar için tasarlanmış oyuncu koltukları ve gaming ekipmanları.",
+      channel: "stlteknoloji.com'da incele",
+      about: {
+        kicker: "Oxyra hakkında",
+        title: "Uzun oturuşlar için tasarlandı.",
+        body: "Oxyra, STL Teknoloji'nin gaming markasıdır. Oyuncu koltuklarımız İstanbul'daki tesisimizin üretim disipliniyle geliştirilir: sağlam iskelet, uzun ömürlü döşeme ve saatler süren oturuşlarda formunu koruyan ergonomi.",
+      },
+      stats: [
+        { n: "3", l: "Ürün kategorisi" },
+        { n: "2016", l: "Üretici güvencesi" },
+        { n: "TR", l: "Yerli üretim" },
+      ],
+      specBand: [
+        { k: "İskelet", v: "Çelik şasi" },
+        { k: "Ergonomi", v: "Ayarlanabilir bel ve boyun desteği" },
+        { k: "Döşeme", v: "Aşınmaya dayanıklı yüzey" },
+        { k: "Mekanizma", v: "Yatırılabilir sırt" },
+      ],
+      valueProps: [
+        { title: "Sağlam iskelet", text: "Metal şasi ve kaliteli mekanizma; yıllarca aynı oturuş hissi." },
+        { title: "Ergonomik destek", text: "Bel ve boyun yastıkları, ayarlanabilir kolçaklar." },
+        { title: "Üretici güvencesi", text: "Aracısız üretim: fabrikadan çıkan ürünün arkasındayız." },
+      ],
+      categoriesLabel: "Ürün gamı",
+      categories: [
+        { label: "Oyuncu Koltukları", image: "/images/oxyra/koltuk-oxyra.jpg" },
+        { label: "Ses Ekipmanları", image: "/images/oxyra/headset-oxyra.jpg" },
+        { label: "Çevre Birimleri", image: "/images/oxyra/mouse-oxyra.jpg" },
+      ],
+      vitrineTitle: "Öne çıkanlar",
+      editorial: {
+        title: "Performans, koltuktan başlar.",
+        text: "Uzun bir oturuşun sonunda fark edersin: iyi bir koltuk oyun kadar önemlidir. Oxyra, bu farkı üretimden gelen güvenle kapatır.",
+      },
+      quote: { text: "Oyunda avantaj senin tarafında.", source: "Oxyra" },
+      ctaTitle: "Kurulumunu tamamla",
+    },
+    fressi: {
+      tagline: "Evde iyi hissettiren teknoloji.",
+      summary: "Retro tasarımlı küçük ev aletleri; kahveden mutfağa, eve yakışan ürünler.",
+      channel: "fressihome.com'da keşfet",
+      scriptAccent: "evde iyi hissettiren",
+      about: {
+        kicker: "Fressi hakkında",
+        title: "Geçmişin zarafeti, bugünün teknolojisiyle.",
+        body: "Fressi, retro ve vintage tarzıyla küçük ev aletlerine taze bir soluk getirir. Kettle, kahve makineleri, tost makineleri ve ev yaşam ürünleri; sade tasarımı ve güvenilir performansı bir arada sunar. Amaç gösteriş değil: gündelik yaşamın küçük anlarını daha şık ve kolay hâle getirmek.",
+      },
+      stats: [
+        { n: "80+", l: "Ürün" },
+        { n: "6", l: "Kategori" },
+        { n: "2 yıl", l: "Garanti" },
+      ],
+      valueProps: [
+        { title: "Retro-modern tasarım", text: "Nostaljik hatlar, günümüzün güvenlik ve verim standartlarıyla." },
+        { title: "Eve yakışan renkler", text: "Krem, yeşil ve lacivert tonları; birbiriyle konuşan bir palet." },
+        { title: "Fayda odaklı", text: "Teknik özellik yığını değil; günlük yaşama somut katkı." },
+      ],
+      categoriesLabel: "Ne aramıştınız?",
+      vitrineTitle: "Öne çıkanlar",
+      editorial: {
+        title: "Görülmek için tasarlandı, kullanılmak için üretildi.",
+        text: "Fressi ürünleri tezgahın üzerinde bir obje gibi durur; ama asıl amacı her sabahı biraz daha keyifli kılmaktır.",
+      },
+      quote: { text: "Fressi, gündelik yaşamı kolaylaştıran, eve yakışan ve iyi hissettiren teknolojidir.", source: "Marka söylemi" },
+      ctaTitle: "Mutfağınıza taze bir soluk",
+    },
+    wexta: {
+      tagline: "Her yolculuk bir hayalle başlar.",
+      summary: "İstanbul'da üretilen dayanıklı, ferah valizler; 20 ülkeye ihracat.",
+      channel: "stlteknoloji.com'da incele",
+      slider: [
+        { title: "Zamanın bir adım ötesinde", cta: "İncele" },
+        { title: "Her yolculuk bir hayalle başlar", cta: "Ürünleri incele" },
+        { title: "Özgün, şık ve estetik modeller", cta: "Ürünleri incele" },
+      ],
+      about: {
+        kicker: "wexta hakkında",
+        title: "Fabrikadan çıkan valiz, yolculuğa hazır.",
+        body: "wexta, STL Teknoloji'nin valiz markasıdır. 2016'dan beri İstanbul Arnavutköy'deki 35.000 m² tesisimizde ürettiğimiz valizler, Türkiye'nin önde gelen tekstil markalarının da tercihi. Aynı üretim bandından çıkan wexta, dayanıklılığı ve hafifliği kendi imzasıyla taşıyor.",
+      },
+      stats: [
+        { n: "35.000 m²", l: "Üretim tesisi" },
+        { n: "20", l: "Ülkeye ihracat" },
+        { n: "%100", l: "Yerli üretim" },
+      ],
+      valueProps: [
+        { title: "Fabrikadan direkt", text: "Üretici markası: aracı yok, kalite kontrol üretim bandında." },
+        { title: "Dayanıklı gövde", text: "ABS ve polipropilen gövdeler; darbeye dayanıklı, uzun ömürlü." },
+        { title: "İhracat standardı", text: "20 ülkeye satılan ürünle aynı bant, aynı standart." },
+      ],
+      categoriesLabel: "Ürün gamı",
+      categories: [
+        { label: "Kabin Boy", image: "/images/stl/valiz-wx-gri-1.jpg" },
+        { label: "Orta Boy", image: "/images/stl/valiz-milano-2.jpg" },
+        { label: "Büyük Boy", image: "/images/stl/valiz-wx1001-2.jpg" },
+      ],
+      vitrineTitle: "Öne çıkanlar",
+      manufacturing: {
+        kicker: "Üretim hikâyesi",
+        title: "Türkiye'nin valiz fabrikasından.",
+        body: "Büyük tekstil markalarının valizlerini üreten bant, wexta'yı da üretiyor. Yerli üretimin esnekliği; hızlı geliştirme, gerçek kalite kontrol ve her parçada izlenebilirlik demek.",
+        points: ["2016'dan beri üretim", "OEM deneyimi", "20 ülkeye ihracat"],
+      },
+      editorial: {
+        title: "Hafif seyahat, net rota.",
+        text: "İyi bir valiz kendini unutturur: hafiftir, sessizce döner, bagajdan sağlam çıkar. wexta tam bunu hedefler.",
+      },
+      quote: { text: "Her yolculuk bir hayalle başlar.", source: "wexta" },
+      ctaTitle: "Yolculuğa hazır mısın?",
+    },
+    bnk: {
+      tagline: "Kore ışıltısı, günlük ritüel.",
+      summary: "K-beauty cilt bakımını sade ve etkili bir rutine dönüştürür.",
+      channel: "Yakında",
+      about: {
+        kicker: "BNK hakkında",
+        title: "Kore cilt bakımı, sade bir rutinde.",
+        body: "BNK — Beauty Net Korea — Kore kozmetiğinin özenli formül yaklaşımını Türkiye'ye taşır. Kalabalık raflar yerine az sayıda, işlevi net ürün: temizle, nemlendir, koru.",
+      },
+      stats: [
+        { n: "K-beauty", l: "Menşei Kore" },
+        { n: "3", l: "Adımlı rutin" },
+        { n: "2026", l: "Türkiye lansmanı" },
+      ],
+      valueProps: [
+        { title: "Az ve öz", text: "Rutini karmaşıklaştırmayan, işlevi net ürün seçkisi." },
+        { title: "Kore formülleri", text: "K-beauty'nin denenmiş içerik yaklaşımı." },
+        { title: "Günlük ritüel", text: "Sabah ve akşam; iki dakikada tamamlanan bakım." },
+      ],
+      categoriesLabel: "Rutin",
+      vitrineTitle: "Rutinin adımları",
+      editorial: {
+        title: "Işıltı, düzenli bakımın sonucu.",
+        text: "K-beauty'nin sırrı mucize değil, süreklilik. BNK rutini bu sürekliliği kolaylaştırmak için sade tutar.",
+      },
+      quote: { text: "Kore ışıltısı, günlük ritüel.", source: "BNK" },
+      ctaTitle: "Rutinini oluştur",
+      launchNote: "BNK satış kanalları yakında duyurulacak.",
+    },
+  },
+
+  brandPage: {
+    stlBrandBadge: "STL Teknoloji markası",
+    productsCount: (n: number) => `${n} ürün`,
+    orContact: "veya bize ulaşın",
+    categoriesTitle: "Kategoriler",
+  },
+
+  about: {
+    eyebrow: "Hakkımızda",
+    heroTitle: "İstanbul'dan dünyaya üreten bir çatı.",
+    heroBody:
+      "STL Teknoloji, 2016 yılında İstanbul'da kurulan bir üretim şirketidir. Arnavutköy'deki 35.000 m² tesisimizde valiz üretimiyle başlayan yolculuğumuz; bugün oyun ekipmanlarından küçük ev aletlerine, seyahatten cilt bakımına uzanan dört markaya dönüştü. Türkiye'nin önde gelen tekstil markalarına OEM üretim yapıyor, 20 ülkeye ihracat gerçekleştiriyoruz.",
+    whoWeAreEyebrow: "Biz Kimiz",
+    whoWeAreTitle: "Yerli üretim, kendi bandımızda.",
+    whoWeAreBody: [
+      "Öncelikli hedefimiz, yüksek kaliteli ve dayanıklı plastik valizlerin üretimini gerçekleştirmektir. Türkiye'nin en büyük tekstil firmaları için valiz üretimi yapan firmamız ayrıca 20 ülkeye ihracat yapmaktadır.",
+      "Valizler, seyahatlerimizin en önemli parçalarından biridir. Her bir valizimiz; işçilikteki özen, yenilikçi tasarımlar ve dayanıklı malzemelerin birleşimiyle üretilir.",
+      "Firmamızın başarısının temelinde yerli üretim prensibi yer alıyor. Üretim sürecinde en son teknolojiyi kullanarak her bir valizi kalite standartlarına uygun olarak üretiyor; müşterilerimize dayanıklı ve güvenilir ürünler sunmanın yanı sıra ülkemizin ekonomisine de katkıda bulunuyoruz.",
+    ],
+    missionEyebrow: "Misyon & Vizyon",
+    missionTitle: "Neyi hedefliyoruz",
+    mission: {
+      label: "Misyon",
+      text: "Valiz üretimindeki liderliğimizi sürdürmek ve müşterilerimize en yüksek kalitede ürünler sunmak. Yenilikçi yaklaşımımızla, herkesin bütçesine uygun seçenekler sunarak seyahat deneyimini daha kolay ve keyifli hâle getiriyoruz.",
+    },
+    vision: {
+      label: "Vizyon",
+      text: "35.000 m²'lik son teknoloji üretim tesisimizde %100 yerli üretim prensibiyle hareket ederek valiz sektöründe daima öncü olmak ve dünya çapında tercih edilen bir marka hâline gelmek.",
+    },
+    lineAlt: "STL Teknoloji üretim bandı",
+    buildingAlt: "STL Teknoloji üretim tesisi, Arnavutköy",
+    timelineEyebrow: "2016 → bugün",
+    timelineTitle: "Yolculuk",
+    timeline: [
+      { year: "2016", title: "Kuruluş", text: "İstanbul'da valiz üretimiyle yola çıktık." },
+      { year: "OEM", title: "Üretim ortaklıkları", text: "Türkiye'nin büyük tekstil markaları için valiz üretimine başladık." },
+      { year: "İhracat", title: "20 ülke", text: "Ürünlerimiz Avrupa'dan Orta Doğu'ya 20 ülkede satılıyor." },
+      { year: "Bugün", title: "Dört marka", text: "wexta, Oxyra, Fressi ve BNK ile kendi markalarımızı büyütüyoruz." },
+    ],
+    valuesEyebrow: "Değerler",
+    valuesTitle: "Nasıl çalışırız",
+    values: [
+      { title: "Üretici kimliği", text: "Satıcı değil üreticiyiz; kaliteyi bantta kurarız, rafta değil." },
+      { title: "Yerli üretim", text: "%100 yerli üretim; hızlı geliştirme ve gerçek izlenebilirlik." },
+      { title: "Tek standart", text: "OEM için geçerli olan kalite çizgisi, kendi markalarımız için de geçerli." },
+      { title: "Uzun vade", text: "Trend kovalamayız; yıllarca kullanılacak ürün yaparız." },
+    ],
+    brandsEyebrow: "Portföy",
+    brandsTitle: "Markalarımız",
+    facilityAlt: "STL Teknoloji üretim tesisi",
+  },
+
+  contact: {
+    eyebrow: "İletişim",
+    title: "Konuşalım.",
+    lead: "Bayilik, iş birliği, OEM üretim veya ürünlerimiz hakkında her konuda bize ulaşabilirsiniz.",
+    phoneLabel: "Telefon",
+    emailLabel: "E-posta",
+    addressLabel: "Adres",
+    hoursLabel: "Çalışma saatleri",
+    formTitle: "Mesaj bırakın",
+    nameLabel: "Ad Soyad",
+    emailFieldLabel: "E-posta",
+    companyLabel: "Firma (opsiyonel)",
+    messageLabel: "Mesajınız",
+    kvkkText: "Kişisel verilerimin Aydınlatma Metni kapsamında işlenmesini kabul ediyorum.",
+    kvkkLink: "Aydınlatma Metni",
+    submit: "Gönder",
+    submitNote: "Gönder'e bastığınızda e-posta uygulamanız açılır; mesaj info@stlteknoloji.com adresine iletilir.",
+    mapTitle: "STL Teknoloji konumu",
+  },
+
+  notFound: {
+    title: "Sayfa bulunamadı",
+    body: "Aradığınız sayfa taşınmış veya kaldırılmış olabilir.",
+    home: "Ana sayfaya dön",
+  },
+};
+
+export type SiteContent = typeof tr;
