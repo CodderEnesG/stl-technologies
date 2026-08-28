@@ -1,0 +1,156 @@
+@import url('https://use.typekit.net/mdd3pyj.css');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Archivo:wdth,wght@62.5..125,400..900&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Playwrite+NO:wght@400&family=Figtree:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+/*
+ * Oxyra birincil fontu: Manifold Extd CF Heavy (lisanslı — Connary Fagen).
+ * Dosya public/fonts/ altına eklendiğinde otomatik devreye girer;
+ * yoksa Archivo (geniş eksen) fallback olarak kullanılır.
+ */
+@font-face {
+  font-family: 'Manifold Extd CF';
+  src: url('/fonts/ManifoldExtdCF-Heavy.woff2') format('woff2'),
+       url('/fonts/ManifoldExtdCF-Heavy.otf') format('opentype');
+  font-weight: 800 900;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'co-headline', 'Figtree', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-expanded: 'Archivo', 'Manrope', sans-serif;
+  --font-oxyra: 'Manifold Extd CF', 'Archivo', 'Manrope', sans-serif;
+  --font-nunito: 'Nunito', ui-sans-serif, sans-serif;
+  --font-script: 'Playwrite NO', cursive;
+  /* BNK ve wexta wordmark'larındaki geometrik sans karakteri */
+  --font-geometric: 'Poppins', ui-sans-serif, sans-serif;
+
+  --color-stl-red: #e10000;
+  --color-stl-ink: #2b2828;
+  --color-stl-surface: #f5f5f5;
+
+  --color-oxyra: #3596de;
+  --color-oxyra-deep: #231caa;
+  --color-oxyra-ink: #05060f;
+
+  --color-fressi-cream: #f9f7f4;
+  --color-fressi-ivory: #d3c4a9;
+  --color-fressi-coffee: #7a716d;
+  --color-fressi-green: #818e71;
+
+  --color-wexta: #29aec6;
+
+  --color-bnk: #ed1651;
+  --color-bnk-ink: #231f20;
+  --color-fressi-coffee-deep: #594439;
+  --color-fressi-blue: #467fa5;
+
+  --color-background: #ffffff;
+  --color-foreground: #2b2828;
+  --color-surface: #f5f5f5;
+  --color-muted: #767272;
+  --color-border: #e6e4e4;
+  --color-accent: #e10000;
+}
+
+:root {
+  --nav-h: 4.5rem;
+  --background: #ffffff;
+  --foreground: #2b2828;
+  --surface: #f5f5f5;
+  --muted: #767272;
+  --border: #e6e4e4;
+  --accent: #e10000;
+}
+
+/* Poster/extended başlıklar: Archivo variable genişletilmiş eksende */
+.font-expanded {
+  font-stretch: 125%;
+}
+
+/* Oxyra başlıkları: Manifold yüklüyse normal genişlik, Archivo fallback'te extended */
+.font-oxyra {
+  font-stretch: 125%;
+  font-weight: 900;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #2b2828;
+  color: #fff;
+}
+
+/* Hide scrollbars until scrolling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+*:hover {
+  scrollbar-color: #cfcfd6 transparent;
+}
+
+.tracking-tightest {
+  letter-spacing: -0.03em;
+}
+
+/* Marquee (Ortaklarımız) */
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-group:hover .marquee {
+  animation-play-state: paused;
+}
+
+/* Hero Showcase sekme ilerleme çizgisi */
+@keyframes hero-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}

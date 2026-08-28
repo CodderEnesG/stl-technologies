@@ -1,0 +1,305 @@
+import type { SiteContent } from "./tr";
+
+// English content — mirrors tr.ts structure exactly.
+
+export const en: SiteContent = {
+  meta: {
+    siteTitle: "STL Teknoloji",
+    home: { title: "STL Teknoloji — Oxyra, Fressi, wexta, BNK", desc: "A manufacturing and technology company in Istanbul with a 35,000 m² facility, uniting four brands under one roof." },
+    oxyra: { title: "Oxyra — Gaming Gear | STL Teknoloji", desc: "Gaming chairs and equipment. An STL Teknoloji brand." },
+    fressi: { title: "Fressi — Technology That Feels Good at Home | STL Teknoloji", desc: "Retro-designed small home appliances: coffee machines, kettles, toasters and more." },
+    wexta: { title: "wexta — Luggage & Travel | STL Teknoloji", desc: "Durable luggage made in Istanbul. 100% local production, exported to 20 countries." },
+    bnk: { title: "BNK — Beauty Net Korea | STL Teknoloji", desc: "The brand that turns K-beauty skincare into a simple routine." },
+    about: { title: "About Us | STL Teknoloji", desc: "Manufacturing in Istanbul since 2016: a 35,000 m² facility, 100% local production, exports to 20 countries." },
+    contact: { title: "Contact | STL Teknoloji", desc: "STL Teknoloji contact details: Arnavutköy / Istanbul." },
+  },
+
+  nav: {
+    brandsLabel: "Brands",
+    about: "About",
+    contact: "Contact",
+    menuAria: "Menu",
+  },
+
+  footer: {
+    tagline: "Every journey starts with a dream.",
+    brandsHeading: "Brands",
+    corporateHeading: "Corporate",
+    contactHeading: "Contact",
+    kvkk: "Privacy Notice (KVKK)",
+    privacy: "Privacy & Cookie Policy",
+    rights: "All rights reserved.",
+  },
+
+  home: {
+    news: [
+      { tag: "Corporate", title: "Manufacturing in Istanbul since 2016", body: "We manage four brands under one roof at our 35,000 m² production facility in Arnavutköy." },
+      { tag: "Export", title: "Exporting to 20 countries", body: "Beyond Türkiye, our products reach points of sale in 20 countries." },
+      { tag: "Production", title: "100% local production", body: "We provide OEM luggage manufacturing for Türkiye's leading textile brands." },
+      { tag: "Brands", title: "Four brands, one discipline", body: "From gaming to the kitchen, travel to skincare: every product passes through the same production discipline." },
+    ],
+    introEyebrow: "STL Teknoloji",
+    introTitle: "One roof",
+    introText:
+      "We bring together four brands that speak to different worlds under the same production and design discipline — from gaming to the kitchen, from travel to skincare.",
+    stats: [
+      { n: "4", l: "Brands" },
+      { n: "20", l: "Export countries" },
+      { n: "2016", l: "Founded" },
+      { n: "35,000 m²", l: "Production facility" },
+    ],
+    bento: {
+      eyebrow: "Group",
+      title: "The STL World",
+      production: { kicker: "Production", text: "From concept to production under one roof at our 35,000 m² facility in Arnavutköy." },
+      exportKicker: "Export",
+      exportStat: "20",
+      exportText: "countries with points of sale",
+      valueKicker: "Value",
+      valueText: "Four different categories, one production quality standard.",
+      oem: { kicker: "OEM manufacturing", text: "We produce luggage for Türkiye's leading textile brands." },
+    },
+    whoWeAre: {
+      eyebrow: "Who We Are",
+      title: "A luggage factory founded in Istanbul.",
+      paragraphs: [
+        "Founded in 2016, our company is a luggage factory operating in Istanbul. Our primary goal is manufacturing high-quality, durable plastic luggage. We produce luggage for Türkiye's largest textile companies and export to 20 countries.",
+        "Every suitcase is made through a combination of careful workmanship, innovative design and durable materials. Local production is the foundation of our success: we use the latest technology on the line and build every suitcase to our own quality standards.",
+      ],
+      cta: "About us",
+      facilityCaption: "Arnavutköy production facility",
+      lineCaption: "STL production line",
+    },
+    portfolioEyebrow: "Portfolio",
+    portfolioTitle: "Brands",
+    explore: "Explore",
+    discoverBrand: "Discover the brand",
+    partnersKicker: "Sales channels",
+    partnersTitle: "Our brands are available at Türkiye's leading retailers.",
+    partnersNote: "Logos are representative; the channel list will be updated.",
+    ctaTitle: "Reach out for our brands, dealerships and partnerships.",
+    ctaButton: "Get in touch",
+  },
+
+  brands: {
+    oxyra: {
+      tagline: "The advantage is on your side.",
+      summary: "Gaming chairs and equipment built for long sessions.",
+      channel: "Browse on stlteknoloji.com",
+      about: {
+        kicker: "About Oxyra",
+        title: "Built for long sessions.",
+        body: "Oxyra is STL Teknoloji's gaming brand. Our gaming chairs are developed with the production discipline of our Istanbul facility: a solid frame, long-lasting upholstery and ergonomics that hold their shape through hours of play.",
+      },
+      stats: [
+        { n: "3", l: "Product categories" },
+        { n: "2016", l: "Manufacturer-backed" },
+        { n: "TR", l: "Local production" },
+      ],
+      specBand: [
+        { k: "Frame", v: "Steel chassis" },
+        { k: "Ergonomics", v: "Adjustable lumbar & neck support" },
+        { k: "Upholstery", v: "Wear-resistant surface" },
+        { k: "Mechanism", v: "Reclining backrest" },
+      ],
+      valueProps: [
+        { title: "Solid frame", text: "Metal chassis and quality mechanism; the same seating feel for years." },
+        { title: "Ergonomic support", text: "Lumbar and neck cushions, adjustable armrests." },
+        { title: "Manufacturer-backed", text: "No middlemen: we stand behind every product that leaves our factory." },
+      ],
+      categoriesLabel: "Product range",
+      categories: [
+        { label: "Gaming Chairs", image: "/images/oxyra/koltuk-oxyra.jpg" },
+        { label: "Audio", image: "/images/oxyra/headset-oxyra.jpg" },
+        { label: "Peripherals", image: "/images/oxyra/mouse-oxyra.jpg" },
+      ],
+      vitrineTitle: "Highlights",
+      editorial: {
+        title: "Performance starts with the chair.",
+        text: "You notice it at the end of a long session: a good chair matters as much as the game. Oxyra closes that gap with manufacturing confidence.",
+      },
+      quote: { text: "The advantage is on your side.", source: "Oxyra" },
+      ctaTitle: "Complete your setup",
+    },
+    fressi: {
+      tagline: "Technology that feels good at home.",
+      summary: "Retro-designed small appliances; from coffee to the kitchen, products that suit your home.",
+      channel: "Discover at fressihome.com",
+      scriptAccent: "feels good at home",
+      about: {
+        kicker: "About Fressi",
+        title: "The elegance of the past, with today's technology.",
+        body: "Fressi brings a fresh take to small home appliances with its retro and vintage style. Kettles, coffee machines, toasters and home living products combine simple design with reliable performance. The goal isn't show: it's making the small moments of everyday life more elegant and easier.",
+      },
+      stats: [
+        { n: "80+", l: "Products" },
+        { n: "6", l: "Categories" },
+        { n: "2 years", l: "Warranty" },
+      ],
+      valueProps: [
+        { title: "Retro-modern design", text: "Nostalgic lines with today's safety and efficiency standards." },
+        { title: "Colors that suit your home", text: "Cream, green and navy tones; a palette that speaks together." },
+        { title: "Benefit-focused", text: "Not a pile of specs; concrete value for daily life." },
+      ],
+      categoriesLabel: "What are you looking for?",
+      vitrineTitle: "Highlights",
+      editorial: {
+        title: "Designed to be seen, built to be used.",
+        text: "Fressi products sit on the counter like an object; but their real purpose is making every morning a little more enjoyable.",
+      },
+      quote: { text: "Fressi is technology that makes daily life easier, suits the home, and feels good.", source: "Brand statement" },
+      ctaTitle: "A fresh breath for your kitchen",
+    },
+    wexta: {
+      tagline: "Every journey starts with a dream.",
+      summary: "Durable, spacious luggage made in Istanbul; exported to 20 countries.",
+      channel: "Browse on stlteknoloji.com",
+      slider: [
+        { title: "One step ahead of time", cta: "Explore" },
+        { title: "Every journey starts with a dream", cta: "Browse products" },
+        { title: "Original, stylish and elegant models", cta: "Browse products" },
+      ],
+      about: {
+        kicker: "About wexta",
+        title: "Straight from the factory, ready for the journey.",
+        body: "wexta is STL Teknoloji's luggage brand. The luggage we have produced since 2016 at our 35,000 m² facility in Arnavutköy, Istanbul is also the choice of Türkiye's leading textile brands. Coming off the same production line, wexta carries that durability and lightness under its own signature.",
+      },
+      stats: [
+        { n: "35,000 m²", l: "Production facility" },
+        { n: "20", l: "Export countries" },
+        { n: "100%", l: "Local production" },
+      ],
+      valueProps: [
+        { title: "Factory-direct", text: "A manufacturer brand: no middlemen, quality control on the production line." },
+        { title: "Durable shell", text: "ABS and polypropylene shells; impact-resistant and long-lasting." },
+        { title: "Export standard", text: "The same line and standard as products sold in 20 countries." },
+      ],
+      categoriesLabel: "Product range",
+      categories: [
+        { label: "Cabin Size", image: "/images/stl/valiz-wx-gri-1.jpg" },
+        { label: "Medium", image: "/images/stl/valiz-milano-2.jpg" },
+        { label: "Large", image: "/images/stl/valiz-wx1001-2.jpg" },
+      ],
+      vitrineTitle: "Highlights",
+      manufacturing: {
+        kicker: "Manufacturing story",
+        title: "From Türkiye's luggage factory.",
+        body: "The line that produces luggage for major textile brands also produces wexta. Local production means agility: fast development, real quality control and traceability in every part.",
+        points: ["Manufacturing since 2016", "OEM experience", "Exports to 20 countries"],
+      },
+      editorial: {
+        title: "Light travel, clear route.",
+        text: "A good suitcase makes you forget it exists: it's light, rolls silently, and comes out of baggage claim intact. That's exactly what wexta aims for.",
+      },
+      quote: { text: "Every journey starts with a dream.", source: "wexta" },
+      ctaTitle: "Ready for the journey?",
+    },
+    bnk: {
+      tagline: "Korean glow, daily ritual.",
+      summary: "Turns K-beauty skincare into a simple, effective routine.",
+      channel: "Coming soon",
+      about: {
+        kicker: "About BNK",
+        title: "Korean skincare, in a simple routine.",
+        body: "BNK — Beauty Net Korea — brings the careful formulation approach of Korean cosmetics to Türkiye. Instead of crowded shelves, a small set of products with a clear purpose: cleanse, moisturize, protect.",
+      },
+      stats: [
+        { n: "K-beauty", l: "Origin: Korea" },
+        { n: "3", l: "Step routine" },
+        { n: "2026", l: "Türkiye launch" },
+      ],
+      valueProps: [
+        { title: "Less, but better", text: "A product selection with clear purpose that keeps the routine simple." },
+        { title: "Korean formulas", text: "K-beauty's proven approach to ingredients." },
+        { title: "Daily ritual", text: "Morning and evening; care completed in two minutes." },
+      ],
+      categoriesLabel: "Routine",
+      vitrineTitle: "Steps of the routine",
+      editorial: {
+        title: "Glow is the result of consistent care.",
+        text: "The secret of K-beauty isn't a miracle, it's consistency. BNK keeps the routine simple to make that consistency easy.",
+      },
+      quote: { text: "Korean glow, daily ritual.", source: "BNK" },
+      ctaTitle: "Build your routine",
+      launchNote: "BNK sales channels will be announced soon.",
+    },
+  },
+
+  brandPage: {
+    stlBrandBadge: "An STL Teknoloji brand",
+    productsCount: (n: number) => `${n} products`,
+    orContact: "or contact us",
+    categoriesTitle: "Categories",
+  },
+
+  about: {
+    eyebrow: "About us",
+    heroTitle: "A roof that manufactures from Istanbul to the world.",
+    heroBody:
+      "STL Teknoloji is a manufacturing company founded in Istanbul in 2016. What began with luggage production at our 35,000 m² facility in Arnavutköy has grown into four brands spanning gaming equipment, small home appliances, travel and skincare. We provide OEM manufacturing for Türkiye's leading textile brands and export to 20 countries.",
+    whoWeAreEyebrow: "Who We Are",
+    whoWeAreTitle: "Local production, on our own line.",
+    whoWeAreBody: [
+      "Our primary goal is manufacturing high-quality, durable plastic luggage. We produce luggage for Türkiye's largest textile companies and also export to 20 countries.",
+      "Luggage is one of the most important parts of any journey. Every suitcase we make combines careful workmanship, innovative design and durable materials.",
+      "Local production is the foundation of our success. We use the latest technology on the line and build every suitcase to our quality standards — offering customers durable, reliable products while contributing to our country's economy.",
+    ],
+    missionEyebrow: "Mission & Vision",
+    missionTitle: "What we aim for",
+    mission: {
+      label: "Mission",
+      text: "To sustain our leadership in luggage manufacturing and offer customers the highest quality products. With our innovative approach, we make travel easier and more enjoyable by offering options for every budget.",
+    },
+    vision: {
+      label: "Vision",
+      text: "To always lead the luggage industry by operating on a 100% local production principle at our 35,000 m² state-of-the-art facility, and to become a brand preferred worldwide.",
+    },
+    lineAlt: "STL Teknoloji production line",
+    buildingAlt: "STL Teknoloji production facility, Arnavutköy",
+    timelineEyebrow: "2016 → today",
+    timelineTitle: "The journey",
+    timeline: [
+      { year: "2016", title: "Founded", text: "We set out with luggage production in Istanbul." },
+      { year: "OEM", title: "Manufacturing partnerships", text: "We began producing luggage for Türkiye's major textile brands." },
+      { year: "Export", title: "20 countries", text: "Our products are sold in 20 countries, from Europe to the Middle East." },
+      { year: "Today", title: "Four brands", text: "We are growing our own brands with wexta, Oxyra, Fressi and BNK." },
+    ],
+    valuesEyebrow: "Values",
+    valuesTitle: "How we work",
+    values: [
+      { title: "Manufacturer identity", text: "We are makers, not resellers; quality is built on the line, not the shelf." },
+      { title: "Local production", text: "100% local production; fast development and real traceability." },
+      { title: "One standard", text: "The quality line that applies to OEM applies to our own brands too." },
+      { title: "Long term", text: "We don't chase trends; we make products to be used for years." },
+    ],
+    brandsEyebrow: "Portfolio",
+    brandsTitle: "Our brands",
+    facilityAlt: "STL Teknoloji production facility",
+  },
+
+  contact: {
+    eyebrow: "Contact",
+    title: "Let's talk.",
+    lead: "Reach us about dealerships, partnerships, OEM manufacturing or anything about our products.",
+    phoneLabel: "Phone",
+    emailLabel: "E-mail",
+    addressLabel: "Address",
+    hoursLabel: "Working hours",
+    formTitle: "Leave a message",
+    nameLabel: "Full name",
+    emailFieldLabel: "E-mail",
+    companyLabel: "Company (optional)",
+    messageLabel: "Your message",
+    kvkkText: "I consent to the processing of my personal data under the Privacy Notice.",
+    kvkkLink: "Privacy Notice",
+    submit: "Send",
+    submitNote: "Pressing Send opens your e-mail app; the message goes to info@stlteknoloji.com.",
+    mapTitle: "STL Teknoloji location",
+  },
+
+  notFound: {
+    title: "Page not found",
+    body: "The page you are looking for may have been moved or removed.",
+    home: "Back to home",
+  },
+};
