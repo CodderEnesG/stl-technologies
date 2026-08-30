@@ -80,12 +80,6 @@ export function Navbar() {
           : "none",
       }}
     >
-      {/* Aktif marka rengi: üst ince şerit */}
-      <span
-        className="absolute inset-x-0 top-0 h-[3px] origin-left transition-transform duration-500"
-        style={{ background: accent, transform: active ? "scaleX(1)" : "scaleX(0)" }}
-      />
-
       <div className="mx-auto flex h-[var(--nav-h)] max-w-[1400px] items-center justify-between px-5 md:px-8">
         {/* Marka sayfasında marka logosu, çatıda STL logosu — her ikisi de çatı ana sayfasına gider */}
         <Link

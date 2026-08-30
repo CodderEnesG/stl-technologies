@@ -10,10 +10,12 @@
  */
 export type IconName =
     "arrow-up-right"
+  | "calendar-days"
   | "check"
   | "clock"
   | "coffee"
   | "droplet"
+  | "eye"
   | "factory"
   | "flask-conical"
   | "frame"
@@ -25,15 +27,19 @@ export type IconName =
   | "luggage"
   | "mail"
   | "map-pin"
+  | "mouse-pointer-2"
   | "package"
   | "palette"
   | "person-standing"
   | "phone"
   | "rotate-ccw"
+  | "ruler"
   | "send"
   | "shield-check"
   | "sparkles"
+  | "store"
   | "sun-moon"
+  | "target"
   | "utensils";
 
 const paths: Record<IconName, React.ReactNode> = {
@@ -41,6 +47,20 @@ const paths: Record<IconName, React.ReactNode> = {
     <>
       <path d="M7 7h10v10" />
       <path d="M7 17 17 7" />
+    </>
+  ),
+  "calendar-days": (
+    <>
+      <path d="M8 2v3" />
+      <path d="M16 2v3" />
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path d="M3 9h18" />
+      <path d="M8 13h.01" />
+      <path d="M12 13h.01" />
+      <path d="M16 13h.01" />
+      <path d="M8 17h.01" />
+      <path d="M12 17h.01" />
+      <path d="M16 17h.01" />
     </>
   ),
   "check": <path d="M20 6 9 17l-5-5" />,
@@ -59,6 +79,12 @@ const paths: Record<IconName, React.ReactNode> = {
     </>
   ),
   "droplet": <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />,
+  "eye": (
+    <>
+      <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
   "factory": (
     <>
       <path d="M12 16h.01" />
@@ -138,6 +164,7 @@ const paths: Record<IconName, React.ReactNode> = {
       <circle cx="12" cy="10" r="3" />
     </>
   ),
+  "mouse-pointer-2": <path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" />,
   "package": (
     <>
       <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" />
@@ -170,6 +197,15 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M3 3v5h5" />
     </>
   ),
+  "ruler": (
+    <>
+      <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" />
+      <path d="m14.5 12.5 2-2" />
+      <path d="m11.5 9.5 2-2" />
+      <path d="m8.5 6.5 2-2" />
+      <path d="m17.5 15.5 2-2" />
+    </>
+  ),
   "send": (
     <>
       <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
@@ -190,6 +226,13 @@ const paths: Record<IconName, React.ReactNode> = {
       <circle cx="4" cy="20" r="2" />
     </>
   ),
+  "store": (
+    <>
+      <path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5" />
+      <path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244" />
+      <path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05" />
+    </>
+  ),
   "sun-moon": (
     <>
       <path d="M12 2v2" />
@@ -197,6 +240,13 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M16 12a4 4 0 0 0-4-4" />
       <path d="m19 5-1.256 1.256" />
       <path d="M20 12h2" />
+    </>
+  ),
+  "target": (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <circle cx="12" cy="12" r="6" />
+      <circle cx="12" cy="12" r="2" />
     </>
   ),
   "utensils": (

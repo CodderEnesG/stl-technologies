@@ -42,9 +42,16 @@ export default function Home() {
         image={stlImages.building}
         imageAlt={a.buildingAlt}
         stats={t.home.stats}
+        statIcons={["calendar-days", "factory", "globe"]}
       />
 
-      <MissionVision ctx={stlCtx} eyebrow={a.missionEyebrow} title={a.missionTitle} items={[a.mission, a.vision]} />
+      <MissionVision
+        ctx={stlCtx}
+        eyebrow={a.missionEyebrow}
+        title={a.missionTitle}
+        items={[a.mission, a.vision]}
+        icons={["target", "eye"]}
+      />
 
       {/* "STL Dünyası" bento bölümü müşteri kararına kadar kapalı.
           Metinler t.home.bento'da, bileşen components/sections içinde duruyor. */}
@@ -70,6 +77,7 @@ export default function Home() {
         title={t.home.partnersTitle}
         note={t.home.partnersNote}
         items={partners}
+        icon="store"
       />
 
       <Suspense fallback={<div className="min-h-[520px]" aria-hidden />}>

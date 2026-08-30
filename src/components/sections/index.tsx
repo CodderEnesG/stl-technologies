@@ -35,6 +35,7 @@ export function AboutBlock({
   image,
   imageAlt,
   stats,
+  statIcons,
 }: {
   ctx: BrandCtx;
   id?: string;
@@ -44,6 +45,8 @@ export function AboutBlock({
   image: string;
   imageAlt: string;
   stats: Stat[];
+  /** Her istatistiğin üstünde gösterilecek ikon (sırayla) */
+  statIcons?: IconName[];
 }) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
@@ -78,8 +81,17 @@ export function AboutBlock({
 
           {/* Satır-içi istatistik şeridi — marka sayfalarındaki BrandIntro düzeninin çatı karşılığı */}
           <div className="mt-12 grid grid-cols-3 gap-6 md:gap-10">
-            {stats.map((st) => (
+            {stats.map((st, i) => (
               <div key={st.l} className="border-t-2 pt-4" style={{ borderColor: brand.color }}>
+                {statIcons?.[i] && (
+                  <Icon
+                    name={statIcons[i]}
+                    size={20}
+                    strokeWidth={ctx.iconWeight ?? 1.75}
+                    className="mb-3"
+                    style={{ color: brand.color }}
+                  />
+                )}
                 <div className={`${ctx.font} text-2xl font-extrabold leading-none tracking-tightest md:text-4xl`}>
                   {st.n}
                 </div>
@@ -101,11 +113,13 @@ export function MissionVision({
   eyebrow,
   title,
   items,
+  icons,
 }: {
   ctx: BrandCtx;
   eyebrow: string;
   title: string;
   items: { label: string; text: string }[];
+  icons?: IconName[];
 }) {
   return (
     <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
@@ -117,8 +131,15 @@ export function MissionVision({
             className="rounded-3xl p-8 md:p-10"
             style={i === 0 ? { background: "#2b2828", color: "#fff" } : { background: ctx.brand.color, color: ctx.brand.onColor }}
           >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] opacity-70">{m.label}</p>
-            <p className={`mt-4 ${ctx.font} text-xl font-semibold leading-snug tracking-tightest md:text-2xl`}>
+            <div className="flex items-center gap-3">
+              {icons?.[i] && (
+                <span className="grid size-10 place-items-center rounded-full bg-white/15">
+                  <Icon name={icons[i]} size={19} strokeWidth={ctx.iconWeight ?? 1.75} />
+                </span>
+              )}
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] opacity-70">{m.label}</p>
+            </div>
+            <p className={`mt-5 ${ctx.font} text-xl font-semibold leading-snug tracking-tightest md:text-2xl`}>
               {m.text}
             </p>
           </div>
@@ -277,19 +298,25 @@ export function MarqueeBand({
   title,
   note,
   items,
+  icon,
 }: {
   ctx: BrandCtx;
   kicker: string;
   title: string;
   note?: string;
   items: string[];
+  icon?: IconName;
 }) {
   const s = toneStyles[ctx.tone];
   const mid = Math.ceil(items.length / 2);
   return (
     <section className="overflow-hidden border-t" style={{ background: "var(--surface)", borderColor: s.cardBorder }}>
       <div className="mx-auto max-w-[1400px] px-5 pt-24 text-center md:px-8">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: ctx.brand.color }}>
+        <p
+          className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.28em]"
+          style={{ color: ctx.brand.color }}
+        >
+          {icon && <Icon name={icon} size={16} strokeWidth={ctx.iconWeight ?? 1.75} />}
           {kicker}
         </p>
         <h2 className={`mx-auto mt-3 max-w-2xl ${ctx.font} text-2xl font-semibold leading-tight tracking-tightest md:text-3xl`}>

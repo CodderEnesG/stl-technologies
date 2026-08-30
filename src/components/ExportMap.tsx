@@ -1,6 +1,7 @@
 import { company } from "../data/company";
 import { useI18n } from "../i18n";
 import { WORLD_VIEWBOX, worldPaths } from "../data/worldPaths";
+import { Icon, type IconName } from "./Icon";
 import { toneStyles, type BrandCtx } from "./brand/sections";
 
 /**
@@ -36,8 +37,8 @@ export function ExportMap({ ctx }: { ctx: BrandCtx }) {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-x-7 gap-y-3 text-sm" style={{ color: s.muted }}>
-            <Legend color="#2b2828" label={m.legendHome} />
-            <Legend color={accent} label={m.legendMarket} />
+            <Legend ctx={ctx} icon="factory" color="#2b2828" label={m.legendHome} />
+            <Legend ctx={ctx} icon="map-pin" color={accent} label={m.legendMarket} />
           </div>
         </div>
 
@@ -75,10 +76,20 @@ export function ExportMap({ ctx }: { ctx: BrandCtx }) {
   );
 }
 
-function Legend({ color, label }: { color: string; label: string }) {
+function Legend({
+  ctx,
+  icon,
+  color,
+  label,
+}: {
+  ctx: BrandCtx;
+  icon: IconName;
+  color: string;
+  label: string;
+}) {
   return (
     <span className="inline-flex items-center gap-2.5">
-      <span className="size-3 rounded-sm" style={{ background: color }} />
+      <Icon name={icon} size={17} strokeWidth={ctx.iconWeight ?? 1.75} style={{ color }} />
       {label}
     </span>
   );
