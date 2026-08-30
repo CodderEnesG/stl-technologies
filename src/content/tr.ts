@@ -112,7 +112,7 @@ export const tr = {
         { k: "Mekanizma", v: "Yatırılabilir sırt" },
       ],
       hotspotsEyebrow: "Yakından bakın",
-      hotspotsTitle: "Koltuğun üç kritik noktası",
+      hotspotsTitle: "Uzun oturuşlar için tasarlandı.",
       hotspotsHint: "Noktalara gelin veya dokunun",
       hotspots: [
         {
@@ -158,7 +158,7 @@ export const tr = {
         title: "Refleksinle aynı hızda.",
         text: "Bir hamlenin sonucu milisaniyelerde belli olur. Oxyra mouse; hafif gövdesi, hassas sensörü ve dengeli ağırlığıyla eli yormadan takip eder.",
       },
-      quote: { text: "Oyunda avantaj senin tarafında.", source: "Oxyra" },
+      quote: { text: "İyi ekipman kendini hatırlatmaz; sen oynarken o yolundan çekilir.", source: "Oxyra" },
       ctaTitle: "Kurulumunu tamamla",
     },
     fressi: {

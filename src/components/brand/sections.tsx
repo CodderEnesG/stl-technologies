@@ -35,6 +35,55 @@ export function BrandShell({ ctx, children }: { ctx: BrandCtx; children: React.R
   return <div style={{ background: s.bg, color: s.fg }}>{children}</div>;
 }
 
+/**
+ * Tam ekran görselli marka hero'su — görselin kendisi marka logosunu taşıyor.
+ * Üzerine okunabilirlik için gradient perde, altına tagline.
+ */
+export function BrandHeroFull({
+  ctx,
+  tagline,
+  background,
+}: {
+  ctx: BrandCtx;
+  tagline: string;
+  background: string;
+}) {
+  const { t } = useI18n();
+  const { brand } = ctx;
+  return (
+    <section
+      className="relative flex flex-col overflow-hidden md:h-[calc(100svh-var(--nav-h))] md:min-h-[560px] md:justify-end"
+      style={{ background: toneStyles[ctx.tone].bg }}
+    >
+      {/*
+       * Görselin kendisi marka logosunu taşıyor ve logo yatayda geniş yer kaplıyor.
+       * Dar ekranda cover kırpması logoyu kestiği için görsel tam genişlikte akışta
+       * durur; md ve üzerinde tam ekran arka plana geçer.
+       */}
+      <img
+        src={background}
+        alt={brand.name}
+        fetchPriority="high"
+        className="w-full md:absolute md:inset-0 md:size-full md:object-cover"
+      />
+      {/* Perde yalnızca en alt şeritte — görseldeki logonun beyazına dokunmaz */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 hidden h-[14%] md:block"
+        style={{ background: "linear-gradient(to top, rgba(5,6,15,0.88), transparent)" }}
+      />
+      <div
+        className="relative mx-auto w-full max-w-[1400px] px-5 py-8 md:px-8 md:pb-10 md:pt-0"
+        style={{ textShadow: "0 2px 24px rgba(5,6,15,0.9)" }}
+      >
+        <h1 className={`max-w-xl ${ctx.font} text-xl font-black leading-[1.15] tracking-tightest text-white md:text-3xl`}>
+          {tagline}
+        </h1>
+      </div>
+    </section>
+  );
+}
+
 export function BrandHero({
   ctx,
   tagline,

@@ -113,7 +113,7 @@ export const en: SiteContent = {
         { k: "Mechanism", v: "Reclining backrest" },
       ],
       hotspotsEyebrow: "A closer look",
-      hotspotsTitle: "Three critical points of the chair",
+      hotspotsTitle: "Built for long sessions.",
       hotspotsHint: "Hover or tap the points",
       hotspots: [
         {
@@ -159,7 +159,7 @@ export const en: SiteContent = {
         title: "As fast as your reflex.",
         text: "A play is decided in milliseconds. The Oxyra mouse tracks without tiring your hand — light body, precise sensor, balanced weight.",
       },
-      quote: { text: "The advantage is on your side.", source: "Oxyra" },
+      quote: { text: "Good gear never reminds you it's there — it gets out of your way while you play.", source: "Oxyra" },
       ctaTitle: "Complete your setup",
     },
     fressi: {
