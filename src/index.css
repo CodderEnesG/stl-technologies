@@ -1,6 +1,39 @@
-@import url('https://use.typekit.net/mdd3pyj.css');
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Archivo:wdth,wght@62.5..125,400..900&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Playwrite+NO:wght@400&family=Figtree:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Playwrite+NO:wght@400&family=Figtree:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
+
+/* STL Teknoloji kurumsal fontu: Gilroy — kurumsal logodaki wordmark'ın fontu.
+   general_assets/fressi/Eski/gilroy kaynağından Türkçe alt kümeyle woff2'ye çevrildi. */
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-Heavy.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* Oxyra marka fontu: Manifold Extended CF (Connary Fagen) — marka kılavuzu gereği */
 @font-face {
@@ -20,13 +53,14 @@
 }
 
 @theme {
-  /* STL kurumsal kimliği: stlteknoloji.com'un Adobe Fonts kiti (Co Headline / Co Text) */
-  --font-sans: 'co-text', 'Figtree', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'co-headline', 'Figtree', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  /* STL kurumsal kimliği: Gilroy — kurumsal logonun kendi fontu */
+  --font-sans: 'Gilroy', 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Gilroy', 'Figtree', 'Manrope', ui-sans-serif, system-ui, sans-serif;
   /* Oxyra gövde fontu — marka kılavuzunda Manifold'un ikincili */
   --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-expanded: 'Archivo', 'Manrope', sans-serif;
-  --font-oxyra: 'Manifold Extended CF', 'Archivo', 'Manrope', sans-serif;
+  /* Poster/afiş başlıkları — logo lockup'ındaki geniş harf aralığı */
+  --font-expanded: 'Gilroy', 'Manrope', sans-serif;
+  --font-oxyra: 'Manifold Extended CF', 'Manrope', sans-serif;
   --font-nunito: 'Nunito', ui-sans-serif, sans-serif;
   --font-script: 'Playwrite NO', cursive;
   /* BNK ve wexta wordmark'larındaki geometrik sans karakteri */
@@ -70,9 +104,18 @@
   --accent: #e10000;
 }
 
-/* Poster/extended başlıklar: Archivo variable genişletilmiş eksende */
+/* Poster/afiş başlıklar: Gilroy Heavy. Harf aralığı markup'taki tracking-* sınıfına bırakılır. */
 .font-expanded {
-  font-stretch: 125%;
+  font-family: var(--font-expanded);
+  font-weight: 900;
+}
+
+/* Logo altındaki "TEKNOLOJİ" karakteri: Gilroy Heavy + geniş aralık */
+.font-lockup {
+  font-family: var(--font-expanded);
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
 /* Oxyra başlıkları — Manifold zaten extended, sentetik genişletme yok */

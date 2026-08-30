@@ -21,6 +21,8 @@ export type BrandVisual = {
   panelText: string;
   hero: string;
   heroBlend?: boolean;
+  /** Hero fotoğrafının odak noktası (CSS object-position). Kadraj panelde buraya göre kurulur. */
+  heroFocus?: string;
   channelHref: string;
   /** Ana lockup — açık zeminler (hero, marka sayfası) */
   logoDark: string;
@@ -29,6 +31,10 @@ export type BrandVisual = {
   /** Yatay/dar varyant — navbar, dropdown, footer gibi kısıtlı alanlar */
   logoDarkWide?: string;
   logoLightWide?: string;
+  /** Marka sayfasında navbar zemini — sayfanın kendi tone rengiyle uyumlu, yarı saydam */
+  navBg: string;
+  /** Navbar koyu zeminde mi: metin/ikon/kontur renklerini çevirir */
+  navOnDark: boolean;
 };
 
 export const stlLogo = {
@@ -38,19 +44,22 @@ export const stlLogo = {
 
 export const brands: BrandVisual[] = [
   {
-    slug: "oxyra",
-    name: "Oxyra",
-    color: "#3596de",
+    slug: "wexta",
+    name: "wexta",
+    color: "#29aec6",
     onColor: "#ffffff",
-    panelBg:
-      "radial-gradient(120% 120% at 70% 20%, rgba(53,150,222,0.35), transparent 55%), linear-gradient(160deg, #05060f 0%, #0a0e2a 60%, #231caa 140%)",
-    panelText: "#ffffff",
-    hero: "/images/oxyra/headset-oxyra.jpg",
-    channelHref: "https://www.stlteknoloji.com/tr/urunler/oyuncu-koltugu",
-    logoDark: "/logos/oxyra-dark.svg",
-    logoLight: "/logos/oxyra-light.svg",
-    logoDarkWide: "/logos/oxyra-dark-h.svg",
-    logoLightWide: "/logos/oxyra-light-h.svg",
+    panelBg: "linear-gradient(160deg, #eafafd 0%, #b7e8f0 45%, #29aec6 135%)",
+    panelText: "#0a3c47",
+    // Katalog kapağı: portre sahne, panel kadrajına birebir oturuyor.
+    // Beyaz zeminli ürün kesiti + mix-blend-multiply, panel açılırken kırpılıp
+    // her kare yeniden boyandığı için sekme/titreme yapıyordu.
+    hero: "/images/stl/wexta-cover.jpg",
+    heroFocus: "50% 45%",
+    channelHref: "https://www.stlteknoloji.com/tr/urunler/valiz",
+    logoDark: "/logos/wexta.svg",
+    logoLight: "/logos/wexta-light.svg",
+    navBg: "rgba(255,255,255,0.88)",
+    navOnDark: false,
   },
   {
     slug: "fressi",
@@ -59,23 +68,13 @@ export const brands: BrandVisual[] = [
     onColor: "#ffffff",
     panelBg: "linear-gradient(165deg, #f9f7f4 0%, #efe9df 55%, #d3c4a9 130%)",
     panelText: "#594439",
-    hero: "/images/fressi/kettle-hero.webp",
+    hero: "/images/fressi/kettle-kt07-hero.jpg",
+    heroFocus: "52% 58%",
     channelHref: "https://fressihome.com",
     logoDark: "/logos/fressi-dark.svg",
     logoLight: "/logos/fressi-light.svg",
-  },
-  {
-    slug: "wexta",
-    name: "wexta",
-    color: "#29aec6",
-    onColor: "#ffffff",
-    panelBg: "linear-gradient(160deg, #eafafd 0%, #b7e8f0 45%, #29aec6 135%)",
-    panelText: "#0a3c47",
-    hero: "/images/stl/valiz-milano-1.jpg",
-    heroBlend: true,
-    channelHref: "https://www.stlteknoloji.com/tr/urunler/valiz",
-    logoDark: "/logos/wexta.svg",
-    logoLight: "/logos/wexta-light.svg",
+    navBg: "rgba(249,247,244,0.88)",
+    navOnDark: false,
   },
   {
     slug: "bnk",
@@ -88,8 +87,48 @@ export const brands: BrandVisual[] = [
     channelHref: "",
     logoDark: "/logos/bnk-dark.svg",
     logoLight: "/logos/bnk-light.svg",
+    navBg: "rgba(255,245,248,0.9)",
+    navOnDark: false,
+  },
+  {
+    slug: "oxyra",
+    name: "Oxyra",
+    color: "#3596de",
+    onColor: "#ffffff",
+    panelBg:
+      "radial-gradient(120% 120% at 70% 20%, rgba(53,150,222,0.35), transparent 55%), linear-gradient(160deg, #05060f 0%, #0a0e2a 60%, #231caa 140%)",
+    panelText: "#ffffff",
+    hero: "/images/oxyra/koltuk-oxyra.jpg",
+    heroFocus: "50% 50%",
+    channelHref: "https://www.stlteknoloji.com/tr/urunler/oyuncu-koltugu",
+    logoDark: "/logos/oxyra-dark.svg",
+    logoLight: "/logos/oxyra-light.svg",
+    logoDarkWide: "/logos/oxyra-dark-h.svg",
+    logoLightWide: "/logos/oxyra-light-h.svg",
+    navBg: "rgba(5,6,15,0.82)",
+    navOnDark: true,
   },
 ];
+
+/**
+ * Çatı sitenin kendisi de bir "marka" kaydı gibi ele alınır: böylece bölüm sözlüğü
+ * (components/brand/sections.tsx) tek bir ctx imzasıyla hem çatıda hem markalarda çalışır.
+ * brands[] dizisine bilerek girmez — marka listelerine sızmaması için.
+ */
+export const stlBrand: BrandVisual = {
+  slug: "stl",
+  name: "STL Teknoloji",
+  color: "#e10000",
+  onColor: "#ffffff",
+  panelBg: "linear-gradient(160deg, #ffffff 0%, #f5f5f5 100%)",
+  panelText: "#2b2828",
+  hero: "/images/stl/fabrika-bina.jpg",
+  channelHref: "",
+  logoDark: "/logos/stl.svg",
+  logoLight: "/logos/stl.svg",
+  navBg: "rgba(255,255,255,0.86)",
+  navOnDark: false,
+};
 
 export const getBrand = (slug: string) => brands.find((b) => b.slug === slug)!;
 

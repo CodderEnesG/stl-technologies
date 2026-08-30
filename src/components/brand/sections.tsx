@@ -6,7 +6,7 @@ import { LogoSlot } from "../LogoSlot";
 import { SectionHeader } from "../SectionHeader";
 import { img } from "../../data/brands";
 
-export type BrandTone = "dark" | "cream" | "light" | "pink" | "mono";
+export type BrandTone = "dark" | "cream" | "light" | "pink" | "mono" | "stl";
 
 export const toneStyles: Record<
   BrandTone,
@@ -19,6 +19,8 @@ export const toneStyles: Record<
   pink: { bg: "#fff5f8", fg: "#231f20", sub: "#6b5b60", card: "#ffffff", cardBorder: "#ffdbe6", muted: "#6b5b60" },
   // wexta katalog dili: beyaz zemin, koyu tipografi, ince gri çizgiler
   mono: { bg: "#ffffff", fg: "#17181a", sub: "#5c6266", card: "#ffffff", cardBorder: "#e8eaeb", muted: "#8a9093" },
+  // STL çatı kimliği: beyaz zemin, antrasit tipografi, kırmızı vurgu
+  stl: { bg: "#ffffff", fg: "#2b2828", sub: "#767272", card: "#ffffff", cardBorder: "#e6e4e4", muted: "#767272" },
 };
 
 export type BrandCtx = {
@@ -678,7 +680,7 @@ export function ImageBand({ images, blend }: { images: string[]; blend?: boolean
 }
 
 export function BrandCTA({ ctx, title, channel, note }: { ctx: BrandCtx; title: string; channel: string; note?: string }) {
-  const { t, p } = useI18n();
+  const { t, s: sec } = useI18n();
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   return (
@@ -700,7 +702,7 @@ export function BrandCTA({ ctx, title, channel, note }: { ctx: BrandCtx; title: 
             </a>
           ) : (
             <Link
-              to={p.contact}
+              to={sec("contact")}
               className="inline-flex items-center gap-2 rounded-full px-8 py-4 font-semibold transition-transform hover:scale-[1.02]"
               style={{ background: brand.color, color: brand.onColor }}
             >
@@ -708,7 +710,7 @@ export function BrandCTA({ ctx, title, channel, note }: { ctx: BrandCtx; title: 
             </Link>
           )}
           {note && <p className="max-w-[26ch] text-sm" style={{ color: s.muted }}>{note}</p>}
-          <Link to={p.contact} className="text-sm font-medium underline underline-offset-4" style={{ color: s.muted }}>
+          <Link to={sec("contact")} className="text-sm font-medium underline underline-offset-4" style={{ color: s.muted }}>
             {t.brandPage.orContact}
           </Link>
         </div>

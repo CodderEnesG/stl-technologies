@@ -5,7 +5,7 @@ import { useI18n } from "../i18n";
 import { StlLogo } from "./Logo";
 
 export function Footer() {
-  const { t, p } = useI18n();
+  const { t, p, s: sec } = useI18n();
   return (
     <footer className="border-t border-border bg-[var(--surface)] text-foreground">
       <div className="mx-auto grid max-w-[1400px] gap-12 px-5 py-16 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:px-8">
@@ -46,8 +46,8 @@ export function Footer() {
             {t.footer.corporateHeading}
           </h4>
           <ul className="space-y-2.5 text-sm">
-            <li><Link to={p.about} className="text-foreground/80 transition-colors hover:text-foreground">{t.nav.about}</Link></li>
-            <li><Link to={p.contact} className="text-foreground/80 transition-colors hover:text-foreground">{t.nav.contact}</Link></li>
+            <li><Link to={sec("about")} className="text-foreground/80 transition-colors hover:text-foreground">{t.nav.about}</Link></li>
+            <li><Link to={sec("contact")} className="text-foreground/80 transition-colors hover:text-foreground">{t.nav.contact}</Link></li>
             <li>
               <a href={company.kvkkUrl} target="_blank" rel="noreferrer" className="text-foreground/80 transition-colors hover:text-foreground">
                 {t.footer.kvkk}

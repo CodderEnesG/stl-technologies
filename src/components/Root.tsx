@@ -5,10 +5,29 @@ import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 
 export default function Root() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
+
+  // Hakkımızda/markalar/iletişim ayrı sayfa değil; bağlantılar çıpaya gidiyor.
+  // Home lazy yüklendiği için hedef birkaç kare boyunca aranır.
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (!hash) {
+      window.scrollTo(0, 0);
+      return;
+    }
+    const id = hash.slice(1);
+    let frames = 0;
+    let raf = 0;
+    const find = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      if (frames++ < 60) raf = requestAnimationFrame(find);
+    };
+    raf = requestAnimationFrame(find);
+    return () => cancelAnimationFrame(raf);
+  }, [pathname, hash]);
 
   return (
     <I18nProvider>
