@@ -1,38 +1,47 @@
 /**
- * Oversized "ghosted" section label — a poster-scale word set in a very light
- * tint, with a small readable eyebrow carrying the actual meaning.
- * Semantics: the eyebrow is the real heading; the ghost word is decorative.
+ * Bölüm başlığı: küçük renkli eyebrow + net okunur başlık + opsiyonel açıklama.
  */
 export function SectionHeader({
   eyebrow,
   title,
+  description,
   onDark = false,
   eyebrowColor = "var(--accent)",
-  ghostColor,
   align = "left",
   className = "",
+  titleFont = "font-display",
 }: {
   eyebrow?: string;
   title: string;
+  description?: string;
   onDark?: boolean;
   eyebrowColor?: string;
-  ghostColor?: string;
   align?: "left" | "center";
   className?: string;
+  titleFont?: string;
 }) {
-  const ghost = ghostColor ?? (onDark ? "rgba(255,255,255,0.10)" : "rgba(43,40,40,0.08)");
+  const center = align === "center";
   return (
-    <div className={`${align === "center" ? "text-center" : ""} ${className}`}>
-      <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: eyebrowColor }}>
-        {eyebrow ?? title}
-      </h2>
-      <p
-        aria-hidden
-        className="font-expanded font-extrabold uppercase leading-[0.82] tracking-tightest"
-        style={{ color: ghost, fontSize: "clamp(2.5rem, 8.5vw, 8rem)" }}
-      >
+    <div className={`${center ? "text-center" : ""} ${className}`}>
+      {eyebrow && (
+        <p
+          className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em]"
+          style={{ color: eyebrowColor }}
+        >
+          {eyebrow}
+        </p>
+      )}
+      <h2 className={`${titleFont} text-3xl font-bold leading-[1.08] tracking-tightest md:text-[2.75rem]`}>
         {title}
-      </p>
+      </h2>
+      {description && (
+        <p
+          className={`mt-4 max-w-2xl text-base leading-relaxed md:text-lg ${center ? "mx-auto" : ""}`}
+          style={{ color: onDark ? "rgba(255,255,255,0.65)" : "var(--muted)" }}
+        >
+          {description}
+        </p>
+      )}
     </div>
   );
 }

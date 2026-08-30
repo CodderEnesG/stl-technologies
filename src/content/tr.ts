@@ -38,7 +38,7 @@ export const tr = {
       { tag: "Marka", title: "Dört marka, tek disiplin", body: "Oyundan mutfağa, seyahatten cilt bakımına: her ürün aynı üretim disiplininden geçiyor." },
     ],
     introEyebrow: "STL Teknoloji",
-    introTitle: "Tek çatı",
+    introTitle: "Dört marka, tek çatı",
     introText:
       "Farklı dünyalara hitap eden dört markayı aynı üretim ve tasarım disiplini altında bir araya getiriyoruz — oyundan mutfağa, seyahatten cilt bakımına.",
     stats: [
@@ -50,6 +50,7 @@ export const tr = {
     bento: {
       eyebrow: "Grup",
       title: "STL Dünyası",
+      description: "Üretim, ihracat ve marka yönetimi; hepsi Arnavutköy'deki tek tesiste birleşiyor.",
       production: { kicker: "Üretim", text: "Arnavutköy'deki 35.000 m² tesisimizde konseptten üretime tek çatı." },
       exportKicker: "İhracat",
       exportStat: "20",
@@ -70,7 +71,8 @@ export const tr = {
       lineCaption: "STL üretim bandı",
     },
     portfolioEyebrow: "Portföy",
-    portfolioTitle: "Markalar",
+    portfolioTitle: "Markalarımız",
+    portfolioDescription: "Her biri kendi alanında, aynı üretim disiplininden geçen dört marka.",
     explore: "Keşfet",
     discoverBrand: "Markayı keşfet",
     partnersKicker: "Satış kanalları",
@@ -95,27 +97,66 @@ export const tr = {
         { n: "2016", l: "Üretici güvencesi" },
         { n: "TR", l: "Yerli üretim" },
       ],
+      brandAbout: {
+        eyebrow: "Marka",
+        title: "X, oyuncunun tarafında.",
+        body: [
+          "Oxyra, STL Teknoloji'nin oyun ekipmanları markasıdır. Aynı üretim tesisinde, aynı kalite çizgisiyle geliştirilir; koltuktan çevre birimlerine kadar tek bir tasarım diline bağlı kalır.",
+          "Amacımız oyuncuya gösterişli bir aksesuar değil, saatler süren oturuşlarda formunu koruyan ekipman vermek. Sade hatlar, ölçülü ışık, sağlam malzeme.",
+        ],
+      },
       specBand: [
         { k: "İskelet", v: "Çelik şasi" },
         { k: "Ergonomi", v: "Ayarlanabilir bel ve boyun desteği" },
         { k: "Döşeme", v: "Aşınmaya dayanıklı yüzey" },
         { k: "Mekanizma", v: "Yatırılabilir sırt" },
       ],
-      valueProps: [
-        { title: "Sağlam iskelet", text: "Metal şasi ve kaliteli mekanizma; yıllarca aynı oturuş hissi." },
-        { title: "Ergonomik destek", text: "Bel ve boyun yastıkları, ayarlanabilir kolçaklar." },
-        { title: "Üretici güvencesi", text: "Aracısız üretim: fabrikadan çıkan ürünün arkasındayız." },
+      hotspotsEyebrow: "Yakından bakın",
+      hotspotsTitle: "Koltuğun üç kritik noktası",
+      hotspotsHint: "Noktalara gelin veya dokunun",
+      hotspots: [
+        {
+          title: "Ergonomik destek",
+          text: "Bel ve boyun yastıkları, ayarlanabilir kolçaklar; omurga uzun oturuşta doğal eğrisini korur.",
+          x: 62,
+          y: 28,
+        },
+        {
+          title: "Sağlam iskelet",
+          text: "Çelik şasi ve kaliteli mekanizma; yıllar sonra da ilk günkü oturuş hissi.",
+          x: 47,
+          y: 70,
+        },
+        {
+          title: "Üretici güvencesi",
+          text: "Aracısız üretim: fabrikadan çıkan ürünün arkasındayız, yedek parça bizden.",
+          x: 47,
+          y: 83,
+        },
       ],
-      categoriesLabel: "Ürün gamı",
-      categories: [
-        { label: "Oyuncu Koltukları", image: "/images/oxyra/koltuk-oxyra.jpg" },
-        { label: "Ses Ekipmanları", image: "/images/oxyra/headset-oxyra.jpg" },
-        { label: "Çevre Birimleri", image: "/images/oxyra/mouse-oxyra.jpg" },
+      rangeEyebrow: "Ürün gamı",
+      rangeTitle: "Kurulumun üç parçası",
+      rangeDescription: "Koltuktan çevre birimlerine, aynı tasarım dilinde üç ürün ailesi.",
+      range: [
+        {
+          label: "Oyuncu Koltukları",
+          text: "Uzun oturuşlar için çelik iskelet ve ayarlanabilir destek.",
+          image: "/images/oxyra/koltuk-oxyra.jpg",
+        },
+        {
+          label: "Ses Ekipmanları",
+          text: "Oyun içi yön hissi ve net iletişim için kapalı kulak tasarımı.",
+          image: "/images/oxyra/headset-oxyra.jpg",
+        },
+        {
+          label: "Çevre Birimleri",
+          text: "Hafif gövde ve hassas sensör; refleksle aynı hızda tepki.",
+          image: "/images/oxyra/mouse-oxyra.jpg",
+        },
       ],
-      vitrineTitle: "Öne çıkanlar",
       editorial: {
-        title: "Performans, koltuktan başlar.",
-        text: "Uzun bir oturuşun sonunda fark edersin: iyi bir koltuk oyun kadar önemlidir. Oxyra, bu farkı üretimden gelen güvenle kapatır.",
+        title: "Refleksinle aynı hızda.",
+        text: "Bir hamlenin sonucu milisaniyelerde belli olur. Oxyra mouse; hafif gövdesi, hassas sensörü ve dengeli ağırlığıyla eli yormadan takip eder.",
       },
       quote: { text: "Oyunda avantaj senin tarafında.", source: "Oxyra" },
       ctaTitle: "Kurulumunu tamamla",

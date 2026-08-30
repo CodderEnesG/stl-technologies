@@ -31,10 +31,11 @@ function IntroBlock() {
   const { t } = useI18n();
   return (
     <section className="mx-auto max-w-[1400px] px-5 pb-24 md:px-8">
-      <SectionHeader eyebrow={t.home.introEyebrow} title={t.home.introTitle} />
-      <p className="mt-6 max-w-3xl font-display text-2xl font-semibold leading-[1.2] tracking-tightest md:text-[2.4rem]">
-        {t.home.introText}
-      </p>
+      <SectionHeader
+        eyebrow={t.home.introEyebrow}
+        title={t.home.introTitle}
+        description={t.home.introText}
+      />
       <div className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-4">
         {t.home.stats.map((s) => (
           <div key={s.l} className="bg-white p-7">
@@ -93,7 +94,7 @@ function GroupBento() {
   const b = t.home.bento;
   return (
     <section className="mx-auto max-w-[1400px] px-5 pb-24 md:px-8">
-      <SectionHeader eyebrow={b.eyebrow} title={b.title} className="mb-10" />
+      <SectionHeader eyebrow={b.eyebrow} title={b.title} description={b.description} className="mb-10" />
       <div className="grid gap-4 md:auto-rows-[230px] md:grid-cols-3">
         <article className="group relative min-h-[260px] overflow-hidden rounded-2xl md:col-span-2 md:row-span-2">
           <img src={stlImages.factory} alt={t.about.facilityAlt} loading="lazy" className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -140,7 +141,11 @@ function BrandStrips() {
   return (
     <section>
       <div className="mx-auto max-w-[1400px] px-5 pb-6 md:px-8">
-        <SectionHeader eyebrow={t.home.portfolioEyebrow} title={t.home.portfolioTitle} />
+        <SectionHeader
+          eyebrow={t.home.portfolioEyebrow}
+          title={t.home.portfolioTitle}
+          description={t.home.portfolioDescription}
+        />
       </div>
       {brands.map((b, i) => {
         const copy = t.brands[b.slug as keyof typeof t.brands];
