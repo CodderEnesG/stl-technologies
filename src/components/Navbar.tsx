@@ -48,7 +48,7 @@ export function Navbar() {
 
       <div className="mx-auto flex h-[var(--nav-h)] max-w-[1400px] items-center justify-between px-5 md:px-8">
         <Link to={p.home} className="flex items-center" aria-label="STL Teknoloji">
-          <StlLogo size={30} />
+          <StlLogo size={46} />
         </Link>
 
         <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
