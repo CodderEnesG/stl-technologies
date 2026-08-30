@@ -855,14 +855,16 @@ export function ProductSpotlight({
             {images.map((src, i) => (
               <figure
                 key={src}
-                className="relative aspect-[3/4] w-[78%] shrink-0 snap-center overflow-hidden rounded-2xl sm:w-[52%] md:w-[46%]"
-                style={{ background: s.card, border: `1px solid ${s.cardBorder}` }}
+                /* Kaynak görseller 1200x1800 (2:3). Kart oranı buna eşit ve object-contain:
+                   infografiklerin kenarındaki yazılar kırpılmıyor, boşluk da kalmıyor. */
+                className="relative aspect-[2/3] w-[72%] shrink-0 snap-center overflow-hidden rounded-2xl sm:w-[46%] md:w-[38%]"
+                style={{ background: "#ffffff", border: `1px solid ${s.cardBorder}` }}
               >
                 <img
                   src={src}
                   alt={alts[i] ?? ""}
                   loading={i === 0 ? "eager" : "lazy"}
-                  className="size-full object-cover"
+                  className="size-full object-contain"
                 />
               </figure>
             ))}
