@@ -124,7 +124,7 @@ export const brands: BrandVisual[] = [
     logoDarkWide: "/logos/oxyra-dark-h.svg",
     logoLightWide: "/logos/oxyra-light-h.svg",
     navTopBg: "#05060f",
-    navBg: "rgba(11,16,58,0.94)",
+    navBg: "rgba(12,17,52,0.88)",
     navOnDark: true,
     footerBg: "#05060f",
     footerOnDark: true,
