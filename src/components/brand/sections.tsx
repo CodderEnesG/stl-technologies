@@ -24,7 +24,10 @@ export const toneStyles: Record<
 export type BrandCtx = {
   brand: BrandVisual;
   tone: BrandTone;
-  font: string; // tailwind font class
+  /** Başlık fontu (tailwind sınıfı) */
+  font: string;
+  /** Gövde fontu — verilmezse site geneli (STL kimliği) kullanılır */
+  bodyFont?: string;
 };
 
 /** "unsplash:<id>" kısayolunu gerçek URL'e çevirir */
@@ -35,7 +38,7 @@ export function BrandShell({ ctx, children }: { ctx: BrandCtx; children: React.R
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   return (
-    <div className="relative" style={{ background: s.bg, color: s.fg }}>
+    <div className={`relative ${ctx.bodyFont ?? ""}`} style={{ background: s.bg, color: s.fg }}>
       {/* Hero'dan sonraki üst bölümlerde marka mavisi ışık katmanı */}
       {ctx.tone === "dark" && (
         <div

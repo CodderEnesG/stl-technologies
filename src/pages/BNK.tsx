@@ -20,7 +20,7 @@ export default function BNK() {
   usePageMeta(t.meta.bnk.title, t.meta.bnk.desc);
 
   // Logo wordmark'ı geometrik sans; başlıklar Poppins ile aynı karakterde
-  const ctx: BrandCtx = { brand: getBrand("bnk"), tone: "pink", font: "font-geometric" };
+  const ctx: BrandCtx = { brand: getBrand("bnk"), tone: "pink", font: "font-geometric", bodyFont: "font-geometric" };
 
   return (
     <BrandShell ctx={ctx}>
