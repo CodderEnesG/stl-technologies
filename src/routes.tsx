@@ -20,16 +20,7 @@ export const router = createBrowserRouter([
     Component: Root,
     children: [
       ...children,
-      { path: "hakkimizda", lazy: page(() => import("./pages/About")) },
-      { path: "iletisim", lazy: page(() => import("./pages/Contact")) },
-      {
-        path: "en",
-        children: [
-          ...children,
-          { path: "about", lazy: page(() => import("./pages/About")) },
-          { path: "contact", lazy: page(() => import("./pages/Contact")) },
-        ],
-      },
+      { path: "en", children: [...children] },
       { path: "*", lazy: page(() => import("./pages/NotFound")) },
     ],
   },

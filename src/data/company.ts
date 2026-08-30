@@ -5,6 +5,12 @@ export const company = {
   founded: 2016,
   facilitySqm: "35.000",
   exportCountries: 20,
+  /**
+   * İhracat pazarları — ISO 3166-1 alpha-2 kodları (ör. "DE", "FR", "SA").
+   * TODO: müşteriden 20 ülkelik kesin liste bekleniyor. Boşken haritada
+   * sadece Türkiye işaretlenir ve "liste güncellenecek" notu görünür.
+   */
+  exportMarkets: [] as string[],
   phoneDisplay: "+90 212 866 85 51",
   phoneHref: "tel:+902128668551",
   email: "info@stlteknoloji.com",

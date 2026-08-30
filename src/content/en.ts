@@ -10,8 +10,6 @@ export const en: SiteContent = {
     fressi: { title: "Fressi — Technology That Feels Good at Home | STL Teknoloji", desc: "Retro-designed small home appliances: coffee machines, kettles, toasters and more." },
     wexta: { title: "wexta — Luggage & Travel | STL Teknoloji", desc: "Durable luggage made in Istanbul. 100% local production, exported to 20 countries." },
     bnk: { title: "BNK — Beauty Net Korea | STL Teknoloji", desc: "The brand that turns K-beauty skincare into a simple routine." },
-    about: { title: "About Us | STL Teknoloji", desc: "Manufacturing in Istanbul since 2016: a 35,000 m² facility, 100% local production, exports to 20 countries." },
-    contact: { title: "Contact | STL Teknoloji", desc: "STL Teknoloji contact details: Arnavutköy / Istanbul." },
   },
 
   nav: {
@@ -22,7 +20,7 @@ export const en: SiteContent = {
   },
 
   footer: {
-    tagline: "Every journey starts with a dream.",
+    tagline: "Four brands, one manufacturing discipline. Made in Istanbul.",
     brandsHeading: "Brands",
     corporateHeading: "Corporate",
     contactHeading: "Contact",
@@ -32,21 +30,14 @@ export const en: SiteContent = {
   },
 
   home: {
-    news: [
-      { tag: "Corporate", title: "Manufacturing in Istanbul since 2016", body: "We manage four brands under one roof at our 35,000 m² production facility in Arnavutköy." },
-      { tag: "Export", title: "Exporting to 20 countries", body: "Beyond Türkiye, our products reach points of sale in 20 countries." },
-      { tag: "Production", title: "100% local production", body: "We provide OEM luggage manufacturing for Türkiye's leading textile brands." },
-      { tag: "Brands", title: "Four brands, one discipline", body: "From gaming to the kitchen, travel to skincare: every product passes through the same production discipline." },
-    ],
     introEyebrow: "STL Teknoloji",
     introTitle: "Four brands, one roof",
     introText:
       "We bring together four brands that speak to different worlds under the same production and design discipline — from gaming to the kitchen, from travel to skincare.",
     stats: [
-      { n: "4", l: "Brands" },
-      { n: "20", l: "Export countries" },
       { n: "2016", l: "Founded" },
       { n: "35,000 m²", l: "Production facility" },
+      { n: "20", l: "Export countries" },
     ],
     bento: {
       eyebrow: "Group",
@@ -62,24 +53,34 @@ export const en: SiteContent = {
     },
     whoWeAre: {
       eyebrow: "Who We Are",
-      title: "A luggage factory founded in Istanbul.",
+      title: "Four brands, one manufacturing discipline.",
       paragraphs: [
-        "Founded in 2016, our company is a luggage factory operating in Istanbul. Our primary goal is manufacturing high-quality, durable plastic luggage. We produce luggage for Türkiye's largest textile companies and export to 20 countries.",
-        "Every suitcase is made through a combination of careful workmanship, innovative design and durable materials. Local production is the foundation of our success: we use the latest technology on the line and build every suitcase to our own quality standards.",
+        "We were founded in Istanbul in 2016, making luggage. Today, at our 35,000 m² facility in Arnavutköy, we run four brands under one manufacturing and design discipline — from gaming equipment to small home appliances, from travel to skincare.",
+        "Our production backbone is local. We make OEM luggage for Türkiye's leading textile brands and export to 20 countries. The quality line we hold for OEM work is the same line we hold for our own brands.",
       ],
-      cta: "About us",
-      facilityCaption: "Arnavutköy production facility",
-      lineCaption: "STL production line",
     },
     portfolioEyebrow: "Portfolio",
     portfolioTitle: "Our brands",
     portfolioDescription: "Four brands, each in its own field, all shaped by the same production discipline.",
     explore: "Explore",
     discoverBrand: "Discover the brand",
+    exportMap: {
+      kicker: "Exports",
+      unit: "export markets",
+      title: "Made in Arnavutköy, shipped worldwide.",
+      body: "Our own brands and the products we manufacture as OEM reach retail in Türkiye and in 20 countries.",
+      legendHome: "Production base",
+      legendMarket: "Export market",
+      alt: "World map of STL Teknoloji export markets",
+      pendingNote: "The country list will be updated.",
+    },
+    cube: {
+      roleDescription: "Brand selector cube",
+      hint: "Move the pointer across, or use the arrow keys.",
+    },
     partnersKicker: "Sales channels",
     partnersTitle: "Our brands are available at Türkiye's leading retailers.",
     partnersNote: "Logos are representative; the channel list will be updated.",
-    ctaTitle: "Reach out for our brands, dealerships and partnerships.",
     ctaButton: "Get in touch",
   },
 
@@ -273,48 +274,21 @@ export const en: SiteContent = {
     categoriesTitle: "Categories",
   },
 
+  // "About" is not a separate page; these strings feed the about and
+  // mission/vision sections on the landing page.
   about: {
-    eyebrow: "About us",
-    heroTitle: "A roof that manufactures from Istanbul to the world.",
-    heroBody:
-      "STL Teknoloji is a manufacturing company founded in Istanbul in 2016. What began with luggage production at our 35,000 m² facility in Arnavutköy has grown into four brands spanning gaming equipment, small home appliances, travel and skincare. We provide OEM manufacturing for Türkiye's leading textile brands and export to 20 countries.",
-    whoWeAreEyebrow: "Who We Are",
-    whoWeAreTitle: "Local production, on our own line.",
-    whoWeAreBody: [
-      "Our primary goal is manufacturing high-quality, durable plastic luggage. We produce luggage for Türkiye's largest textile companies and also export to 20 countries.",
-      "Luggage is one of the most important parts of any journey. Every suitcase we make combines careful workmanship, innovative design and durable materials.",
-      "Local production is the foundation of our success. We use the latest technology on the line and build every suitcase to our quality standards — offering customers durable, reliable products while contributing to our country's economy.",
-    ],
     missionEyebrow: "Mission & Vision",
     missionTitle: "What we aim for",
     mission: {
       label: "Mission",
-      text: "To sustain our leadership in luggage manufacturing and offer customers the highest quality products. With our innovative approach, we make travel easier and more enjoyable by offering options for every budget.",
+      text: "To hold the same manufacturing and design standard across all four of our brands, whatever the category. With our innovative approach, to offer products that fit every budget and last for years.",
     },
     vision: {
       label: "Vision",
-      text: "To always lead the luggage industry by operating on a 100% local production principle at our 35,000 m² state-of-the-art facility, and to become a brand preferred worldwide.",
+      text: "To grow on a 100% local production principle at our 35,000 m² state-of-the-art facility, and to turn our brand portfolio — from gaming equipment to home appliances to skincare — into a group preferred worldwide.",
     },
     lineAlt: "STL Teknoloji production line",
     buildingAlt: "STL Teknoloji production facility, Arnavutköy",
-    timelineEyebrow: "2016 → today",
-    timelineTitle: "The journey",
-    timeline: [
-      { year: "2016", title: "Founded", text: "We set out with luggage production in Istanbul." },
-      { year: "OEM", title: "Manufacturing partnerships", text: "We began producing luggage for Türkiye's major textile brands." },
-      { year: "Export", title: "20 countries", text: "Our products are sold in 20 countries, from Europe to the Middle East." },
-      { year: "Today", title: "Four brands", text: "We are growing our own brands with wexta, Oxyra, Fressi and BNK." },
-    ],
-    valuesEyebrow: "Values",
-    valuesTitle: "How we work",
-    values: [
-      { title: "Manufacturer identity", text: "We are makers, not resellers; quality is built on the line, not the shelf." },
-      { title: "Local production", text: "100% local production; fast development and real traceability." },
-      { title: "One standard", text: "The quality line that applies to OEM applies to our own brands too." },
-      { title: "Long term", text: "We don't chase trends; we make products to be used for years." },
-    ],
-    brandsEyebrow: "Portfolio",
-    brandsTitle: "Our brands",
     facilityAlt: "STL Teknoloji production facility",
   },
 

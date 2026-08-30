@@ -80,17 +80,22 @@ export function HeroAccordion() {
               fetchPriority={i === 0 ? "high" : undefined}
               className={
                 b.heroBlend
-                  ? "absolute bottom-0 left-1/2 h-[62%] -translate-x-1/2 object-contain object-bottom transition-all duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:h-[68%]"
-                  : "absolute bottom-0 left-0 h-[58%] w-full object-cover object-center transition-all duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:h-[64%]"
+                  ? // Yükseklik animasyonu her karede layout hesaplatıyordu (büyüme + titreme);
+                    // ölçek transform'u compositor'da çalışır.
+                    "absolute bottom-0 left-1/2 h-[64%] origin-bottom -translate-x-1/2 object-contain object-bottom transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform group-hover:scale-[1.05]"
+                  : // Fotoğraflı hero'lar panelin tamamını kaplar: dar bir şeride sıkıştırılınca
+                    // kare kaynak aşırı yakınlaşıyor ve panel büyüyünce kadraj bozuluyordu.
+                    "absolute inset-0 size-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
               }
               style={{
                 filter: isActive ? "none" : "saturate(0.85)",
                 mixBlendMode: b.heroBlend ? "multiply" : undefined,
-                opacity: b.heroBlend ? 1 : 0.92,
-                maskImage: b.heroBlend ? undefined : "linear-gradient(to bottom, transparent, #000 18%)",
-                WebkitMaskImage: b.heroBlend ? undefined : "linear-gradient(to bottom, transparent, #000 18%)",
+                // Sahne fotoğrafı paneli tamamen kaplıyor: maske/opaklık ile soldurmaya gerek yok,
+                // okunabilirliği alttaki perde sağlıyor.
+                objectPosition: b.heroBlend ? undefined : (b.heroFocus ?? "center 55%"),
               }}
             />
+            {/* Panel kapalıyken hafif karartma */}
             <div
               className="absolute inset-0 transition-opacity duration-500"
               style={{
@@ -98,6 +103,19 @@ export function HeroAccordion() {
                 opacity: active === i ? 0 : 0.55,
               }}
             />
+            {/* Sahne fotoğrafı tüm paneli kapladığı için yazı bloğuna okunabilirlik perdesi.
+                Blend'li ürün kesitlerinde gerek yok: zemin zaten düz ve açık. */}
+            {!b.heroBlend && (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[46%]"
+                style={{
+                  background: `linear-gradient(to top, ${
+                    b.panelText === "#ffffff" ? "rgba(4,6,16,0.88)" : "rgba(255,255,255,0.88)"
+                  } 0%, transparent 100%)`,
+                }}
+              />
+            )}
 
             {/* Kapalı hâl: dikey marka adı */}
             <span
