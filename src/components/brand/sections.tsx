@@ -445,7 +445,7 @@ export function ProductRange({
   const onDark = ctx.tone === "dark";
 
   return (
-    <section className="mx-auto max-w-[1400px] px-5 pt-24 md:px-8">
+    <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
       <SectionHeader
         eyebrow={eyebrow}
         title={title}
