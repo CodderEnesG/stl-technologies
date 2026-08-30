@@ -25,7 +25,8 @@ export function ChairHotspots({
   ctx: BrandCtx;
   eyebrow: string;
   title: string;
-  hint: string;
+  /** Başlık altındaki kısa yönerge — verilmezse gösterilmez */
+  hint?: string;
   image: string;
   hotspots: Hotspot[];
 }) {

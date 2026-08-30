@@ -12,7 +12,8 @@ export const toneStyles: Record<
   BrandTone,
   { bg: string; fg: string; sub: string; card: string; cardBorder: string; muted: string }
 > = {
-  dark: { bg: "#05060f", fg: "#ffffff", sub: "rgba(255,255,255,0.7)", card: "rgba(255,255,255,0.04)", cardBorder: "rgba(255,255,255,0.1)", muted: "rgba(255,255,255,0.5)" },
+  // Oxyra: koyu zemin; mavi, kart ve konturlarda detay olarak yaşar
+  dark: { bg: "#05060f", fg: "#ffffff", sub: "rgba(255,255,255,0.72)", card: "rgba(53,150,222,0.07)", cardBorder: "rgba(120,175,225,0.2)", muted: "rgba(255,255,255,0.55)" },
   cream: { bg: "#f9f7f4", fg: "#594439", sub: "#7a716d", card: "#ffffff", cardBorder: "#e7ded0", muted: "#7a716d" },
   light: { bg: "#f4fbfd", fg: "#0a3c47", sub: "#3d6d78", card: "#ffffff", cardBorder: "#d5eef3", muted: "#3d6d78" },
   pink: { bg: "#fff5f8", fg: "#231f20", sub: "#6b5b60", card: "#ffffff", cardBorder: "#ffdbe6", muted: "#6b5b60" },
@@ -32,7 +33,24 @@ export const resolveImg = (src: string, w = 900, h = 1100) =>
 
 export function BrandShell({ ctx, children }: { ctx: BrandCtx; children: React.ReactNode }) {
   const s = toneStyles[ctx.tone];
-  return <div style={{ background: s.bg, color: s.fg }}>{children}</div>;
+  const { brand } = ctx;
+  return (
+    <div className="relative" style={{ background: s.bg, color: s.fg }}>
+      {/* Hero'dan sonraki üst bölümlerde marka mavisi ışık katmanı */}
+      {ctx.tone === "dark" && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-[2200px]"
+          style={{
+            background: `radial-gradient(900px 620px at 18% 6%, ${brand.color}26, transparent 70%),
+                         radial-gradient(760px 520px at 88% 26%, ${brand.color}1f, transparent 72%),
+                         radial-gradient(1100px 700px at 45% 52%, ${brand.color}14, transparent 75%)`,
+          }}
+        />
+      )}
+      <div className="relative">{children}</div>
+    </div>
+  );
 }
 
 /**
@@ -239,7 +257,12 @@ export function BrandAbout({
           <span
             aria-hidden
             className="pointer-events-none absolute inset-0 blur-3xl"
-            style={{ background: `radial-gradient(circle at 50% 50%, ${brand.color}33, transparent 70%)` }}
+            style={{ background: `radial-gradient(circle at 50% 50%, ${brand.color}66, transparent 68%)` }}
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
+            style={{ background: `radial-gradient(circle, ${brand.color}55, transparent 70%)` }}
           />
           <img src={mark} alt="" aria-hidden className="relative w-full max-w-[260px] object-contain" />
         </div>
@@ -269,7 +292,12 @@ export function SpecBand({ ctx, specs }: { ctx: BrandCtx; specs: { k: string; v:
     <section className="mx-auto max-w-[1400px] px-5 pt-20 md:px-8">
       <div className="grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-4" style={{ borderColor: s.cardBorder, background: s.cardBorder }}>
         {specs.map((sp) => (
-          <div key={sp.k} className="p-6" style={{ background: s.card }}>
+          <div key={sp.k} className="relative overflow-hidden p-6" style={{ background: s.card }}>
+            <span
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-px"
+              style={{ background: `linear-gradient(to right, ${brand.color}, transparent)` }}
+            />
             <div className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: brand.color }}>{sp.k}</div>
             <div className={`mt-2 ${ctx.font} font-bold tracking-tightest`}>{sp.v}</div>
           </div>

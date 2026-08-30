@@ -159,7 +159,7 @@ export const en: SiteContent = {
         title: "As fast as your reflex.",
         text: "A play is decided in milliseconds. The Oxyra mouse tracks without tiring your hand — light body, precise sensor, balanced weight.",
       },
-      quote: { text: "Good gear never reminds you it's there — it gets out of your way while you play.", source: "Oxyra" },
+      quote: { text: "We build it, and we stand behind it.", source: "Oxyra" },
       ctaTitle: "Complete your setup",
     },
     fressi: {

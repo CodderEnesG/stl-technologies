@@ -7,7 +7,6 @@ import {
   BrandCTA,
   BrandHeroFull,
   BrandShell,
-  Editorial,
   ProductRange,
   PullQuote,
   SpecBand,
@@ -37,7 +36,7 @@ export default function Oxyra() {
         ctx={ctx}
         eyebrow={c.hotspotsEyebrow}
         title={c.hotspotsTitle}
-        hint={c.hotspotsHint}
+        // hint={c.hotspotsHint}
         image="/images/oxyra/koltuk-oxyra.jpg"
         hotspots={c.hotspots}
       />
@@ -48,12 +47,6 @@ export default function Oxyra() {
         description={c.rangeDescription}
         items={c.range}
         href={ctx.brand.channelHref}
-      />
-      <Editorial
-        ctx={ctx}
-        image="/images/oxyra/mouse-oxyra.jpg"
-        title={c.editorial.title}
-        text={c.editorial.text}
       />
       <PullQuote ctx={ctx} text={c.quote.text} source={c.quote.source} />
       <BrandCTA ctx={ctx} title={c.ctaTitle} channel={c.channel} />
