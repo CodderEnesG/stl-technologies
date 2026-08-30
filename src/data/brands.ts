@@ -31,7 +31,12 @@ export type BrandVisual = {
   /** Yatay/dar varyant — navbar, dropdown, footer gibi kısıtlı alanlar */
   logoDarkWide?: string;
   logoLightWide?: string;
-  /** Marka sayfasında navbar zemini — sayfanın kendi tone rengiyle uyumlu, yarı saydam */
+  /**
+   * Sayfa başındayken navbar zemini — sayfanın kendi zemin rengiyle birebir aynı,
+   * opak. Böylece hero'nun üstünde çizgi/blok gibi durmuyor.
+   */
+  navTopBg: string;
+  /** Aşağı kaydırılınca navbar zemini — yarı saydam, arkasındaki içerik seziliyor */
   navBg: string;
   /** Navbar koyu zeminde mi: metin/ikon/kontur renklerini çevirir */
   navOnDark: boolean;
@@ -62,6 +67,7 @@ export const brands: BrandVisual[] = [
     channelHref: "https://www.stlteknoloji.com/tr/urunler/valiz",
     logoDark: "/logos/wexta.svg",
     logoLight: "/logos/wexta-light.svg",
+    navTopBg: "#ffffff",
     navBg: "rgba(255,255,255,0.88)",
     navOnDark: false,
     footerBg: "#f2f5f6",
@@ -79,6 +85,7 @@ export const brands: BrandVisual[] = [
     channelHref: "https://fressihome.com",
     logoDark: "/logos/fressi-dark.svg",
     logoLight: "/logos/fressi-light.svg",
+    navTopBg: "#f9f7f4",
     navBg: "rgba(249,247,244,0.88)",
     navOnDark: false,
     footerBg: "#f2eee7",
@@ -95,6 +102,7 @@ export const brands: BrandVisual[] = [
     channelHref: "",
     logoDark: "/logos/bnk-dark.svg",
     logoLight: "/logos/bnk-light.svg",
+    navTopBg: "#fff5f8",
     navBg: "rgba(255,245,248,0.9)",
     navOnDark: false,
     footerBg: "#ffeef4",
@@ -115,6 +123,7 @@ export const brands: BrandVisual[] = [
     logoLight: "/logos/oxyra-light.svg",
     logoDarkWide: "/logos/oxyra-dark-h.svg",
     logoLightWide: "/logos/oxyra-light-h.svg",
+    navTopBg: "#05060f",
     navBg: "rgba(11,16,58,0.94)",
     navOnDark: true,
     footerBg: "#05060f",
@@ -138,6 +147,7 @@ export const stlBrand: BrandVisual = {
   channelHref: "",
   logoDark: "/logos/stl.svg",
   logoLight: "/logos/stl.svg",
+  navTopBg: "#ffffff",
   navBg: "rgba(255,255,255,0.86)",
   navOnDark: false,
   footerBg: "#f5f5f5",
