@@ -33,7 +33,7 @@ export type BrandVisual = {
 
 export const stlLogo = {
   dark: "/logos/stl.svg", // renkli logo, açık zeminler
-  light: "/logos/stl.svg", // koyu zeminde tipografik StlLogo tercih edilir
+  light: "/logos/stl.svg", // koyu zemin için beyaz varyant gerekirse buraya
 };
 
 export const brands: BrandVisual[] = [

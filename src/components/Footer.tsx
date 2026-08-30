@@ -10,7 +10,7 @@ export function Footer() {
     <footer className="border-t border-border bg-[var(--surface)] text-foreground">
       <div className="mx-auto grid max-w-[1400px] gap-12 px-5 py-16 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:px-8">
         <div>
-          <StlLogo size={30} />
+          <StlLogo size={50} />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">{t.footer.tagline}</p>
           <a
             href={company.instagram}
