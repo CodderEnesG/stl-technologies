@@ -133,6 +133,18 @@ footer'da STL logosu CSS filtresiyle beyaza döner — beyaz logo dosyası yok.
 Favicon: `public/favicon.svg` (kırmızı yuvarlak kare + beyaz STL markası,
 `logos/stl-mark.svg` yol verisinden üretildi) + `public/apple-touch-icon.png`.
 
+## Ürün odaklı bölüm (ProductSpotlight)
+
+Marka geneli iddialar `SpecBand`'de durur (her ürün için doğru olmalı). Modele
+özel sayısal değerler `ProductSpotlight` bölümünde, sadece o ürüne bağlı olarak
+gösterilir — Oxyra'da Mooncha koltuğu (145°, 51 cm, 136 kg, 100.000 çevrim).
+Yeni model eklenirken kendi `spotlight` içeriğiyle bileşen tekrar kullanılır.
+
+Görseller `public/images/oxyra/mooncha/1..7.jpg` — markanın kendi Trendyol
+listelemesinden. **Not:** 2–7 numaralı görseller pazaryeri infografiği ve
+üzerlerinde Türkçe metin basılı; EN sayfasında da Türkçe görünüyorlar. Dilden
+bağımsız ürün çekimleri geldiğinde değiştirilmeli.
+
 ## Bekleyen işler
 
 - [ ] Müşteri hero varyantı seçimi
@@ -145,6 +157,8 @@ Favicon: `public/favicon.svg` (kırmızı yuvarlak kare + beyaz STL markası,
 - [ ] İhracat ülkeleri listesi: `src/data/company.ts` → `exportMarkets` (ISO alpha-2).
       Boşken haritada sadece Türkiye işaretli görünür.
 - [ ] "STL Dünyası" bölümü için müşterinin referans görseli bekleniyor
+- [ ] Mooncha galerisindeki infografiklerde Türkçe metin basılı; dilden bağımsız
+      ürün çekimleriyle değişmeli
 - [ ] Oxyra başlık fontu Manifold Extd CF Heavy lisanslı — dosya
       `public/fonts/ManifoldExtdCF-Heavy.woff2` olarak eklenince otomatik devreye girer
       (şu an Archivo ile geniş eksende çalışıyor)
