@@ -77,6 +77,26 @@ Vercel'de repoyu içe aktarmak yeterli, ek ayar gerekmiyor.
 Marka sayfaları kendi fontlarını korur: Oxyra → Manifold Extended CF, Fressi → Nunito +
 Playwrite NO, wexta ve BNK → Poppins.
 
+## İkonlar
+
+`src/components/Icon.tsx` — tek dosyada inline SVG seti, bağımlılık yok.
+Kaynak: **Lucide** (https://lucide.dev, ISC lisansı). Lucide tamamen stroke
+tabanlı olduğu için marka karakteri tek path setinden `strokeWidth` ile
+ayarlanıyor (`BrandCtx.iconWeight`): Oxyra 2.1 (kalın/gaming), Fressi 1.7,
+STL 1.75, wexta 1.45 (ince katalog çizgisi), BNK 1.35 (narin).
+
+Instagram gilfi elle çizildi — Lucide marka ikonlarını setten çıkardı.
+
+İkon eklemek için:
+```bash
+curl -sSL https://unpkg.com/lucide-static@1.37.0/icons/<isim>.svg
+```
+İç elemanları `Icon.tsx` içindeki `paths` haritasına ekleyin (JSX camelCase
+attribute'larla) ve `IconName` birleşimine adı yazın.
+
+Favicon: `public/favicon.svg` (kırmızı yuvarlak kare + beyaz STL markası,
+`logos/stl-mark.svg` yol verisinden üretildi) + `public/apple-touch-icon.png`.
+
 ## Bekleyen işler
 
 - [ ] Müşteri hero varyantı seçimi

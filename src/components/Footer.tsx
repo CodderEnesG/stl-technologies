@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { brands } from "../data/brands";
 import { company } from "../data/company";
 import { useI18n } from "../i18n";
+import { Icon } from "./Icon";
 import { StlLogo } from "./Logo";
 
 export function Footer() {
@@ -18,6 +19,7 @@ export function Footer() {
             rel="noreferrer"
             className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
           >
+            <Icon name="instagram" size={16} />
             Instagram
           </a>
         </div>
@@ -65,26 +67,34 @@ export function Footer() {
           <h4 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-muted">
             {t.footer.contactHeading}
           </h4>
-          <address className="space-y-2.5 text-sm not-italic leading-relaxed text-muted">
-            <p>
-              {company.addressLines.map((l) => (
-                <span key={l}>
-                  {l}
-                  <br />
-                </span>
-              ))}
+          <address className="space-y-3 text-sm not-italic leading-relaxed text-muted">
+            <p className="flex gap-2.5">
+              <Icon name="map-pin" size={16} className="mt-0.5 shrink-0" />
+              <span>
+                {company.addressLines.map((l) => (
+                  <span key={l}>
+                    {l}
+                    <br />
+                  </span>
+                ))}
+              </span>
             </p>
-            <p>
+            <p className="flex items-center gap-2.5">
+              <Icon name="phone" size={16} className="shrink-0" />
               <a href={company.phoneHref} className="transition-colors hover:text-[var(--accent)]">
                 {company.phoneDisplay}
               </a>
             </p>
-            <p>
-              <a href={`mailto:${company.email}`} className="transition-colors hover:text-[var(--accent)]">
+            <p className="flex items-center gap-2.5">
+              <Icon name="mail" size={16} className="shrink-0" />
+              <a href={`mailto:${company.email}`} className="break-all transition-colors hover:text-[var(--accent)]">
                 {company.email}
               </a>
             </p>
-            <p>{company.hours}</p>
+            <p className="flex items-center gap-2.5">
+              <Icon name="clock" size={16} className="shrink-0" />
+              {company.hours}
+            </p>
           </address>
         </div>
       </div>

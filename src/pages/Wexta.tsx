@@ -23,7 +23,7 @@ export default function Wexta() {
 
   // Katalog dili: beyaz zemin, koyu tipografi, siyah bantlar; turkuaz sadece vurgu
   // Başlık fontu wexta wordmark'ının yuvarlak geometrik karakterini izler
-  const ctx: BrandCtx = { brand: getBrand("wexta"), tone: "mono", font: "font-geometric", bodyFont: "font-geometric" };
+  const ctx: BrandCtx = { brand: getBrand("wexta"), tone: "mono", font: "font-geometric", bodyFont: "font-geometric", iconWeight: 1.45 };
   const ribbon = lang === "tr" ? { left: "Seyahat", right: "Valiz" } : { left: "Travel", right: "Luggage" };
 
   return (
@@ -37,6 +37,7 @@ export default function Wexta() {
         title={c.manufacturing.title}
         body={c.manufacturing.body}
         points={c.manufacturing.points}
+        icons={["factory", "shield-check", "globe"]}
         image={stlImages.factory}
       />
       <CategoryGrid ctx={ctx} label={c.categoriesLabel} categories={c.categories} href={ctx.brand.channelHref} />
