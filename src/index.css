@@ -2,16 +2,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Archivo:wdth,wght@62.5..125,400..900&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Playwrite+NO:wght@400&family=Figtree:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 
-/*
- * Oxyra birincil fontu: Manifold Extd CF Heavy (lisanslı — Connary Fagen).
- * Dosya public/fonts/ altına eklendiğinde otomatik devreye girer;
- * yoksa Archivo (geniş eksen) fallback olarak kullanılır.
- */
+/* Oxyra marka fontu: Manifold Extended CF (Connary Fagen) — marka kılavuzu gereği */
 @font-face {
-  font-family: 'Manifold Extd CF';
-  src: url('/fonts/ManifoldExtdCF-Heavy.woff2') format('woff2'),
-       url('/fonts/ManifoldExtdCF-Heavy.otf') format('opentype');
+  font-family: 'Manifold Extended CF';
+  src: url('/fonts/ManifoldExtendedCF-Heavy.woff2') format('woff2');
   font-weight: 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Manifold Extended CF';
+  src: url('/fonts/ManifoldExtendedCF-Medium.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -19,7 +23,7 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'co-headline', 'Figtree', 'Manrope', ui-sans-serif, system-ui, sans-serif;
   --font-expanded: 'Archivo', 'Manrope', sans-serif;
-  --font-oxyra: 'Manifold Extd CF', 'Archivo', 'Manrope', sans-serif;
+  --font-oxyra: 'Manifold Extended CF', 'Archivo', 'Manrope', sans-serif;
   --font-nunito: 'Nunito', ui-sans-serif, sans-serif;
   --font-script: 'Playwrite NO', cursive;
   /* BNK ve wexta wordmark'larındaki geometrik sans karakteri */
@@ -68,10 +72,10 @@
   font-stretch: 125%;
 }
 
-/* Oxyra başlıkları: Manifold yüklüyse normal genişlik, Archivo fallback'te extended */
+/* Oxyra başlıkları — Manifold zaten extended, sentetik genişletme yok */
 .font-oxyra {
-  font-stretch: 125%;
   font-weight: 900;
+  letter-spacing: -0.01em;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -143,6 +147,27 @@ body {
 }
 .marquee-group:hover .marquee {
   animation-play-state: paused;
+}
+
+/* Ürün kartı — hover'da kontur marka rengine döner */
+.brand-card:hover,
+.brand-card:focus-visible {
+  border-color: var(--card-accent);
+}
+
+/* Hotspot noktası — aktif olanın çevresinde yayılan halka */
+@keyframes hotspot-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+.hotspot-ping {
+  animation: hotspot-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 /* Hero Showcase sekme ilerleme çizgisi */

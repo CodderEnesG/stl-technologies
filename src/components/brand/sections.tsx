@@ -101,38 +101,112 @@ export function BrandIntro({
   title,
   body,
   stats,
+  image,
 }: {
   ctx: BrandCtx;
   kicker: string;
   title: string;
   body: string;
   stats: { n: string; l: string }[];
+  /** Verilirse metnin yanında ürün görseli gösterilir (arkasında marka renginde hafif ışık) */
+  image?: string;
+}) {
+  const s = toneStyles[ctx.tone];
+  const { brand } = ctx;
+
+  const heading = (
+    <div>
+      <p className="mb-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: brand.color }}>
+        <span className="size-2 rounded-full" style={{ background: brand.color }} />
+        {kicker}
+      </p>
+      <h2 className={`${ctx.font} text-3xl font-bold leading-[1.05] tracking-tightest md:text-5xl`}>{title}</h2>
+      <p className="mt-6 max-w-xl text-lg leading-relaxed" style={{ color: s.sub }}>{body}</p>
+    </div>
+  );
+
+  return (
+    <section className="mx-auto max-w-[1400px] px-5 pt-24 md:px-8">
+      {image ? (
+        <div className="grid items-center gap-10 md:grid-cols-[1fr_0.85fr] md:gap-16">
+          {heading}
+          <div className="relative">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -z-10 blur-3xl"
+              style={{ background: `radial-gradient(circle at 50% 55%, ${brand.color}44, transparent 65%)` }}
+            />
+            <img src={resolveImg(image, 900, 900)} alt="" aria-hidden className="w-full object-contain" />
+          </div>
+        </div>
+      ) : (
+        <div className="grid gap-x-16 gap-y-8 md:grid-cols-[1.05fr_0.95fr] md:items-end">
+          <div>
+            <p className="mb-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: brand.color }}>
+              <span className="size-2 rounded-full" style={{ background: brand.color }} />
+              {kicker}
+            </p>
+            <h2 className={`${ctx.font} text-3xl font-bold leading-[1.05] tracking-tightest md:text-5xl`}>{title}</h2>
+          </div>
+          <div className="relative pl-6">
+            <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full" style={{ background: brand.color }} />
+            <p className="text-lg leading-relaxed" style={{ color: s.sub }}>{body}</p>
+          </div>
+        </div>
+      )}
+
+      <div className="mt-16 grid grid-cols-3 gap-6 md:gap-12">
+        {stats.map((st) => (
+          <div key={st.l} className="border-t-2 pt-5" style={{ borderColor: brand.color }}>
+            <div className={`${ctx.font} text-3xl font-extrabold leading-none tracking-tightest md:text-5xl`}>{st.n}</div>
+            <div className="mt-3 text-sm" style={{ color: toneStyles[ctx.tone].muted }}>{st.l}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/** Marka logosu (sembol) + marka hakkında metni — STL "Biz Kimiz" düzeninin marka karşılığı */
+export function BrandAbout({
+  ctx,
+  mark,
+  eyebrow,
+  title,
+  body,
+}: {
+  ctx: BrandCtx;
+  mark: string;
+  eyebrow: string;
+  title: string;
+  body: string[];
 }) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   return (
     <section className="mx-auto max-w-[1400px] px-5 pt-24 md:px-8">
-      <div className="grid gap-x-16 gap-y-8 md:grid-cols-[1.05fr_0.95fr] md:items-end">
+      <div className="grid items-center gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
+        <div className="relative grid place-items-center py-8">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 blur-3xl"
+            style={{ background: `radial-gradient(circle at 50% 50%, ${brand.color}33, transparent 70%)` }}
+          />
+          <img src={mark} alt="" aria-hidden className="relative w-full max-w-[260px] object-contain" />
+        </div>
         <div>
-          <p className="mb-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: brand.color }}>
-            <span className="size-2 rounded-full" style={{ background: brand.color }} />
-            {kicker}
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: brand.color }}>
+            {eyebrow}
           </p>
-          <h2 className={`${ctx.font} text-3xl font-bold leading-[1.05] tracking-tightest md:text-5xl`}>{title}</h2>
-        </div>
-        <div className="relative pl-6">
-          <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full" style={{ background: brand.color }} />
-          <p className="text-lg leading-relaxed" style={{ color: s.sub }}>{body}</p>
-        </div>
-      </div>
-
-      <div className="mt-16 grid grid-cols-3 gap-6 md:gap-12">
-        {stats.map((st) => (
-          <div key={st.l} className="border-t-2 pt-5" style={{ borderColor: brand.color }}>
-            <div className="font-expanded text-3xl font-extrabold leading-none tracking-tightest md:text-5xl">{st.n}</div>
-            <div className="mt-3 text-sm" style={{ color: toneStyles[ctx.tone].muted }}>{st.l}</div>
+          <h2 className={`mt-4 ${ctx.font} text-3xl font-bold leading-[1.08] tracking-tightest md:text-4xl`}>
+            {title}
+          </h2>
+          <div className="mt-6 space-y-4 text-lg leading-relaxed" style={{ color: s.sub }}>
+            {body.map((p) => (
+              <p key={p.slice(0, 24)}>{p}</p>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </section>
   );
@@ -262,6 +336,85 @@ export function FressiCategoryGrid({
               <span className="font-nunito">fressi</span>
               <span className="font-script text-sm" style={{ color: c.color }}>{c.label}</span>
             </h3>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Birleşik ürün gamı şeridi: kategori + öne çıkan ürün tek kartta.
+ * Kartlarda ince kontur, hover'da marka rengine döner; ürün arkasında hafif ışık.
+ */
+export function ProductRange({
+  ctx,
+  eyebrow,
+  title,
+  description,
+  items,
+  href,
+}: {
+  ctx: BrandCtx;
+  eyebrow: string;
+  title: string;
+  description: string;
+  items: { label: string; text: string; image: string }[];
+  href: string;
+}) {
+  const { t } = useI18n();
+  const s = toneStyles[ctx.tone];
+  const { brand } = ctx;
+  const onDark = ctx.tone === "dark";
+
+  return (
+    <section className="mx-auto max-w-[1400px] px-5 pt-24 md:px-8">
+      <SectionHeader
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+        onDark={onDark}
+        eyebrowColor={brand.color}
+        titleFont={ctx.font}
+        className="mb-12"
+      />
+      <div className="grid gap-5 md:grid-cols-3">
+        {items.map((it) => (
+          <a
+            key={it.label}
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            className="brand-card group flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1"
+            style={{
+              background: s.card,
+              borderColor: s.cardBorder,
+              ["--card-accent" as string]: brand.color,
+            }}
+          >
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-500 group-hover:opacity-100"
+                style={{ background: `radial-gradient(circle at 50% 60%, ${brand.color}33, transparent 62%)` }}
+              />
+              <img
+                src={resolveImg(it.image, 800, 600)}
+                alt={it.label}
+                loading="lazy"
+                className="relative size-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+            <div className="flex flex-1 flex-col p-6">
+              <h3 className={`${ctx.font} text-lg font-bold tracking-tightest`}>{it.label}</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed" style={{ color: s.sub }}>{it.text}</p>
+              <span
+                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold transition-transform group-hover:translate-x-1"
+                style={{ color: brand.color }}
+              >
+                {t.home.explore} <Arrow />
+              </span>
+            </div>
           </a>
         ))}
       </div>

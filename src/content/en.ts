@@ -39,7 +39,7 @@ export const en: SiteContent = {
       { tag: "Brands", title: "Four brands, one discipline", body: "From gaming to the kitchen, travel to skincare: every product passes through the same production discipline." },
     ],
     introEyebrow: "STL Teknoloji",
-    introTitle: "One roof",
+    introTitle: "Four brands, one roof",
     introText:
       "We bring together four brands that speak to different worlds under the same production and design discipline — from gaming to the kitchen, from travel to skincare.",
     stats: [
@@ -51,6 +51,7 @@ export const en: SiteContent = {
     bento: {
       eyebrow: "Group",
       title: "The STL World",
+      description: "Manufacturing, export and brand management — all under one roof in Arnavutköy.",
       production: { kicker: "Production", text: "From concept to production under one roof at our 35,000 m² facility in Arnavutköy." },
       exportKicker: "Export",
       exportStat: "20",
@@ -71,7 +72,8 @@ export const en: SiteContent = {
       lineCaption: "STL production line",
     },
     portfolioEyebrow: "Portfolio",
-    portfolioTitle: "Brands",
+    portfolioTitle: "Our brands",
+    portfolioDescription: "Four brands, each in its own field, all shaped by the same production discipline.",
     explore: "Explore",
     discoverBrand: "Discover the brand",
     partnersKicker: "Sales channels",
@@ -96,27 +98,66 @@ export const en: SiteContent = {
         { n: "2016", l: "Manufacturer-backed" },
         { n: "TR", l: "Local production" },
       ],
+      brandAbout: {
+        eyebrow: "The brand",
+        title: "X is on the player's side.",
+        body: [
+          "Oxyra is STL Teknoloji's gaming equipment brand. It is developed in the same facility, on the same quality line, and holds to a single design language from chairs to peripherals.",
+          "The goal isn't a flashy accessory — it's gear that holds its shape through hours of play. Clean lines, restrained lighting, solid materials.",
+        ],
+      },
       specBand: [
         { k: "Frame", v: "Steel chassis" },
         { k: "Ergonomics", v: "Adjustable lumbar & neck support" },
         { k: "Upholstery", v: "Wear-resistant surface" },
         { k: "Mechanism", v: "Reclining backrest" },
       ],
-      valueProps: [
-        { title: "Solid frame", text: "Metal chassis and quality mechanism; the same seating feel for years." },
-        { title: "Ergonomic support", text: "Lumbar and neck cushions, adjustable armrests." },
-        { title: "Manufacturer-backed", text: "No middlemen: we stand behind every product that leaves our factory." },
+      hotspotsEyebrow: "A closer look",
+      hotspotsTitle: "Three critical points of the chair",
+      hotspotsHint: "Hover or tap the points",
+      hotspots: [
+        {
+          title: "Ergonomic support",
+          text: "Lumbar and neck cushions with adjustable armrests; your spine keeps its natural curve through long sessions.",
+          x: 62,
+          y: 28,
+        },
+        {
+          title: "Solid frame",
+          text: "Steel chassis and quality mechanism; the same seating feel years down the line.",
+          x: 47,
+          y: 70,
+        },
+        {
+          title: "Manufacturer-backed",
+          text: "No middlemen: we stand behind what leaves our factory, spare parts included.",
+          x: 47,
+          y: 83,
+        },
       ],
-      categoriesLabel: "Product range",
-      categories: [
-        { label: "Gaming Chairs", image: "/images/oxyra/koltuk-oxyra.jpg" },
-        { label: "Audio", image: "/images/oxyra/headset-oxyra.jpg" },
-        { label: "Peripherals", image: "/images/oxyra/mouse-oxyra.jpg" },
+      rangeEyebrow: "Product range",
+      rangeTitle: "Three parts of the setup",
+      rangeDescription: "From the chair to peripherals — three product families in one design language.",
+      range: [
+        {
+          label: "Gaming Chairs",
+          text: "Steel frame and adjustable support, built for long sessions.",
+          image: "/images/oxyra/koltuk-oxyra.jpg",
+        },
+        {
+          label: "Audio",
+          text: "Closed-back design for in-game directionality and clear comms.",
+          image: "/images/oxyra/headset-oxyra.jpg",
+        },
+        {
+          label: "Peripherals",
+          text: "Light body, precise sensor — response at the speed of your reflex.",
+          image: "/images/oxyra/mouse-oxyra.jpg",
+        },
       ],
-      vitrineTitle: "Highlights",
       editorial: {
-        title: "Performance starts with the chair.",
-        text: "You notice it at the end of a long session: a good chair matters as much as the game. Oxyra closes that gap with manufacturing confidence.",
+        title: "As fast as your reflex.",
+        text: "A play is decided in milliseconds. The Oxyra mouse tracks without tiring your hand — light body, precise sensor, balanced weight.",
       },
       quote: { text: "The advantage is on your side.", source: "Oxyra" },
       ctaTitle: "Complete your setup",
