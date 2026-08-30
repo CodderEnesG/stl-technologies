@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { Link } from "react-router";
 import type { BrandVisual, Product } from "../../data/brands";
 import { useI18n } from "../../i18n";
@@ -757,6 +758,145 @@ export function BrandCTA({ ctx, title, channel, note }: { ctx: BrandCtx; title: 
           <Link to={sec("contact")} className="text-sm font-medium underline underline-offset-4" style={{ color: s.muted }}>
             {t.brandPage.orContact}
           </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Tek ürüne odaklanan bölüm: solda modelin kendi teknik değerleri, sağda
+ * ürün görselleri kayan galeri.
+ *
+ * Marka geneli iddialar SpecBand'de; buradaki sayılar sadece bu modele ait.
+ * Yeni bir model eklenirken kendi `spotlight` içeriğiyle tekrar kullanılır.
+ */
+export function ProductSpotlight({
+  ctx,
+  kicker,
+  title,
+  text,
+  specs,
+  images,
+  alts,
+  href,
+  cta,
+}: {
+  ctx: BrandCtx;
+  kicker: string;
+  title: string;
+  text: string;
+  specs: { k: string; v: string }[];
+  images: string[];
+  alts: string[];
+  href?: string;
+  cta?: string;
+}) {
+  const s = toneStyles[ctx.tone];
+  const { brand } = ctx;
+  const [index, setIndex] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const go = (i: number) => {
+    const next = (i + images.length) % images.length;
+    setIndex(next);
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.children[next] as HTMLElement | undefined;
+    card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  };
+
+  return (
+    <section className="mx-auto max-w-[1400px] px-5 pt-24 md:px-8">
+      <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-center md:gap-14">
+        <div>
+          <p
+            className="mb-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em]"
+            style={{ color: brand.color }}
+          >
+            <span className="size-2 rounded-full" style={{ background: brand.color }} />
+            {kicker}
+          </p>
+          <h2 className={`${ctx.font} text-3xl font-bold leading-[1.08] tracking-tightest md:text-4xl`}>{title}</h2>
+          <p className="mt-5 max-w-md text-lg leading-relaxed" style={{ color: s.sub }}>
+            {text}
+          </p>
+
+          <dl className="mt-9 grid grid-cols-2 gap-x-8 gap-y-6">
+            {specs.map((sp) => (
+              <div key={sp.k} className="border-t pt-3" style={{ borderColor: s.cardBorder }}>
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: s.muted }}>
+                  {sp.k}
+                </dt>
+                <dd className={`mt-1.5 ${ctx.font} text-xl font-bold tracking-tightest`}>{sp.v}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {href && cta && (
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-9 inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-semibold transition-transform hover:scale-[1.02]"
+              style={{ background: brand.color, color: brand.onColor }}
+            >
+              {cta} <Arrow />
+            </a>
+          )}
+        </div>
+
+        {/* Kayan galeri — yatay scroll-snap; oklar ve noktalar kontrol eder */}
+        <div className="relative min-w-0">
+          <div
+            ref={trackRef}
+            className="hide-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2"
+          >
+            {images.map((src, i) => (
+              <figure
+                key={src}
+                className="relative aspect-[3/4] w-[78%] shrink-0 snap-center overflow-hidden rounded-2xl sm:w-[52%] md:w-[46%]"
+                style={{ background: s.card, border: `1px solid ${s.cardBorder}` }}
+              >
+                <img
+                  src={src}
+                  alt={alts[i] ?? ""}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  className="size-full object-cover"
+                />
+              </figure>
+            ))}
+          </div>
+
+          <div className="mt-5 flex items-center gap-4">
+            <div className="flex gap-2">
+              {[["‹", index - 1], ["›", index + 1]].map(([glyph, target]) => (
+                <button
+                  key={glyph as string}
+                  type="button"
+                  onClick={() => go(target as number)}
+                  aria-label={glyph === "‹" ? "Önceki" : "Sonraki"}
+                  className="grid size-10 place-items-center rounded-full border text-lg transition-colors"
+                  style={{ borderColor: s.cardBorder, color: s.sub }}
+                >
+                  {glyph as string}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-1 gap-1.5">
+              {images.map((src, i) => (
+                <button
+                  key={src}
+                  type="button"
+                  onClick={() => go(i)}
+                  aria-label={`${i + 1}`}
+                  aria-current={i === index ? "true" : undefined}
+                  className="h-[3px] flex-1 rounded-full transition-colors"
+                  style={{ background: i === index ? brand.color : s.cardBorder }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

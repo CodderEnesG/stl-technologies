@@ -106,12 +106,36 @@ export const tr = {
           "Amacımız oyuncuya gösterişli bir aksesuar değil, saatler süren oturuşlarda formunu koruyan ekipman vermek. Sade hatlar, ölçülü ışık, sağlam malzeme.",
         ],
       },
+      // Marka geneli — tüm koltuklar için geçerli ifadeler.
+      // Modele özel sayısal değerler (Mooncha: 145°, 51 cm, 136 kg, 100.000 çevrim)
+      // aşağıdaki spotlight bloğunda, sadece o ürüne bağlı olarak duruyor.
       specBand: [
         { k: "İskelet", v: "Çelik şasi" },
         { k: "Ergonomi", v: "Ayarlanabilir bel ve boyun desteği" },
         { k: "Döşeme", v: "Aşınmaya dayanıklı yüzey" },
         { k: "Mekanizma", v: "Yatırılabilir sırt" },
       ],
+      spotlight: {
+        kicker: "Öne çıkan model",
+        title: "Mooncha — ayak destekli oyuncu koltuğu.",
+        text: "Gözenekli, terletmeyen deri yüzey; altı noktalı destek sistemi ve gizlenebilir ayak desteği. Aşağıdaki değerler bu modele aittir.",
+        cta: "Ürünü incele",
+        specs: [
+          { k: "Yatırma", v: "145°" },
+          { k: "Oturma alanı", v: "51 cm" },
+          { k: "Taşıma kapasitesi", v: "136 kg" },
+          { k: "Dayanıklılık testi", v: "100.000 çevrim" },
+        ],
+        alts: [
+          "Oxyra Mooncha oyuncu koltuğu, beyaz",
+          "Elastik konfor katmanı kesiti",
+          "Altı noktalı destek sistemi",
+          "Koltuk ölçüleri",
+          "Kanatsız oturma alanı",
+          "145° ayarlanabilir yatırma",
+          "Dayanıklılık testi",
+        ],
+      },
       hotspotsEyebrow: "Yakından bakın",
       hotspotsTitle: "Uzun oturuşlar için tasarlandı.",
       hotspotsHint: "Noktalara gelin veya dokunun",

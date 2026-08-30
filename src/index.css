@@ -161,6 +161,14 @@ body {
   scrollbar-color: #cfcfd6 transparent;
 }
 
+/* Yatay galeri: kaydırma çubuğu gizli, kontrol oklarla */
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .tracking-tightest {
   letter-spacing: -0.03em;
 }

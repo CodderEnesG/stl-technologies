@@ -107,12 +107,35 @@ export const en: SiteContent = {
           "The goal isn't a flashy accessory — it's gear that holds its shape through hours of play. Clean lines, restrained lighting, solid materials.",
         ],
       },
+      // Brand-wide claims — true for every chair. Model-specific figures live in
+      // the spotlight block below, tied to that one product.
       specBand: [
         { k: "Frame", v: "Steel chassis" },
         { k: "Ergonomics", v: "Adjustable lumbar & neck support" },
         { k: "Upholstery", v: "Wear-resistant surface" },
         { k: "Mechanism", v: "Reclining backrest" },
       ],
+      spotlight: {
+        kicker: "Featured model",
+        title: "Mooncha — gaming chair with footrest.",
+        text: "Breathable, non-sweat leather surface; six-point support system and a retractable footrest. The figures below belong to this model.",
+        cta: "View product",
+        specs: [
+          { k: "Recline", v: "145°" },
+          { k: "Seat width", v: "51 cm" },
+          { k: "Load capacity", v: "136 kg" },
+          { k: "Durability test", v: "100,000 cycles" },
+        ],
+        alts: [
+          "Oxyra Mooncha gaming chair, white",
+          "Elastic comfort layer cutaway",
+          "Six-point support system",
+          "Chair dimensions",
+          "Wingless seat area",
+          "145° adjustable recline",
+          "Durability test",
+        ],
+      },
       hotspotsEyebrow: "A closer look",
       hotspotsTitle: "Built for long sessions.",
       hotspotsHint: "Hover or tap the points",

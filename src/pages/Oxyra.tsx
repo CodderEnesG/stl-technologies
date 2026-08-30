@@ -8,6 +8,7 @@ import {
   BrandHeroFull,
   BrandShell,
   ProductRange,
+  ProductSpotlight,
   PullQuote,
   SpecBand,
   type BrandCtx,
@@ -39,6 +40,17 @@ export default function Oxyra() {
         // hint={c.hotspotsHint}
         image="/images/oxyra/koltuk-oxyra.jpg"
         hotspots={c.hotspots}
+      />
+      <ProductSpotlight
+        ctx={ctx}
+        kicker={c.spotlight.kicker}
+        title={c.spotlight.title}
+        text={c.spotlight.text}
+        specs={c.spotlight.specs}
+        cta={c.spotlight.cta}
+        href={ctx.brand.channelHref}
+        images={[1, 2, 3, 4, 5, 6, 7].map((n) => `/images/oxyra/mooncha/${n}.jpg`)}
+        alts={c.spotlight.alts}
       />
       <ProductRange
         ctx={ctx}
