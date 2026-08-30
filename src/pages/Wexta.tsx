@@ -23,7 +23,7 @@ export default function Wexta() {
 
   // Katalog dili: beyaz zemin, koyu tipografi, siyah bantlar; turkuaz sadece vurgu
   // Başlık fontu wexta wordmark'ının yuvarlak geometrik karakterini izler
-  const ctx: BrandCtx = { brand: getBrand("wexta"), tone: "mono", font: "font-geometric" };
+  const ctx: BrandCtx = { brand: getBrand("wexta"), tone: "mono", font: "font-geometric", bodyFont: "font-geometric" };
   const ribbon = lang === "tr" ? { left: "Seyahat", right: "Valiz" } : { left: "Travel", right: "Luggage" };
 
   return (

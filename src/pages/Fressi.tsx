@@ -20,7 +20,7 @@ export default function Fressi() {
   const c = t.brands.fressi;
   usePageMeta(t.meta.fressi.title, t.meta.fressi.desc);
 
-  const ctx: BrandCtx = { brand: getBrand("fressi"), tone: "cream", font: "font-nunito" };
+  const ctx: BrandCtx = { brand: getBrand("fressi"), tone: "cream", font: "font-nunito", bodyFont: "font-nunito" };
 
   return (
     <BrandShell ctx={ctx}>

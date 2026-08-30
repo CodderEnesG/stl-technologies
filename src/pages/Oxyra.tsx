@@ -19,7 +19,7 @@ export default function Oxyra() {
   usePageMeta(t.meta.oxyra.title, t.meta.oxyra.desc);
 
   // Marka kılavuzu: başlıklar Manifold Extended CF, gövde Inter (site geneli --font-sans)
-  const ctx: BrandCtx = { brand: getBrand("oxyra"), tone: "dark", font: "font-oxyra" };
+  const ctx: BrandCtx = { brand: getBrand("oxyra"), tone: "dark", font: "font-oxyra", bodyFont: "font-inter" };
 
   return (
     <BrandShell ctx={ctx}>
