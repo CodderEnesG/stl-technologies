@@ -35,6 +35,10 @@ export type BrandVisual = {
   navBg: string;
   /** Navbar koyu zeminde mi: metin/ikon/kontur renklerini çevirir */
   navOnDark: boolean;
+  /** Marka sayfasında footer zemini — sayfanın tone rengiyle uyumlu, opak */
+  footerBg: string;
+  /** Footer koyu zeminde mi */
+  footerOnDark: boolean;
 };
 
 export const stlLogo = {
@@ -60,6 +64,8 @@ export const brands: BrandVisual[] = [
     logoLight: "/logos/wexta-light.svg",
     navBg: "rgba(255,255,255,0.88)",
     navOnDark: false,
+    footerBg: "#f2f5f6",
+    footerOnDark: false,
   },
   {
     slug: "fressi",
@@ -75,6 +81,8 @@ export const brands: BrandVisual[] = [
     logoLight: "/logos/fressi-light.svg",
     navBg: "rgba(249,247,244,0.88)",
     navOnDark: false,
+    footerBg: "#f2eee7",
+    footerOnDark: false,
   },
   {
     slug: "bnk",
@@ -89,6 +97,8 @@ export const brands: BrandVisual[] = [
     logoLight: "/logos/bnk-light.svg",
     navBg: "rgba(255,245,248,0.9)",
     navOnDark: false,
+    footerBg: "#ffeef4",
+    footerOnDark: false,
   },
   {
     slug: "oxyra",
@@ -107,6 +117,8 @@ export const brands: BrandVisual[] = [
     logoLightWide: "/logos/oxyra-light-h.svg",
     navBg: "rgba(5,6,15,0.82)",
     navOnDark: true,
+    footerBg: "#05060f",
+    footerOnDark: true,
   },
 ];
 
@@ -128,6 +140,8 @@ export const stlBrand: BrandVisual = {
   logoLight: "/logos/stl.svg",
   navBg: "rgba(255,255,255,0.86)",
   navOnDark: false,
+  footerBg: "#f5f5f5",
+  footerOnDark: false,
 };
 
 export const getBrand = (slug: string) => brands.find((b) => b.slug === slug)!;

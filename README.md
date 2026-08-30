@@ -121,6 +121,15 @@ curl -sSL https://unpkg.com/lucide-static@1.37.0/icons/<isim>.svg
 İç elemanları `Icon.tsx` içindeki `paths` haritasına ekleyin (JSX camelCase
 attribute'larla) ve `IconName` birleşimine adı yazın.
 
+Landing'de ikonlar: hakkımızda istatistik şeridi (kuruluş / tesis / ihracat),
+misyon-vizyon kartları, satış kanalları başlığı, ihracat haritası lejantı ve
+markalar küpünün ipucu satırı. Marka sayfalarında: Oxyra teknik bandı, Fressi
+kategorileri ve değer kartları, wexta üretim listesi, BNK değer kartları.
+
+Navbar ve footer marka sayfasında o markanın temasını alır
+(`BrandVisual.navBg` / `navOnDark` ve `footerBg` / `footerOnDark`). Koyu
+footer'da STL logosu CSS filtresiyle beyaza döner — beyaz logo dosyası yok.
+
 Favicon: `public/favicon.svg` (kırmızı yuvarlak kare + beyaz STL markası,
 `logos/stl-mark.svg` yol verisinden üretildi) + `public/apple-touch-icon.png`.
 

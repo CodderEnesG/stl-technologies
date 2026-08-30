@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { brands } from "../data/brands";
 import { useI18n } from "../i18n";
 import { Arrow } from "./Arrow";
+import { Icon } from "./Icon";
 import { LogoSlot } from "./LogoSlot";
 import { SectionHeader } from "./SectionHeader";
 import { BrandGrid } from "./sections";
@@ -405,7 +406,11 @@ function Cube({
           ))}
         </div>
 
-        <p className="mt-6 text-center text-xs" style={{ color: s.muted }}>
+        <p
+          className="mt-6 flex items-center justify-center gap-2 text-center text-xs"
+          style={{ color: s.muted }}
+        >
+          <Icon name="mouse-pointer-2" size={14} strokeWidth={ctx.iconWeight ?? 1.75} />
           {t.home.cube.hint}
         </p>
       </div>
