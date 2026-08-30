@@ -12,12 +12,13 @@ import { brands, stlBrand } from "../../data/brands";
 import { company } from "../../data/company";
 import { useI18n } from "../../i18n";
 import { Arrow } from "../Arrow";
+import { Icon, type IconName } from "../Icon";
 import { LogoSlot } from "../LogoSlot";
 import { SectionHeader } from "../SectionHeader";
 import { toneStyles, type BrandCtx } from "../brand/sections";
 
 /** Çatı sitenin kendi ctx'i — marka sayfalarındaki ctx literalinin karşılığı. */
-export const stlCtx: BrandCtx = { brand: stlBrand, tone: "stl", font: "font-display" };
+export const stlCtx: BrandCtx = { brand: stlBrand, tone: "stl", font: "font-display", iconWeight: 1.75 };
 
 type Stat = { n: string; l: string };
 
@@ -380,9 +381,9 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
         <div className="flex flex-col justify-between gap-12">
           <div className="space-y-9">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: s.muted }}>
+              <FieldLabel ctx={ctx} icon="phone" muted={s.muted}>
                 {c.phoneLabel}
-              </p>
+              </FieldLabel>
               <a
                 href={company.phoneHref}
                 className={`mt-2 block ${ctx.font} text-3xl font-bold tracking-tightest transition-colors md:text-5xl`}
@@ -392,9 +393,9 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
               </a>
             </div>
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: s.muted }}>
+              <FieldLabel ctx={ctx} icon="mail" muted={s.muted}>
                 {c.emailLabel}
-              </p>
+              </FieldLabel>
               <a
                 href={`mailto:${company.email}`}
                 className={`mt-2 block break-all ${ctx.font} text-2xl font-bold tracking-tightest md:text-4xl`}
@@ -404,9 +405,9 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
             </div>
             <div className="grid gap-9 sm:grid-cols-2">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: s.muted }}>
+                <FieldLabel ctx={ctx} icon="map-pin" muted={s.muted}>
                   {c.addressLabel}
-                </p>
+                </FieldLabel>
                 <address className="mt-2 text-base not-italic leading-relaxed">
                   {company.addressLines.map((l) => (
                     <span key={l}>
@@ -417,9 +418,9 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
                 </address>
               </div>
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: s.muted }}>
+                <FieldLabel ctx={ctx} icon="clock" muted={s.muted}>
                   {c.hoursLabel}
-                </p>
+                </FieldLabel>
                 <p className="mt-2 text-base leading-relaxed">
                   {company.hours}
                   <br />
@@ -436,7 +437,9 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
             className="inline-flex w-fit items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition-colors"
             style={{ borderColor: s.cardBorder }}
           >
-            Instagram <Arrow />
+            <Icon name="instagram" size={17} strokeWidth={ctx.iconWeight ?? 1.75} />
+            Instagram
+            <Icon name="arrow-up-right" size={15} strokeWidth={ctx.iconWeight ?? 1.75} />
           </a>
         </div>
 
@@ -512,7 +515,7 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
             className="mt-7 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold transition-transform hover:scale-[1.02]"
             style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
           >
-            {c.submit} <Arrow />
+            {c.submit} <Icon name="send" size={17} strokeWidth={ctx.iconWeight ?? 1.75} />
           </button>
           <p className="mt-3 text-xs" style={{ color: s.muted }}>
             {c.submitNote}
@@ -533,6 +536,26 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
         </div>
       </div>
     </section>
+  );
+}
+
+/** İletişim bilgisi etiketi: küçük ikon + majüskül etiket */
+function FieldLabel({
+  ctx,
+  icon,
+  muted,
+  children,
+}: {
+  ctx: BrandCtx;
+  icon: IconName;
+  muted: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: muted }}>
+      <Icon name={icon} size={15} strokeWidth={ctx.iconWeight ?? 1.75} />
+      {children}
+    </p>
   );
 }
 

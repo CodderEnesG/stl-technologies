@@ -4,6 +4,7 @@ import { useI18n } from "../../i18n";
 import { Arrow } from "../Arrow";
 import { LogoSlot } from "../LogoSlot";
 import { SectionHeader } from "../SectionHeader";
+import { Icon, type IconName } from "../Icon";
 import { img } from "../../data/brands";
 
 export type BrandTone = "dark" | "cream" | "light" | "pink" | "mono" | "stl";
@@ -30,6 +31,11 @@ export type BrandCtx = {
   font: string;
   /** Gövde fontu — verilmezse site geneli (STL kimliği) kullanılır */
   bodyFont?: string;
+  /**
+   * İkon çizgi kalınlığı. Lucide stroke tabanlı olduğu için marka karakteri
+   * buradan geliyor: Oxyra kalın, wexta ince katalog çizgisi, BNK narin.
+   */
+  iconWeight?: number;
 };
 
 /** "unsplash:<id>" kısayolunu gerçek URL'e çevirir */
@@ -290,19 +296,22 @@ export function BrandAbout({
 }
 
 /** Oxyra: kısa teknik vurgu bandı */
-export function SpecBand({ ctx, specs }: { ctx: BrandCtx; specs: { k: string; v: string }[] }) {
+export function SpecBand({ ctx, specs, icons }: { ctx: BrandCtx; specs: { k: string; v: string }[]; icons?: IconName[] }) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   return (
     <section className="mx-auto max-w-[1400px] px-5 pt-20 md:px-8">
       <div className="grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-4" style={{ borderColor: s.cardBorder, background: s.cardBorder }}>
-        {specs.map((sp) => (
+        {specs.map((sp, i) => (
           <div key={sp.k} className="relative overflow-hidden p-6" style={{ background: s.card }}>
             <span
               aria-hidden
               className="absolute inset-x-0 top-0 h-px"
               style={{ background: `linear-gradient(to right, ${brand.color}, transparent)` }}
             />
+            {icons?.[i] && (
+              <Icon name={icons[i]} size={26} strokeWidth={ctx.iconWeight ?? 1.75} className="mb-4" style={{ color: brand.color }} />
+            )}
             <div className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: brand.color }}>{sp.k}</div>
             <div className={`mt-2 ${ctx.font} font-bold tracking-tightest`}>{sp.v}</div>
           </div>
@@ -312,7 +321,7 @@ export function SpecBand({ ctx, specs }: { ctx: BrandCtx; specs: { k: string; v:
   );
 }
 
-export function ValueProps({ ctx, items }: { ctx: BrandCtx; items: { title: string; text: string }[] }) {
+export function ValueProps({ ctx, items, icons }: { ctx: BrandCtx; items: { title: string; text: string }[]; icons?: IconName[] }) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   return (
@@ -325,8 +334,12 @@ export function ValueProps({ ctx, items }: { ctx: BrandCtx; items: { title: stri
             style={{ background: s.card, borderColor: s.cardBorder }}
           >
             <div className="flex items-center gap-3">
-              <span className="grid size-9 place-items-center rounded-full text-sm font-extrabold" style={{ background: brand.color, color: brand.onColor }}>
-                {i + 1}
+              <span className="grid size-11 place-items-center rounded-full" style={{ background: brand.color, color: brand.onColor }}>
+                {icons?.[i] ? (
+                  <Icon name={icons[i]} size={21} strokeWidth={ctx.iconWeight ?? 1.75} />
+                ) : (
+                  <span className="text-sm font-extrabold">{i + 1}</span>
+                )}
               </span>
               <span className="h-px flex-1" style={{ background: s.cardBorder }} />
             </div>
@@ -396,7 +409,7 @@ export function FressiCategoryGrid({
 }: {
   ctx: BrandCtx;
   label: string;
-  categories: { key: string; label: string; color: string; image: string; href: string }[];
+  categories: { key: string; label: string; color: string; image: string; href: string; icon?: IconName }[];
 }) {
   const { t } = useI18n();
   return (
@@ -414,7 +427,11 @@ export function FressiCategoryGrid({
               </div>
             </div>
             <h3 className="mt-4 flex items-center justify-center gap-2 font-semibold">
-              <span className="size-2 rounded-full" style={{ background: c.color }} />
+              {c.icon ? (
+                <Icon name={c.icon} size={17} strokeWidth={ctx.iconWeight ?? 1.75} style={{ color: c.color }} />
+              ) : (
+                <span className="size-2 rounded-full" style={{ background: c.color }} />
+              )}
               <span className="font-nunito">fressi</span>
               <span className="font-script text-sm" style={{ color: c.color }}>{c.label}</span>
             </h3>
@@ -565,6 +582,7 @@ export function ManufacturingStory({
   body,
   points,
   image,
+  icons,
 }: {
   ctx: BrandCtx;
   kicker: string;
@@ -572,6 +590,7 @@ export function ManufacturingStory({
   body: string;
   points: string[];
   image: string;
+  icons?: IconName[];
 }) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
@@ -582,9 +601,11 @@ export function ManufacturingStory({
         <h2 className={`mt-4 ${ctx.font} text-3xl font-bold leading-[1.08] tracking-tightest md:text-4xl`}>{title}</h2>
         <p className="mt-4 max-w-md text-lg leading-relaxed opacity-90">{body}</p>
         <ul className="mt-8 space-y-3">
-          {points.map((pt) => (
+          {points.map((pt, i) => (
             <li key={pt} className="flex items-center gap-3 font-medium">
-              <span className="grid size-6 place-items-center rounded-full bg-white/20 text-xs">✓</span>
+              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-white/20">
+                <Icon name={icons?.[i] ?? "check"} size={15} strokeWidth={ctx.iconWeight ?? 1.75} />
+              </span>
               {pt}
             </li>
           ))}

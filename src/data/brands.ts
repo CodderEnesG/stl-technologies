@@ -269,8 +269,8 @@ export const bnkProducts: Product[] = [
 
 // Fressi kategori renk sistemi (marka kılavuzu)
 export const fressiCategories = [
-  { key: "Kitchen", label: "Mutfak", color: "#818e71", image: "/images/fressi/kettle-kt07.webp", href: "https://fressihome.com/collections/kettle" },
-  { key: "Coffee", label: "Kahve", color: "#594439", image: "/images/fressi/espresso-em01.webp", href: "https://fressihome.com/collections/kahve-makinesi" },
-  { key: "Collection", label: "Koleksiyon", color: "#467fa5", image: "/images/fressi/pikap-p101.webp", href: "https://fressihome.com/collections/tum-urunler" },
-  { key: "Home", label: "Ev", color: "#d3c4a9", image: "/images/fressi/cd-calar-cd183.webp", href: "https://fressihome.com/collections/temizlik-ve-ferahlik" },
+  { key: "Kitchen", label: "Mutfak", color: "#818e71", icon: "utensils" as const, image: "/images/fressi/kettle-kt07.webp", href: "https://fressihome.com/collections/kettle" },
+  { key: "Coffee", label: "Kahve", color: "#594439", icon: "coffee" as const, image: "/images/fressi/espresso-em01.webp", href: "https://fressihome.com/collections/kahve-makinesi" },
+  { key: "Collection", label: "Koleksiyon", color: "#467fa5", icon: "layout-grid" as const, image: "/images/fressi/pikap-p101.webp", href: "https://fressihome.com/collections/tum-urunler" },
+  { key: "Home", label: "Ev", color: "#d3c4a9", icon: "house" as const, image: "/images/fressi/cd-calar-cd183.webp", href: "https://fressihome.com/collections/temizlik-ve-ferahlik" },
 ];

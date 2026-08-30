@@ -20,7 +20,7 @@ export default function Fressi() {
   const c = t.brands.fressi;
   usePageMeta(t.meta.fressi.title, t.meta.fressi.desc);
 
-  const ctx: BrandCtx = { brand: getBrand("fressi"), tone: "cream", font: "font-nunito", bodyFont: "font-nunito" };
+  const ctx: BrandCtx = { brand: getBrand("fressi"), tone: "cream", font: "font-nunito", bodyFont: "font-nunito", iconWeight: 1.7 };
 
   return (
     <BrandShell ctx={ctx}>
@@ -31,7 +31,7 @@ export default function Fressi() {
         pattern="/images/fressi/pattern-1.svg"
       />
       <BrandIntro ctx={ctx} kicker={c.about.kicker} title={c.about.title} body={c.about.body} stats={c.stats} />
-      <ValueProps ctx={ctx} items={c.valueProps} />
+      <ValueProps ctx={ctx} items={c.valueProps} icons={["sparkles", "palette", "house"]} />
       <FressiCategoryGrid ctx={ctx} label={c.categoriesLabel} categories={fressiCategories} />
       <ProductVitrine ctx={ctx} title={c.vitrineTitle} products={fressiProducts} />
       <Editorial
