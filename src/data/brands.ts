@@ -23,6 +23,8 @@ export type BrandVisual = {
   heroBlend?: boolean;
   /** Hero fotoğrafının odak noktası (CSS object-position). Kadraj panelde buraya göre kurulur. */
   heroFocus?: string;
+  /** Hero panelindeki marka adının rengi. Verilmezse panelText kullanılır. */
+  heroNameColor?: string;
   channelHref: string;
   /** Ana lockup — açık zeminler (hero, marka sayfası) */
   logoDark: string;
@@ -64,6 +66,7 @@ export const brands: BrandVisual[] = [
     // her kare yeniden boyandığı için sekme/titreme yapıyordu.
     hero: "/images/stl/wexta-cover.jpg",
     heroFocus: "50% 45%",
+    heroNameColor: "rgb(41, 174, 198)",
     channelHref: "https://www.stlteknoloji.com/tr/urunler/valiz",
     logoDark: "/logos/wexta.svg",
     logoLight: "/logos/wexta-light.svg",

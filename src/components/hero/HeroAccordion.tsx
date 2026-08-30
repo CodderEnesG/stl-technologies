@@ -120,7 +120,11 @@ export function HeroAccordion() {
             {/* Kapalı hâl: dikey marka adı */}
             <span
               className="absolute left-1/2 top-10 hidden -translate-x-1/2 whitespace-nowrap font-expanded text-2xl font-extrabold uppercase tracking-tightest transition-opacity duration-300 md:block"
-              style={{ opacity: active === i ? 0 : 1, writingMode: "vertical-rl" }}
+              style={{
+                opacity: active === i ? 0 : 1,
+                writingMode: "vertical-rl",
+                color: b.heroNameColor ?? b.panelText,
+              }}
             >
               {b.name}
             </span>
@@ -160,7 +164,12 @@ export function HeroAccordion() {
               className="absolute inset-x-0 bottom-0 p-5 md:hidden"
               style={{ opacity: active === i ? 0 : 1 }}
             >
-              <h2 className="font-expanded text-3xl font-black uppercase leading-none tracking-tightest">{b.name}</h2>
+              <h2
+                className="font-expanded text-3xl font-black uppercase leading-none tracking-tightest"
+                style={{ color: b.heroNameColor ?? b.panelText }}
+              >
+                {b.name}
+              </h2>
             </div>
           </Link>
         );
