@@ -1,5 +1,6 @@
 import { getBrand, stlImages, wextaProducts } from "../data/brands";
 import { useI18n } from "../i18n";
+import { ProductHotspots } from "../components/brand/ProductHotspots";
 import { usePageMeta } from "../hooks/usePageMeta";
 import {
   BrandCTA,
@@ -11,10 +12,11 @@ import {
   ImageBand,
   ManufacturingStory,
   ProductVitrine,
+  SpecBand,
   PullQuote,
   type BrandCtx,
 } from "../components/brand/sections";
-import { WextaSlider } from "../components/brand/WextaSlider";
+import { WextaHero } from "../components/brand/wextaHero";
 
 export default function Wexta() {
   const { t, lang } = useI18n();
@@ -28,9 +30,17 @@ export default function Wexta() {
 
   return (
     <BrandShell ctx={ctx}>
-      <WextaSlider channelHref={ctx.brand.channelHref} />
+      <WextaHero ctx={ctx} channelHref={ctx.brand.channelHref} />
       <CatalogRibbon left={ribbon.left} right={ribbon.right} logo="/logos/wexta-light.svg" />
-      <BrandIntro ctx={ctx} kicker={c.about.kicker} title={c.about.title} body={c.about.body} stats={c.stats} />
+      <BrandIntro
+        ctx={ctx}
+        mark="/logos/wexta.svg"
+        kicker={c.about.kicker}
+        title={c.about.title}
+        body={c.about.body}
+        stats={c.stats}
+      />
+      <SpecBand ctx={ctx} specs={c.specBand} icons={["package", "rotate-ccw", "shield-check", "factory"]} />
       <ManufacturingStory
         ctx={ctx}
         kicker={c.manufacturing.kicker}
@@ -39,6 +49,14 @@ export default function Wexta() {
         points={c.manufacturing.points}
         icons={["factory", "shield-check", "globe"]}
         image={stlImages.factory}
+      />
+      <ProductHotspots
+        ctx={ctx}
+        eyebrow={c.hotspotsEyebrow}
+        title={c.hotspotsTitle}
+        hint={c.hotspotsHint}
+        image="/images/stl/valiz-wx1001-1.jpg"
+        hotspots={c.hotspots}
       />
       <CategoryGrid ctx={ctx} label={c.categoriesLabel} categories={c.categories} href={ctx.brand.channelHref} />
       <ProductVitrine ctx={ctx} title={c.vitrineTitle} products={wextaProducts} />

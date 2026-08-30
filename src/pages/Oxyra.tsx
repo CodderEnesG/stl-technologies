@@ -1,7 +1,7 @@
 import { getBrand } from "../data/brands";
 import { useI18n } from "../i18n";
 import { usePageMeta } from "../hooks/usePageMeta";
-import { ChairHotspots } from "../components/brand/ChairHotspots";
+import { ProductHotspots } from "../components/brand/ProductHotspots";
 import {
   BrandAbout,
   BrandCTA,
@@ -32,7 +32,7 @@ export default function Oxyra() {
         body={c.brandAbout.body}
       />
       <SpecBand ctx={ctx} specs={c.specBand} icons={["frame", "person-standing", "layers", "rotate-ccw"]} />
-      <ChairHotspots
+      <ProductHotspots
         ctx={ctx}
         eyebrow={c.hotspotsEyebrow}
         title={c.hotspotsTitle}
