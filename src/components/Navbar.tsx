@@ -19,10 +19,13 @@ export function Navbar() {
 
   // Marka sayfasında navbar o markanın zeminini/kontrastını alır; çatıda beyaz kalır.
   const onDark = active?.navOnDark ?? false;
-  const navBg = active?.navBg ?? "rgba(255,255,255,0.86)";
+  // Sayfa başında navbar sayfanın zeminiyle aynı renkte ve kontursuz durur;
+  // aşağı kayınca yarı saydam zemine ve konturuna geçer.
+  const navBg = scrolled
+    ? (active?.navBg ?? "rgba(255,255,255,0.86)")
+    : (active?.navTopBg ?? "#ffffff");
   const fg = onDark ? "#ffffff" : "var(--foreground)";
   const line = onDark ? "rgba(255,255,255,0.16)" : "var(--border)";
-  const lineSoft = onDark ? "rgba(255,255,255,0.1)" : "rgba(230,228,228,0.6)";
   const dim = onDark ? "rgba(255,255,255,0.62)" : "var(--muted)";
   const hoverBg = onDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)";
   const panelBg = onDark ? "#12131a" : "#ffffff";
@@ -72,7 +75,7 @@ export function Navbar() {
       style={{
         background: navBg,
         color: fg,
-        borderColor: scrolled ? line : lineSoft,
+        borderColor: scrolled ? line : "transparent",
         boxShadow: scrolled
           ? onDark
             ? "0 12px 40px -20px rgba(0,0,0,0.8)"
