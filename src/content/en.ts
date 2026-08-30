@@ -201,6 +201,12 @@ export const en: SiteContent = {
         { title: "Every journey starts with a dream", cta: "Browse products" },
         { title: "Original, stylish and elegant models", cta: "Browse products" },
       ],
+      heroAlt: {
+        label: "Travel collection",
+        title: "Off the line, ready for the trip.",
+        lead: "Hard-shell luggage made on our own line in Arnavutköy: light, quiet and built to last for years.",
+        cta: "Browse products",
+      },
       about: {
         kicker: "About wexta",
         title: "Straight from the factory, ready for the journey.",
@@ -210,6 +216,21 @@ export const en: SiteContent = {
         { n: "35,000 m²", l: "Production facility" },
         { n: "20", l: "Export countries" },
         { n: "100%", l: "Local production" },
+      ],
+      specBand: [
+        { k: "Shell", v: "ABS / polypropylene" },
+        { k: "Wheels", v: "360° silent double wheels" },
+        { k: "Lock", v: "Combination lock" },
+        { k: "Production", v: "100% local" },
+      ],
+      hotspotsEyebrow: "A closer look",
+      hotspotsTitle: "Durability is in the details.",
+      hotspotsHint: "Hover or tap the dots",
+      hotspots: [
+        { title: "Hard shell", text: "ABS and polypropylene shell: it flexes on impact and returns to shape. Years on the belt, same suitcase.", x: 50, y: 58 },
+        { title: "Double wheels", text: "360° spinning double wheels on all four corners; low centre of gravity, glides silently with one hand.", x: 38, y: 93 },
+        { title: "Combination lock", text: "Lock recessed into the shell: nothing sticks out, nothing catches on the belt or in transit.", x: 66, y: 50 },
+        { title: "Telescopic handle", text: "Multi-stage aluminium handle; adjusts to your height and stays put once locked.", x: 55, y: 14 },
       ],
       valueProps: [
         { title: "Factory-direct", text: "A manufacturer brand: no middlemen, quality control on the production line." },
@@ -249,6 +270,12 @@ export const en: SiteContent = {
         { n: "K-beauty", l: "Origin: Korea" },
         { n: "3", l: "Step routine" },
         { n: "2026", l: "Türkiye launch" },
+      ],
+      specBand: [
+        { k: "Approach", v: "Korean skincare" },
+        { k: "Routine", v: "Morning and evening" },
+        { k: "Steps", v: "Two minutes" },
+        { k: "Range", v: "Few, and clearly useful" },
       ],
       valueProps: [
         { title: "Less, but better", text: "A product selection with clear purpose that keeps the routine simple." },

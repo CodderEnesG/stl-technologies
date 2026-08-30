@@ -1,0 +1,73 @@
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
+import { type BrandCtx } from "../sections";
+import { WextaSlider } from "../WextaSlider";
+import { WextaCoverHero } from "./WextaCoverHero";
+import { WextaRangeHero } from "./WextaRangeHero";
+
+const VARIANTS = ["1", "2", "3"] as const;
+type Variant = (typeof VARIANTS)[number];
+const STORAGE_KEY = "wexta-hero-variant";
+
+const labels: Record<Variant, string> = {
+  "1": "Slider",
+  "2": "Katalog kapağı",
+  "3": "Ürün gamı",
+};
+
+/**
+ * wexta hero varyant seçici — müşteri kararı için.
+ * ?whero=1..3 ile veya sağ alttaki mini seçiciyle gezilir; seçim localStorage'da kalır.
+ * Karar netleşince kalan varyantlar silinir ve seçilen doğrudan render edilir.
+ */
+export function WextaHero({ ctx, channelHref }: { ctx: BrandCtx; channelHref: string }) {
+  const [params, setParams] = useSearchParams();
+  const fromQuery = params.get("whero");
+  const [variant, setVariant] = useState<Variant>(() => {
+    if (fromQuery && (VARIANTS as readonly string[]).includes(fromQuery)) return fromQuery as Variant;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored && (VARIANTS as readonly string[]).includes(stored) ? (stored as Variant) : "1";
+  });
+
+  useEffect(() => {
+    if (fromQuery && (VARIANTS as readonly string[]).includes(fromQuery) && fromQuery !== variant) {
+      setVariant(fromQuery as Variant);
+    }
+  }, [fromQuery, variant]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, variant);
+  }, [variant]);
+
+  const pick = (v: Variant) => {
+    setVariant(v);
+    params.set("whero", v);
+    setParams(params, { replace: true });
+  };
+
+  return (
+    <>
+      {variant === "1" && <WextaSlider channelHref={channelHref} />}
+      {variant === "2" && <WextaCoverHero ctx={ctx} channelHref={channelHref} />}
+      {variant === "3" && <WextaRangeHero ctx={ctx} channelHref={channelHref} />}
+
+      <div className="fixed bottom-4 right-4 z-[90] flex items-center gap-1 rounded-full border border-[#e8eaeb] bg-white/90 p-1 shadow-lg backdrop-blur">
+        {VARIANTS.map((v) => (
+          <button
+            key={v}
+            onClick={() => pick(v)}
+            title={labels[v]}
+            className="grid size-8 place-items-center rounded-full text-xs font-bold transition-colors"
+            style={
+              variant === v
+                ? { background: ctx.brand.color, color: ctx.brand.onColor }
+                : { color: "#8a9093" }
+            }
+          >
+            {v}
+          </button>
+        ))}
+      </div>
+    </>
+  );
+}

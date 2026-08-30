@@ -12,9 +12,10 @@ export type Hotspot = {
 
 /**
  * Ürün ortada, özellikler görselin üzerindeki noktalardan açılır.
+ * Markadan bağımsız: Oxyra koltuğunda da wexta valizinde de aynı bileşen kullanılır.
  * Hover / tık / klavye focus ile çalışır; mobilde kartlar görselin altında listelenir.
  */
-export function ChairHotspots({
+export function ProductHotspots({
   ctx,
   eyebrow,
   title,
@@ -33,6 +34,10 @@ export function ChairHotspots({
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   const [active, setActive] = useState(0);
+  // Koyu zeminde beyaz cam nokta okunuyor; açık zeminde markanın kendi rengi gerekiyor.
+  const onDark = ctx.tone === "dark";
+  const dotIdle = onDark ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.9)";
+  const dotIdleBorder = onDark ? "rgba(255,255,255,0.5)" : brand.color;
 
   return (
     <section className="mx-auto max-w-[1400px] px-5 pt-24 md:px-8">
@@ -71,9 +76,10 @@ export function ChairHotspots({
                 style={{
                   left: `${h.x}%`,
                   top: `${h.y}%`,
-                  background: on ? brand.color : "rgba(255,255,255,0.14)",
-                  border: `1.5px solid ${on ? brand.color : "rgba(255,255,255,0.5)"}`,
+                  background: on ? brand.color : dotIdle,
+                  border: `1.5px solid ${on ? brand.color : dotIdleBorder}`,
                   backdropFilter: "blur(4px)",
+                  boxShadow: onDark ? undefined : "0 6px 18px -6px rgba(0,0,0,0.35)",
                 }}
               >
                 <span

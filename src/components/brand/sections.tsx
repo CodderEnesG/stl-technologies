@@ -180,6 +180,7 @@ export function BrandIntro({
   body,
   stats,
   image,
+  mark,
 }: {
   ctx: BrandCtx;
   kicker: string;
@@ -188,6 +189,11 @@ export function BrandIntro({
   stats: { n: string; l: string }[];
   /** Verilirse metnin yanında ürün görseli gösterilir (arkasında marka renginde hafif ışık) */
   image?: string;
+  /**
+   * Verilirse metnin yanında marka sembolü ışık halesiyle gösterilir —
+   * Oxyra sayfasındaki "marka hakkında" düzeninin diğer markalardaki karşılığı.
+   */
+  mark?: string;
 }) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
@@ -205,7 +211,24 @@ export function BrandIntro({
 
   return (
     <section className="mx-auto max-w-[1400px] px-5 pt-24 md:px-8">
-      {image ? (
+      {mark ? (
+        <div className="grid items-center gap-10 md:grid-cols-[0.75fr_1.25fr] md:gap-16">
+          <div className="relative grid place-items-center py-6">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 blur-3xl"
+              style={{ background: `radial-gradient(circle at 50% 50%, ${brand.color}55, transparent 68%)` }}
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
+              style={{ background: `radial-gradient(circle, ${brand.color}44, transparent 70%)` }}
+            />
+            <img src={mark} alt="" aria-hidden className="relative w-full max-w-[240px] object-contain" />
+          </div>
+          {heading}
+        </div>
+      ) : image ? (
         <div className="grid items-center gap-10 md:grid-cols-[1fr_0.85fr] md:gap-16">
           {heading}
           <div className="relative">

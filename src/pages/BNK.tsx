@@ -10,6 +10,7 @@ import {
   ImageBand,
   ProductVitrine,
   PullQuote,
+  SpecBand,
   ValueProps,
   type BrandCtx,
 } from "../components/brand/sections";
@@ -25,7 +26,15 @@ export default function BNK() {
   return (
     <BrandShell ctx={ctx}>
       <BrandHero ctx={ctx} tagline={c.tagline} />
-      <BrandIntro ctx={ctx} kicker={c.about.kicker} title={c.about.title} body={c.about.body} stats={c.stats} />
+      <BrandIntro
+        ctx={ctx}
+        mark="/logos/bnk-dark.svg"
+        kicker={c.about.kicker}
+        title={c.about.title}
+        body={c.about.body}
+        stats={c.stats}
+      />
+      <SpecBand ctx={ctx} specs={c.specBand} icons={["sparkles", "sun-moon", "clock", "droplet"]} />
       <ValueProps ctx={ctx} items={c.valueProps} icons={["droplet", "flask-conical", "sun-moon"]} />
       <ProductVitrine ctx={ctx} title={c.vitrineTitle} products={bnkProducts} />
       <Editorial

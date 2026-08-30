@@ -200,6 +200,12 @@ export const tr = {
         { title: "Her yolculuk bir hayalle başlar", cta: "Ürünleri incele" },
         { title: "Özgün, şık ve estetik modeller", cta: "Ürünleri incele" },
       ],
+      heroAlt: {
+        label: "Seyahat koleksiyonu",
+        title: "Fabrikadan çıkar, yolculuğa hazır.",
+        lead: "Arnavutköy'deki kendi bandımızda üretilen sert gövdeli valizler; hafif, sessiz ve yıllara dayanıklı.",
+        cta: "Ürünleri incele",
+      },
       about: {
         kicker: "wexta hakkında",
         title: "Fabrikadan çıkan valiz, yolculuğa hazır.",
@@ -209,6 +215,21 @@ export const tr = {
         { n: "35.000 m²", l: "Üretim tesisi" },
         { n: "20", l: "Ülkeye ihracat" },
         { n: "%100", l: "Yerli üretim" },
+      ],
+      specBand: [
+        { k: "Gövde", v: "ABS / polipropilen" },
+        { k: "Teker", v: "360° sessiz çift teker" },
+        { k: "Kilit", v: "Şifreli kilit" },
+        { k: "Üretim", v: "%100 yerli" },
+      ],
+      hotspotsEyebrow: "Yakından bakın",
+      hotspotsTitle: "Detayda saklı dayanıklılık.",
+      hotspotsHint: "Noktalara gelin veya dokunun",
+      hotspots: [
+        { title: "Sert gövde", text: "ABS ve polipropilen kabuk; darbede esner, formuna döner. Bagaj bandında yıllarca aynı kalır.", x: 50, y: 58 },
+        { title: "Çift teker", text: "Dört köşede 360° dönen çift teker; ağırlık merkezi düşük, tek elle sessizce süzülür.", x: 38, y: 93 },
+        { title: "Şifreli kilit", text: "Gövdeye gömülü şifreli kilit; çıkıntı yapmaz, bantta ve kargoda takılmaz.", x: 66, y: 50 },
+        { title: "Teleskopik kol", text: "Kademeli alüminyum kol; boyunuza göre ayarlanır, kilitlendiğinde oynamaz.", x: 55, y: 14 },
       ],
       valueProps: [
         { title: "Fabrikadan direkt", text: "Üretici markası: aracı yok, kalite kontrol üretim bandında." },
@@ -248,6 +269,12 @@ export const tr = {
         { n: "K-beauty", l: "Menşei Kore" },
         { n: "3", l: "Adımlı rutin" },
         { n: "2026", l: "Türkiye lansmanı" },
+      ],
+      specBand: [
+        { k: "Yaklaşım", v: "Kore cilt bakımı" },
+        { k: "Rutin", v: "Sabah ve akşam" },
+        { k: "Adım", v: "İki dakika" },
+        { k: "Seçki", v: "Az ve işlevi net" },
       ],
       valueProps: [
         { title: "Az ve öz", text: "Rutini karmaşıklaştırmayan, işlevi net ürün seçkisi." },

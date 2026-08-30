@@ -58,6 +58,33 @@ Ana sayfada sağ altta 1–4 seçici var (veya `?hero=2` gibi). Müşteri seçim
 `src/components/hero/index.tsx` içindeki seçici kaldırılır ve seçilen varyant doğrudan
 render edilir; kalan bileşenler silinir.
 
+## wexta hero varyantları
+
+wexta sayfasında sağ altta 1–3 seçici var (veya `?whero=2`):
+
+1. **Slider** — mevcut üç sahneli otomatik slider (stlteknoloji.com dili)
+2. **Katalog kapağı** — markanın kendi katalog kapağı tam ekran, üstte katalog
+   künyesi, altta wordmark + tagline. Oxyra'daki `BrandHeroFull` grameri.
+3. **Ürün gamı** — beyaz katalog sayfası; sağda seçili valiz, altında model
+   şeridi. Model üstüne gelince fotoğraf çapraz geçişle değişir. Sadece gerçek
+   ürün çekimleri kullanılıyor.
+
+Karar netleşince `src/components/brand/wextaHero/index.tsx` içindeki seçici
+kaldırılır, seçilen varyant doğrudan render edilir, kalanlar silinir.
+
+## Marka sayfası grameri
+
+Dört marka sayfası da aynı bölüm sözlüğünden besleniyor
+(`src/components/brand/sections.tsx`). Oxyra'da kurulan üç yapı taşı diğerlerine
+de taşındı:
+
+- `BrandIntro` artık `mark` alıyor — marka sembolü ışık halesiyle, yanında metin
+  ve altında üçlü istatistik şeridi (wexta, BNK).
+- `SpecBand` — dört başlıklı teknik bant, ikonlu (Oxyra, wexta, BNK).
+- `ProductHotspots` (eski `ChairHotspots`) markadan bağımsız: Oxyra koltuğunda da
+  wexta valizinde de aynı bileşen. Nokta konumları içerik dosyasındaki `x`/`y`
+  yüzdelerinden geliyor.
+
 ## Deploy (Vercel)
 
 `vercel.json` hazır: framework `vite`, build `pnpm build`, çıktı `dist`, SPA rewrite tanımlı.
