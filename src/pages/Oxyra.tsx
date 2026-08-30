@@ -5,8 +5,7 @@ import { ChairHotspots } from "../components/brand/ChairHotspots";
 import {
   BrandAbout,
   BrandCTA,
-  BrandHero,
-  BrandIntro,
+  BrandHeroFull,
   BrandShell,
   Editorial,
   ProductRange,
@@ -25,15 +24,7 @@ export default function Oxyra() {
 
   return (
     <BrandShell ctx={ctx}>
-      <BrandHero ctx={ctx} tagline={c.tagline} />
-      <BrandIntro
-        ctx={ctx}
-        kicker={c.about.kicker}
-        title={c.about.title}
-        body={c.about.body}
-        stats={c.stats}
-        image="/images/oxyra/koltuk-oxyra.jpg"
-      />
+      <BrandHeroFull ctx={ctx} tagline={c.tagline} background="/images/oxyra/hero-setup.jpg" />
       <BrandAbout
         ctx={ctx}
         mark="/logos/oxyra-mark-light.svg"
