@@ -745,18 +745,49 @@ export function ImageBand({ images, blend }: { images: string[]; blend?: boolean
   );
 }
 
-export function BrandCTA({ ctx, title, channel, note, pattern }: { ctx: BrandCtx; title: string; channel: string; note?: string; pattern?: string }) {
+export function BrandCTA({
+  ctx,
+  title,
+  channel,
+  note,
+  pattern,
+  image,
+}: {
+  ctx: BrandCtx;
+  title: string;
+  channel: string;
+  note?: string;
+  pattern?: string;
+  /** Marka gradyanı gibi tam kapsayan arka plan görseli — metin ortalanır, beyaza döner */
+  image?: string;
+}) {
   const { t, s: sec } = useI18n();
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   return (
-    <section className="relative overflow-hidden" style={{ background: s.bg, color: s.fg }}>
+    <section
+      className="relative overflow-hidden"
+      style={{ background: image ? undefined : s.bg, color: image ? "#ffffff" : s.fg }}
+    >
+      {image && (
+        <>
+          <img src={image} alt="" aria-hidden loading="lazy" className="absolute inset-0 size-full object-cover" />
+          <span aria-hidden className="absolute inset-0 bg-black/10" />
+        </>
+      )}
       {pattern && <PatternLayer src={pattern} opacity={0.2} fade="top" />}
-      <div className="relative mx-auto flex max-w-[1400px] flex-col items-start gap-8 px-5 py-24 md:flex-row md:items-center md:justify-between md:px-8">
-        <h2 className={`${ctx.font} max-w-2xl text-4xl font-black uppercase leading-[0.95] tracking-tightest md:text-6xl`}>
+      <div
+        className={`relative mx-auto flex max-w-[1400px] flex-col gap-8 px-5 py-24 md:px-8 ${
+          image ? "items-center text-center" : "items-start md:flex-row md:items-center md:justify-between"
+        }`}
+      >
+        <h2
+          className={`${ctx.font} max-w-2xl text-4xl font-black uppercase leading-[0.95] tracking-tightest md:text-6xl`}
+          style={{ textShadow: image ? "0 2px 26px rgba(0,0,0,0.35)" : undefined }}
+        >
           {title}
         </h2>
-        <div className="flex flex-col gap-3">
+        <div className={`flex flex-col gap-3 ${image ? "items-center" : ""}`}>
           {brand.channelHref ? (
             <a
               href={brand.channelHref}
@@ -776,8 +807,12 @@ export function BrandCTA({ ctx, title, channel, note, pattern }: { ctx: BrandCtx
               {t.nav.contact} <Arrow />
             </Link>
           )}
-          {note && <p className="max-w-[26ch] text-sm" style={{ color: s.muted }}>{note}</p>}
-          <Link to={sec("contact")} className="text-sm font-medium underline underline-offset-4" style={{ color: s.muted }}>
+          {note && <p className="max-w-[26ch] text-sm" style={{ color: image ? "rgba(255,255,255,0.85)" : s.muted }}>{note}</p>}
+          <Link
+            to={sec("contact")}
+            className="text-sm font-medium underline underline-offset-4"
+            style={{ color: image ? "rgba(255,255,255,0.9)" : s.muted }}
+          >
             {t.brandPage.orContact}
           </Link>
         </div>
