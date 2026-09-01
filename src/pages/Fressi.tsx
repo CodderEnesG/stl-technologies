@@ -12,7 +12,6 @@ import {
   FressiIntro,
   FressiReviews,
   ProductVitrine,
-  ValueProps,
   BrandShell,
   type BrandCtx,
 } from "../components/brand/sections";
@@ -77,7 +76,6 @@ export default function Fressi() {
         prevLabel={c.hero.prev}
         nextLabel={c.hero.next}
       />
-      <ValueProps ctx={ctx} items={c.valueProps} icons={["sparkles", "palette", "house"]} />
       <ProductVitrine ctx={ctx} title={c.vitrineTitle} products={fressiProducts} />
       <Editorial
         ctx={ctx}
@@ -113,7 +111,13 @@ export default function Fressi() {
           { src: "/images/fressi/dunya-lansman.webp", alt: "Fressi lansman sahnesi konsepti", wide: true },
         ]}
       />
-      <BrandCTA ctx={ctx} title={c.ctaTitle} channel={c.channel} image="/images/fressi/gradient-koyu.png" />
+      <BrandCTA
+        ctx={ctx}
+        title={c.quote.text}
+        quoteSource={c.quote.source}
+        channel={c.channel}
+        image="/images/fressi/gradient-koyu.png"
+      />
     </BrandShell>
   );
 }
