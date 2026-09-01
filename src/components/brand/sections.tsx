@@ -752,6 +752,7 @@ export function BrandCTA({
   note,
   pattern,
   image,
+  quoted,
   quoteSource,
 }: {
   ctx: BrandCtx;
@@ -761,10 +762,9 @@ export function BrandCTA({
   pattern?: string;
   /** Marka gradyanı gibi tam kapsayan arka plan görseli — metin ortalanır, beyaza döner */
   image?: string;
-  /**
-   * Verilirse başlık marka söylemi alıntısı gibi dizilir: tırnak içinde,
-   * versal değil, altında kaynak satırı.
-   */
+  /** Başlığı marka söylemi alıntısı gibi dizer: tırnak içinde, versal değil */
+  quoted?: boolean;
+  /** Alıntının altındaki kaynak satırı — verilmezse satır çıkmaz */
   quoteSource?: string;
 }) {
   const { t, s: sec } = useI18n();
@@ -787,16 +787,16 @@ export function BrandCTA({
           image ? "items-center text-center" : "items-start md:flex-row md:items-center md:justify-between"
         }`}
       >
-        <div className={quoteSource ? "max-w-3xl" : "max-w-2xl"}>
+        <div className={quoted ? "max-w-3xl" : "max-w-2xl"}>
           <h2
             className={`${ctx.font} font-bold tracking-tightest ${
-              quoteSource
+              quoted
                 ? "text-2xl leading-[1.25] md:text-4xl"
                 : "text-4xl font-black uppercase leading-[0.95] md:text-6xl"
             }`}
             style={{ textShadow: image ? "0 2px 26px rgba(0,0,0,0.35)" : undefined }}
           >
-            {quoteSource ? `“${title}”` : title}
+            {quoted ? `“${title}”` : title}
           </h2>
           {quoteSource && (
             <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.24em] opacity-80">{quoteSource}</p>

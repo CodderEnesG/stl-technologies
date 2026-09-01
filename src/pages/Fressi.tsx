@@ -114,7 +114,7 @@ export default function Fressi() {
       <BrandCTA
         ctx={ctx}
         title={c.quote.text}
-        quoteSource={c.quote.source}
+        quoted
         channel={c.channel}
         image="/images/fressi/gradient-koyu.png"
       />
