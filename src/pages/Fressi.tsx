@@ -7,10 +7,10 @@ import {
   Editorial,
   FressiCategoryBar,
   FressiCircleRail,
+  FressiGallery,
   FressiHeroSlideshow,
   FressiIntro,
   FressiReviews,
-  ImageBand,
   ProductVitrine,
   PullQuote,
   ValueProps,
@@ -66,9 +66,8 @@ export default function Fressi() {
         title={c.about.title}
         body={c.about.body}
         stats={c.stats}
-        image="/images/fressi/kettle-kt07-hero.jpg"
+        image="/images/fressi/life-cay-keyfi.webp"
         pattern={PATTERN}
-        signature={c.aboutSignature}
       />
       <FressiCircleRail
         ctx={ctx}
@@ -83,7 +82,7 @@ export default function Fressi() {
       <ProductVitrine ctx={ctx} title={c.vitrineTitle} products={fressiProducts} />
       <Editorial
         ctx={ctx}
-        image="/images/fressi/espresso-em01.webp"
+        image="/images/fressi/life-tezgah-renkli.webp"
         title={c.editorial.title}
         text={c.editorial.text}
       />
@@ -97,14 +96,28 @@ export default function Fressi() {
         verifiedLabel={c.reviews.verified}
         allLabel={c.reviews.all}
         allHref={ctx.brand.channelHref}
+        prevLabel={c.hero.prev}
+        nextLabel={c.hero.next}
       />
-      <PullQuote ctx={ctx} text={c.quote.text} source={c.quote.source} pattern={PATTERN} />
-      <ImageBand
+      <PullQuote
+        ctx={ctx}
+        text={c.quote.text}
+        source={c.quote.source}
+        image="/images/fressi/gradient-koyu.png"
+      />
+      <FressiGallery
+        ctx={ctx}
+        eyebrow={c.gallery.eyebrow}
+        title={c.gallery.title}
+        pattern={PATTERN}
         images={[
-          "/images/fressi/kettle-kt07.webp",
-          "/images/fressi/turk-kahve-tk302.webp",
-          "/images/fressi/tost-tm26.webp",
-          "/images/fressi/pikap-p101.webp",
+          { src: "/images/fressi/life-tezgah-sade.webp", alt: "Fressi kahve makinesi, kettle ve ekmek kızartma makinesi mutfak tezgahında", wide: true },
+          { src: "/images/fressi/dunya-mutfak-set.webp", alt: "Fressi ürün ve ambalaj seti mutfakta" },
+          { src: "/images/fressi/life-kettle-makro.webp", alt: "Fressi kettle yakın çekim" },
+          { src: "/images/fressi/dunya-ambalaj.webp", alt: "Fressi ambalaj ve kurumsal basılı malzemeler" },
+          { src: "/images/fressi/dunya-magaza.webp", alt: "Fressi mağaza konsepti" },
+          { src: "/images/fressi/dunya-billboard.webp", alt: "Fressi açıkhava reklam konsepti" },
+          { src: "/images/fressi/dunya-lansman.webp", alt: "Fressi lansman sahnesi konsepti", wide: true },
         ]}
       />
       <BrandCTA ctx={ctx} title={c.ctaTitle} channel={c.channel} pattern={PATTERN} />

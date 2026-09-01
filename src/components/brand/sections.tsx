@@ -672,6 +672,7 @@ export function PullQuote({
   bg,
   fg,
   pattern,
+  image,
 }: {
   ctx: BrandCtx;
   text: string;
@@ -680,13 +681,29 @@ export function PullQuote({
   fg?: string;
   /** Marka pattern'i — renkli zeminin üstünde çok düşük yoğunlukta doku */
   pattern?: string;
+  /** Marka gradyanı gibi tam kapsayan arka plan görseli */
+  image?: string;
 }) {
   const { brand } = ctx;
   return (
-    <section className="relative overflow-hidden" style={{ background: bg ?? brand.color, color: fg ?? brand.onColor }}>
+    <section
+      className="relative overflow-hidden"
+      style={{ background: image ? undefined : (bg ?? brand.color), color: fg ?? brand.onColor }}
+    >
+      {image && (
+        <>
+          <img src={image} alt="" aria-hidden loading="lazy" className="absolute inset-0 size-full object-cover" />
+          <span aria-hidden className="absolute inset-0 bg-black/10" />
+        </>
+      )}
       {pattern && <PatternLayer src={pattern} opacity={0.12} size={520} fade="both" />}
       <div className="relative mx-auto max-w-[1000px] px-5 py-24 text-center md:px-8">
-        <p className={`${ctx.font} text-2xl font-bold leading-[1.25] tracking-tightest md:text-4xl`}>“{text}”</p>
+        <p
+          className={`${ctx.font} text-2xl font-bold leading-[1.25] tracking-tightest md:text-4xl`}
+          style={{ textShadow: image ? "0 2px 26px rgba(0,0,0,0.35)" : undefined }}
+        >
+          “{text}”
+        </p>
         <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.24em] opacity-80">{source}</p>
       </div>
     </section>
@@ -1347,6 +1364,8 @@ export function FressiReviews({
   verifiedLabel,
   allLabel,
   allHref,
+  prevLabel,
+  nextLabel,
 }: {
   ctx: BrandCtx;
   eyebrow: string;
@@ -1358,8 +1377,31 @@ export function FressiReviews({
   verifiedLabel: string;
   allLabel: string;
   allHref: string;
+  prevLabel: string;
+  nextLabel: string;
 }) {
   const s = toneStyles[ctx.tone];
+  const rail = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState(0);
+  const [pages, setPages] = useState(1);
+
+  const sync = () => {
+    const el = rail.current;
+    if (!el) return;
+    setPages(Math.max(1, Math.ceil(el.scrollWidth / el.clientWidth)));
+    setPage(Math.round(el.scrollLeft / el.clientWidth));
+  };
+  useEffect(() => {
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, []);
+  const scrollTo = (p: number) => {
+    const el = rail.current;
+    if (!el) return;
+    el.scrollTo({ left: p * el.clientWidth, behavior: "smooth" });
+  };
+
   return (
     <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
       <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -1372,20 +1414,46 @@ export function FressiReviews({
             <Stars value={stats.average} color={ctx.brand.color} size={16} />
             <p className="mt-1 text-sm" style={{ color: s.muted }}>{ratingLabel(stats.count)}</p>
           </div>
+          {pages > 1 && (
+            <div className="ml-2 hidden gap-2 md:flex">
+              <button
+                type="button"
+                aria-label={prevLabel}
+                onClick={() => scrollTo(Math.max(0, page - 1))}
+                className="grid size-10 place-items-center rounded-full border transition hover:-translate-y-0.5"
+                style={{ borderColor: s.cardBorder, color: s.fg }}
+              >
+                <Chevron dir="left" />
+              </button>
+              <button
+                type="button"
+                aria-label={nextLabel}
+                onClick={() => scrollTo(Math.min(pages - 1, page + 1))}
+                className="grid size-10 place-items-center rounded-full border transition hover:-translate-y-0.5"
+                style={{ borderColor: s.cardBorder, color: s.fg }}
+              >
+                <Chevron dir="right" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="gap-6 md:columns-2 lg:columns-3">
+      <div
+        ref={rail}
+        onScroll={sync}
+        className="hide-scrollbar flex snap-x snap-mandatory items-stretch gap-6 overflow-x-auto pb-2"
+      >
         {reviews.map((r) => (
           <article
             key={`${r.author}-${r.product}`}
-            className="mb-6 break-inside-avoid rounded-2xl border p-6"
+            className="flex w-[86%] shrink-0 snap-start flex-col rounded-2xl border p-6 sm:w-[48%] lg:w-[31.5%]"
             style={{ background: s.card, borderColor: s.cardBorder }}
           >
             <Stars value={r.rating} color={ctx.brand.color} />
             {r.title && <h3 className="mt-3 font-semibold">{r.title}</h3>}
             <p className="mt-2 text-[15px] leading-relaxed" style={{ color: s.sub }}>{r.body}</p>
-            <footer className="mt-5 border-t pt-4 text-sm" style={{ borderColor: s.cardBorder }}>
+            <footer className="mt-auto border-t pt-4 text-sm" style={{ borderColor: s.cardBorder }}>
               <div className="flex items-center gap-2 font-semibold">
                 {r.author}
                 {r.verified && (
@@ -1404,7 +1472,23 @@ export function FressiReviews({
         ))}
       </div>
 
-      <div className="mt-4 text-center">
+      {pages > 1 && (
+        <div className="mt-8 flex justify-center gap-2">
+          {Array.from({ length: pages }).map((_, p) => (
+            <button
+              key={p}
+              type="button"
+              aria-label={`${p + 1}`}
+              aria-current={p === page}
+              onClick={() => scrollTo(p)}
+              className="h-2 rounded-full transition-all duration-300"
+              style={{ width: p === page ? 22 : 8, background: p === page ? ctx.brand.color : "rgba(89,68,57,0.25)" }}
+            />
+          ))}
+        </div>
+      )}
+
+      <div className="mt-8 text-center">
         <a
           href={allHref}
           target="_blank"
@@ -1433,7 +1517,6 @@ export function FressiIntro({
   stats,
   image,
   pattern,
-  signature,
 }: {
   ctx: BrandCtx;
   kicker: string;
@@ -1442,8 +1525,6 @@ export function FressiIntro({
   stats: { n: string; l: string }[];
   image: string;
   pattern?: string;
-  /** Başlığın üstündeki el yazısı vurgu */
-  signature?: string;
 }) {
   const s = toneStyles[ctx.tone];
   return (
@@ -1464,12 +1545,6 @@ export function FressiIntro({
             className="relative aspect-[4/5] w-full rounded-[2rem] object-cover shadow-[0_30px_60px_-30px_rgba(89,68,57,0.55)]"
             style={{ objectPosition: ctx.brand.heroFocus ?? "50% 50%" }}
           />
-          <div
-            className="absolute -bottom-6 left-6 rounded-2xl px-5 py-4 shadow-lg md:-right-8 md:left-auto"
-            style={{ background: s.card, border: `1px solid ${s.cardBorder}` }}
-          >
-            <p className="font-script text-lg" style={{ color: ctx.brand.color }}>{signature ?? kicker}</p>
-          </div>
         </div>
 
         <div>
@@ -1477,15 +1552,7 @@ export function FressiIntro({
             {kicker}
           </p>
           <h2 className={`${ctx.font} text-3xl font-bold leading-[1.08] tracking-tightest md:text-[2.75rem]`}>{title}</h2>
-          <p className="mt-6 text-lg leading-relaxed" style={{ color: s.sub }}>
-            <span
-              className={`${ctx.font} float-left mr-3 mt-1 text-[3.25rem] font-extrabold leading-[0.8]`}
-              style={{ color: ctx.brand.color }}
-            >
-              {body.slice(0, 1)}
-            </span>
-            {body.slice(1)}
-          </p>
+          <p className="mt-6 text-lg leading-relaxed" style={{ color: s.sub }}>{body}</p>
           <dl className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-6">
             {stats.map((st, idx) => (
               <div key={st.l} className="flex items-center gap-10">
@@ -1497,6 +1564,52 @@ export function FressiIntro({
               </div>
             ))}
           </dl>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/**
+ * Fressi dünyası — marka kılavuzundaki yaşam ve sunum görsellerinden mozaik.
+ * ImageBand'in yerini aldı: eşit yükseklikte dört kesit yerine, ilk görselin
+ * öne çıktığı ızgara.
+ */
+export function FressiGallery({
+  ctx,
+  eyebrow,
+  title,
+  images,
+  pattern,
+}: {
+  ctx: BrandCtx;
+  eyebrow: string;
+  title: string;
+  images: { src: string; alt: string; wide?: boolean }[];
+  pattern?: string;
+}) {
+  return (
+    <section className="relative overflow-hidden py-24">
+      {pattern && <PatternLayer src={pattern} opacity={0.13} fade="both" />}
+      <div className="relative mx-auto max-w-[1400px] px-5 md:px-8">
+        <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} className="mb-10" />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {images.map((im) => (
+            <figure
+              key={im.src}
+              className={`overflow-hidden rounded-2xl ${im.wide ? "sm:col-span-2" : ""}`}
+            >
+              <img
+                src={im.src}
+                alt={im.alt}
+                loading="lazy"
+                className={`size-full object-cover transition-transform duration-700 hover:scale-[1.03] ${
+                  im.wide ? "aspect-[16/9]" : "aspect-[4/3]"
+                }`}
+              />
+            </figure>
+          ))}
         </div>
       </div>
     </section>

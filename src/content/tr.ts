@@ -222,7 +222,10 @@ export const tr = {
         prev: "Önceki görsel",
         next: "Sonraki görsel",
       },
-      aboutSignature: "geçmişin zarafeti",
+      gallery: {
+        eyebrow: "Marka dünyası",
+        title: "Fressi eve girince",
+      },
       circles: {
         eyebrow: "Ürün dünyası",
         title: "Bugün ne hazırlıyoruz?",
