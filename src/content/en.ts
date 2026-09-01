@@ -344,6 +344,10 @@ export const en: SiteContent = {
         prev: "Previous slide",
         next: "Next slide",
       },
+      gallery: {
+        eyebrow: "Product world",
+        title: "What's on the shelf",
+      },
       circles: {
         eyebrow: "Categories",
         title: "Where does your routine start?",

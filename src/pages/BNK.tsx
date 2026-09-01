@@ -4,6 +4,7 @@ import { usePageMeta } from "../hooks/usePageMeta";
 import {
   BrandCTA,
   BrandCategoryBar,
+  BrandGallery,
   BrandHeroSlideshow,
   BrandIntro,
   BrandShell,
@@ -72,6 +73,20 @@ export default function BNK() {
         ratio="aspect-[16/9]"
         title={c.editorial.title}
         text={c.editorial.text}
+      />
+      <BrandGallery
+        ctx={ctx}
+        eyebrow={c.gallery.eyebrow}
+        title={c.gallery.title}
+        ratio="aspect-[3/4]"
+        images={[
+          { src: "/images/bnk/gallery-vitac-tonik.webp", alt: "TENZERO Green Tangerine Vita C tonik" },
+          { src: "/images/bnk/gallery-spf-pembe.webp", alt: "FOODAHOLIC SPF50+ güneş kremi" },
+          { src: "/images/bnk/gallery-collagen-serum.webp", alt: "TENZERO kolajen toner" },
+          { src: "/images/bnk/gallery-goz-kremi.webp", alt: "Sıkılaştırıcı göz çevresi kremi" },
+          { src: "/images/bnk/gallery-bb-krem.webp", alt: "UV korumalı BB krem" },
+          { src: "/images/bnk/gallery-sunstick.webp", alt: "Air UV shield güneş stick" },
+        ]}
       />
       <PullQuote ctx={ctx} text={c.quote.text} source={c.quote.source} />
       <BrandCTA ctx={ctx} title={c.ctaTitle} channel={c.channel} />

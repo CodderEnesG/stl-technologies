@@ -344,6 +344,10 @@ export const tr = {
         prev: "Önceki görsel",
         next: "Sonraki görsel",
       },
+      gallery: {
+        eyebrow: "Ürün dünyası",
+        title: "Rafın hâli",
+      },
       circles: {
         eyebrow: "Kategoriler",
         title: "Rutinini nereden kuracaksın?",
