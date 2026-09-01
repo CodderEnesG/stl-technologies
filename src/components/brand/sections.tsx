@@ -1665,12 +1665,15 @@ export function BrandGallery({
   title,
   images,
   pattern,
+  ratio = "aspect-[4/3]",
 }: {
   ctx: BrandCtx;
   eyebrow: string;
   title: string;
   images: { src: string; alt: string; wide?: boolean }[];
   pattern?: string;
+  /** Kare oranı (tailwind aspect sınıfı) — dikey ürün kadrajlarında 3/4 */
+  ratio?: string;
 }) {
   return (
     <section className="relative overflow-hidden py-24">
@@ -1688,7 +1691,7 @@ export function BrandGallery({
                 alt={im.alt}
                 loading="lazy"
                 className={`size-full object-cover transition-transform duration-700 hover:scale-[1.03] ${
-                  im.wide ? "aspect-[16/9]" : "aspect-[4/3]"
+                  im.wide ? "aspect-[16/9]" : ratio
                 }`}
               />
             </figure>
