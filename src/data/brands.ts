@@ -296,8 +296,23 @@ export const bnkProducts: Product[] = [
 
 // Fressi kategori renk sistemi (marka kılavuzu)
 export const fressiCategories = [
-  { key: "Kitchen", label: "Mutfak", color: "#818e71", icon: "utensils" as const, image: "/images/fressi/kettle-kt07.webp", href: "https://fressihome.com/collections/kettle" },
   { key: "Coffee", label: "Kahve", color: "#594439", icon: "coffee" as const, image: "/images/fressi/espresso-em01.webp", href: "https://fressihome.com/collections/kahve-makinesi" },
-  { key: "Collection", label: "Koleksiyon", color: "#467fa5", icon: "layout-grid" as const, image: "/images/fressi/pikap-p101.webp", href: "https://fressihome.com/collections/tum-urunler" },
+  { key: "Kitchen", label: "Mutfak", color: "#818e71", icon: "utensils" as const, image: "/images/fressi/kettle-kt07.webp", href: "https://fressihome.com/collections/kettle" },
   { key: "Home", label: "Ev", color: "#d3c4a9", icon: "house" as const, image: "/images/fressi/cd-calar-cd183.webp", href: "https://fressihome.com/collections/temizlik-ve-ferahlik" },
+  { key: "Collection", label: "Koleksiyon", color: "#467fa5", icon: "layout-grid" as const, image: "/images/fressi/pikap-p101.webp", href: "https://fressihome.com/collections/tum-urunler" },
+];
+
+/**
+ * fressihome.com anasayfasındaki daire ürün rayının birebir karşılığı —
+ * görseller ve koleksiyon linkleri mağazadan alındı.
+ */
+export const fressiCircles = [
+  { label: "Airfryer Fırın", image: "/images/fressi/circle-airfryer.webp", href: "https://fressihome.com/collections/airfryer-firin" },
+  { label: "Çay Makinesi", image: "/images/fressi/circle-cay-makinesi.webp", href: "https://fressihome.com/collections/cay-makinesi" },
+  { label: "Smoothie Blender", image: "/images/fressi/circle-smoothie-blender.webp", href: "https://fressihome.com/collections/smoothie-blender" },
+  { label: "Espresso Makinesi", image: "/images/fressi/circle-espresso.webp", href: "https://fressihome.com/collections/kahve-makinesi" },
+  { label: "Akıllı Thermo Tencere", image: "/images/fressi/circle-thermo-tencere.webp", href: "https://fressihome.com/collections/akilli-thermo-tencere" },
+  { label: "Kettle", image: "/images/fressi/circle-kettle.webp", href: "https://fressihome.com/collections/kettle" },
+  { label: "Katı Meyve Sıkacağı", image: "/images/fressi/circle-meyve-sikacagi.webp", href: "https://fressihome.com/collections/kati-meyve-sikacagi" },
+  { label: "Karıştırıcılar", image: "/images/fressi/circle-karistirici.webp", href: "https://fressihome.com/collections/karistiricilar" },
 ];

@@ -206,6 +206,34 @@ export const tr = {
         { title: "Eve yakışan renkler", text: "Krem, yeşil ve lacivert tonları; birbiriyle konuşan bir palet." },
         { title: "Fayda odaklı", text: "Teknik özellik yığını değil; günlük yaşama somut katkı." },
       ],
+      hero: {
+        slides: [
+          {
+            title: "Evde iyi hissettiren teknoloji.",
+            sub: "Retro çizgiler, gündelik hayata giren pratiklik.",
+            cta: "Fressi ürünlerini keşfet",
+          },
+          {
+            title: "Mutfağınızda usta şef sizsiniz.",
+            sub: "Tek seferde mükemmel uyumu yakalayın.",
+            cta: "Ürünleri incele",
+          },
+        ],
+        prev: "Önceki görsel",
+        next: "Sonraki görsel",
+      },
+      aboutSignature: "geçmişin zarafeti",
+      circles: {
+        eyebrow: "Ürün dünyası",
+        title: "Bugün ne hazırlıyoruz?",
+      },
+      reviews: {
+        eyebrow: "Müşteri yorumları",
+        title: "Fressi'yi kullananlar ne diyor?",
+        count: (n: number) => `${n} değerlendirme`,
+        verified: "Doğrulanmış alışveriş",
+        all: "Tüm yorumları fressihome.com'da okuyun",
+      },
       categoriesLabel: "Ne aramıştınız?",
       vitrineTitle: "Öne çıkanlar",
       editorial: {

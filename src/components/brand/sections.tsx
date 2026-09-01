@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import type { BrandVisual, Product } from "../../data/brands";
 import { useI18n } from "../../i18n";
@@ -671,17 +671,21 @@ export function PullQuote({
   source,
   bg,
   fg,
+  pattern,
 }: {
   ctx: BrandCtx;
   text: string;
   source: string;
   bg?: string;
   fg?: string;
+  /** Marka pattern'i — renkli zeminin üstünde çok düşük yoğunlukta doku */
+  pattern?: string;
 }) {
   const { brand } = ctx;
   return (
-    <section style={{ background: bg ?? brand.color, color: fg ?? brand.onColor }}>
-      <div className="mx-auto max-w-[1000px] px-5 py-24 text-center md:px-8">
+    <section className="relative overflow-hidden" style={{ background: bg ?? brand.color, color: fg ?? brand.onColor }}>
+      {pattern && <PatternLayer src={pattern} opacity={0.12} size={520} fade="both" />}
+      <div className="relative mx-auto max-w-[1000px] px-5 py-24 text-center md:px-8">
         <p className={`${ctx.font} text-2xl font-bold leading-[1.25] tracking-tightest md:text-4xl`}>“{text}”</p>
         <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.24em] opacity-80">{source}</p>
       </div>
@@ -724,13 +728,14 @@ export function ImageBand({ images, blend }: { images: string[]; blend?: boolean
   );
 }
 
-export function BrandCTA({ ctx, title, channel, note }: { ctx: BrandCtx; title: string; channel: string; note?: string }) {
+export function BrandCTA({ ctx, title, channel, note, pattern }: { ctx: BrandCtx; title: string; channel: string; note?: string; pattern?: string }) {
   const { t, s: sec } = useI18n();
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   return (
-    <section style={{ background: s.bg, color: s.fg }}>
-      <div className="mx-auto flex max-w-[1400px] flex-col items-start gap-8 px-5 py-24 md:flex-row md:items-center md:justify-between md:px-8">
+    <section className="relative overflow-hidden" style={{ background: s.bg, color: s.fg }}>
+      {pattern && <PatternLayer src={pattern} opacity={0.2} fade="top" />}
+      <div className="relative mx-auto flex max-w-[1400px] flex-col items-start gap-8 px-5 py-24 md:flex-row md:items-center md:justify-between md:px-8">
         <h2 className={`${ctx.font} max-w-2xl text-4xl font-black uppercase leading-[0.95] tracking-tightest md:text-6xl`}>
           {title}
         </h2>
@@ -899,6 +904,599 @@ export function ProductSpotlight({
               ))}
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+ * Fressi'ye özel bölümler — fressihome.com'daki mağaza diliyle aynı gramer:
+ * yatay banner slaytı, kategori barı, daire ürün rayı ve müşteri yorumları.
+ * ------------------------------------------------------------------------- */
+
+/** Marka pattern'ini bölüm zeminine döşer — kılavuz gereği düşük yoğunlukta. */
+export function PatternLayer({
+  src,
+  size = 620,
+  opacity = 0.16,
+  fade = "bottom",
+}: {
+  src: string;
+  size?: number;
+  opacity?: number;
+  /** Kenarlarda pattern'in eridiği yön */
+  fade?: "bottom" | "top" | "both" | "none";
+}) {
+  const mask =
+    fade === "none"
+      ? undefined
+      : fade === "both"
+        ? "linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent)"
+        : fade === "top"
+          ? "linear-gradient(to bottom, transparent, #000 30%)"
+          : "linear-gradient(to bottom, #000 45%, transparent)";
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0"
+      style={{
+        backgroundImage: `url(${src})`,
+        backgroundSize: `${size}px`,
+        opacity,
+        maskImage: mask,
+        WebkitMaskImage: mask,
+      }}
+    />
+  );
+}
+
+function Chevron({ dir }: { dir: "left" | "right" }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d={dir === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}
+        stroke="currentColor"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** Dolu yıldız — Lucide stroke setinden farklı olarak puanlamada dolgu okunuyor. */
+function Stars({ value, size = 15, color }: { value: number; size?: number; color: string }) {
+  return (
+    <span className="inline-flex items-center gap-[3px]" aria-hidden>
+      {[1, 2, 3, 4, 5].map((i) => (
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24">
+          <path
+            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.12 2.12 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.12 2.12 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.12 2.12 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.12 2.12 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.12 2.12 0 0 0 1.597-1.16z"
+            fill={i <= Math.round(value) ? color : "transparent"}
+            stroke={color}
+            strokeWidth="1.4"
+            strokeLinejoin="round"
+            opacity={i <= Math.round(value) ? 1 : 0.35}
+          />
+        </svg>
+      ))}
+    </span>
+  );
+}
+
+export type FressiSlide = {
+  image: string;
+  title: string;
+  sub?: string;
+  cta: string;
+  href: string;
+  /** Masaüstünde metin bloğunun yatay konumu */
+  align?: "left" | "center";
+  /** Masaüstünde metin bloğunun dikey konumu — ürünlerin üstüne düşmesin diye */
+  valign?: "top" | "center";
+  /** Görselin üzerindeki metin beyaz mı */
+  onDark?: boolean;
+  /** Mobilde kırpma odağı */
+  focus?: string;
+};
+
+/**
+ * fressihome.com anasayfasındaki hero slaytının karşılığı: tam genişlikte yatay
+ * banner + üstünde marka metni. Banner'lardaki kampanya yazıları görselden
+ * temizlendi; metin artık HTML katmanında, yani dil değişince o da değişiyor.
+ */
+export function FressiHeroSlideshow({
+  ctx,
+  slides,
+  pattern,
+  logo,
+  prevLabel,
+  nextLabel,
+}: {
+  ctx: BrandCtx;
+  slides: FressiSlide[];
+  pattern?: string;
+  /** Slaytın üstünde duran marka lockup'ı (ilk slayt) */
+  logo?: string;
+  prevLabel: string;
+  nextLabel: string;
+}) {
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const touchX = useRef<number | null>(null);
+  const s = toneStyles[ctx.tone];
+  const n = slides.length;
+  const go = (d: number) => setI((v) => (v + d + n) % n);
+
+  useEffect(() => {
+    if (paused || n < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => setI((v) => (v + 1) % n), 6500);
+    return () => window.clearInterval(id);
+  }, [paused, n]);
+
+  const active = slides[i];
+
+  return (
+    <section
+      className="relative overflow-hidden"
+      style={{ background: s.bg }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {pattern && <PatternLayer src={pattern} opacity={0.2} fade="both" />}
+      <div className="relative mx-auto max-w-[1600px]">
+        <div
+          className="relative aspect-[16/11] w-full overflow-hidden md:aspect-[2000/854]"
+          onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+          onTouchEnd={(e) => {
+            if (touchX.current === null) return;
+            const dx = e.changedTouches[0].clientX - touchX.current;
+            if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+            touchX.current = null;
+          }}
+        >
+          {slides.map((sl, idx) => (
+            <img
+              key={sl.image}
+              src={sl.image}
+              alt=""
+              aria-hidden={idx !== i}
+              loading={idx === 0 ? "eager" : "lazy"}
+              fetchPriority={idx === 0 ? "high" : undefined}
+              className="absolute inset-0 size-full object-cover transition-opacity duration-700"
+              style={{ objectPosition: sl.focus ?? "50% 50%", opacity: idx === i ? 1 : 0 }}
+            />
+          ))}
+
+          {/* Masaüstü metin katmanı — mobilde metin görselin altına iniyor */}
+          <div className="absolute inset-0 hidden md:block">
+            {slides.map((sl, idx) => (
+              <div
+                key={sl.image}
+                className={`absolute inset-0 flex px-[6%] transition-opacity duration-700 ${
+                  sl.valign === "top" ? "items-start pt-[6%]" : "items-center"
+                } ${sl.align === "center" ? "justify-center text-center" : "justify-start"}`}
+                style={{ opacity: idx === i ? 1 : 0, pointerEvents: idx === i ? "auto" : "none" }}
+              >
+                <div
+                  className={sl.align === "center" ? "max-w-2xl" : "max-w-md"}
+                  style={{
+                    color: sl.onDark ? "#ffffff" : ctx.brand.panelText,
+                    textShadow: sl.onDark ? "0 2px 24px rgba(0,0,0,0.35)" : undefined,
+                  }}
+                >
+                  {logo && idx === 0 && (
+                    <img src={ctx.brand.logoDark} alt="" aria-hidden className="mb-6 h-9 w-auto object-contain object-left" />
+                  )}
+                  <h1 className={`${ctx.font} text-3xl font-bold leading-[1.1] tracking-tightest lg:text-[2.9rem]`}>
+                    {sl.title}
+                  </h1>
+                  {sl.sub && <p className="mt-3 text-base opacity-85 lg:text-lg">{sl.sub}</p>}
+                  <a
+                    href={sl.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-7 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5"
+                    style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
+                  >
+                    {sl.cta}
+                    <Arrow />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {n > 1 && (
+            <>
+              <button
+                type="button"
+                aria-label={prevLabel}
+                onClick={() => go(-1)}
+                className="absolute left-3 top-1/2 hidden size-10 -translate-y-1/2 place-items-center rounded-full bg-white/75 text-[#594439] backdrop-blur transition hover:bg-white md:grid"
+              >
+                <Chevron dir="left" />
+              </button>
+              <button
+                type="button"
+                aria-label={nextLabel}
+                onClick={() => go(1)}
+                className="absolute right-3 top-1/2 hidden size-10 -translate-y-1/2 place-items-center rounded-full bg-white/75 text-[#594439] backdrop-blur transition hover:bg-white md:grid"
+              >
+                <Chevron dir="right" />
+              </button>
+              <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2">
+                {slides.map((sl, idx) => (
+                  <button
+                    key={sl.image}
+                    type="button"
+                    aria-label={`${idx + 1}`}
+                    aria-current={idx === i}
+                    onClick={() => setI(idx)}
+                    className="h-2 rounded-full transition-all duration-300"
+                    style={{
+                      width: idx === i ? 22 : 8,
+                      background: idx === i ? ctx.brand.color : "rgba(89,68,57,0.3)",
+                    }}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Mobil metin bloğu */}
+        <div className="px-5 pb-10 pt-7 text-center md:hidden">
+          <h1 className={`${ctx.font} text-2xl font-bold leading-tight tracking-tightest`}>{active.title}</h1>
+          {active.sub && <p className="mt-2 text-sm" style={{ color: s.sub }}>{active.sub}</p>}
+          <a
+            href={active.href}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-5 inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold"
+            style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
+          >
+            {active.cta}
+            <Arrow />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Kategori barı — mağazadaki üst menünün karşılığı: dört kategori, ince
+ * çizgiler arasında, doğrudan fressihome.com koleksiyonlarına gider.
+ */
+export function FressiCategoryBar({
+  ctx,
+  categories,
+}: {
+  ctx: BrandCtx;
+  categories: { key: string; label: string; color: string; href: string; icon?: IconName }[];
+}) {
+  const s = toneStyles[ctx.tone];
+  return (
+    <nav
+      className="relative border-y"
+      style={{ borderColor: s.cardBorder, background: s.card }}
+      aria-label={ctx.brand.name}
+    >
+      <div className="mx-auto flex max-w-[1400px] overflow-x-auto px-2 md:px-8">
+        {categories.map((c) => (
+          <a
+            key={c.key}
+            href={c.href}
+            target="_blank"
+            rel="noreferrer"
+            className="group relative flex flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap px-6 py-4 text-sm font-semibold transition-colors"
+            style={{ color: s.fg }}
+          >
+            {c.icon && <Icon name={c.icon} size={17} strokeWidth={ctx.iconWeight ?? 1.7} style={{ color: c.color }} />}
+            {c.label}
+            <span
+              className="absolute inset-x-4 bottom-0 h-[2px] origin-center scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100"
+              style={{ background: c.color }}
+            />
+          </a>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+/**
+ * Daire ürün rayı — mağazadaki dairesel kategori karuselinin birebir karşılığı.
+ * Kaydırmalı ray; oklar ve sayfa noktaları scroll konumundan türetiliyor.
+ */
+export function FressiCircleRail({
+  ctx,
+  eyebrow,
+  title,
+  items,
+  pattern,
+  prevLabel,
+  nextLabel,
+}: {
+  ctx: BrandCtx;
+  eyebrow: string;
+  title: string;
+  items: { label: string; image: string; href: string }[];
+  pattern?: string;
+  prevLabel: string;
+  nextLabel: string;
+}) {
+  const rail = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState(0);
+  const [pages, setPages] = useState(1);
+
+  const sync = () => {
+    const el = rail.current;
+    if (!el) return;
+    setPages(Math.max(1, Math.ceil(el.scrollWidth / el.clientWidth)));
+    setPage(Math.round(el.scrollLeft / el.clientWidth));
+  };
+  useEffect(() => {
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, []);
+
+  const scrollTo = (p: number) => {
+    const el = rail.current;
+    if (!el) return;
+    el.scrollTo({ left: p * el.clientWidth, behavior: "smooth" });
+  };
+
+  return (
+    <section className="relative overflow-hidden py-24">
+      {pattern && <PatternLayer src={pattern} opacity={0.13} fade="both" />}
+      <div className="relative mx-auto max-w-[1400px] px-5 md:px-8">
+        <div className="mb-10 flex items-end justify-between gap-6">
+          <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} />
+          {pages > 1 && (
+            <div className="hidden shrink-0 gap-2 md:flex">
+              <button
+                type="button"
+                aria-label={prevLabel}
+                onClick={() => scrollTo(Math.max(0, page - 1))}
+                className="grid size-10 place-items-center rounded-full border transition hover:-translate-y-0.5"
+                style={{ borderColor: toneStyles[ctx.tone].cardBorder, color: toneStyles[ctx.tone].fg }}
+              >
+                <Chevron dir="left" />
+              </button>
+              <button
+                type="button"
+                aria-label={nextLabel}
+                onClick={() => scrollTo(Math.min(pages - 1, page + 1))}
+                className="grid size-10 place-items-center rounded-full border transition hover:-translate-y-0.5"
+                style={{ borderColor: toneStyles[ctx.tone].cardBorder, color: toneStyles[ctx.tone].fg }}
+              >
+                <Chevron dir="right" />
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div
+          ref={rail}
+          onScroll={sync}
+          className="hide-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 md:gap-8"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {items.map((it) => (
+            <a
+              key={it.label}
+              href={it.href}
+              target="_blank"
+              rel="noreferrer"
+              className="group w-[46%] shrink-0 snap-start text-center sm:w-[31%] lg:w-[23%]"
+            >
+              <div className="relative aspect-square overflow-hidden rounded-full">
+                <img
+                  src={it.image}
+                  alt={it.label}
+                  loading="lazy"
+                  className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full opacity-0 ring-2 ring-inset transition-opacity duration-300 group-hover:opacity-100"
+                  style={{ color: ctx.brand.color }}
+                />
+              </div>
+              <h3 className="mt-4 text-sm font-semibold md:text-base">{it.label}</h3>
+            </a>
+          ))}
+        </div>
+
+        {pages > 1 && (
+          <div className="mt-8 flex justify-center gap-2">
+            {Array.from({ length: pages }).map((_, p) => (
+              <button
+                key={p}
+                type="button"
+                aria-label={`${p + 1}`}
+                aria-current={p === page}
+                onClick={() => scrollTo(p)}
+                className="h-2 rounded-full transition-all duration-300"
+                style={{ width: p === page ? 22 : 8, background: p === page ? ctx.brand.color : "rgba(89,68,57,0.25)" }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Müşteri yorumları — fressihome.com'daki Entrfy yorum karuselinin karşılığı.
+ * Veri mağazadan alınmış statik anlık görüntü (bkz. data/fressiReviews.ts).
+ */
+export function FressiReviews({
+  ctx,
+  eyebrow,
+  title,
+  reviews,
+  stats,
+  ratingLabel,
+  verifiedLabel,
+  allLabel,
+  allHref,
+}: {
+  ctx: BrandCtx;
+  eyebrow: string;
+  title: string;
+  reviews: { rating: number; title?: string; body: string; author: string; product: string; verified: boolean }[];
+  stats: { count: number; average: number };
+  /** "295 değerlendirme" gibi — sayıyı alıp metni kuran fonksiyon */
+  ratingLabel: (n: number) => string;
+  verifiedLabel: string;
+  allLabel: string;
+  allHref: string;
+}) {
+  const s = toneStyles[ctx.tone];
+  return (
+    <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
+      <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} />
+        <div className="flex shrink-0 items-center gap-4">
+          <div className={`${ctx.font} text-5xl font-extrabold leading-none tracking-tightest`}>
+            {stats.average.toFixed(1).replace(".", ",")}
+          </div>
+          <div>
+            <Stars value={stats.average} color={ctx.brand.color} size={16} />
+            <p className="mt-1 text-sm" style={{ color: s.muted }}>{ratingLabel(stats.count)}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="gap-6 md:columns-2 lg:columns-3">
+        {reviews.map((r) => (
+          <article
+            key={`${r.author}-${r.product}`}
+            className="mb-6 break-inside-avoid rounded-2xl border p-6"
+            style={{ background: s.card, borderColor: s.cardBorder }}
+          >
+            <Stars value={r.rating} color={ctx.brand.color} />
+            {r.title && <h3 className="mt-3 font-semibold">{r.title}</h3>}
+            <p className="mt-2 text-[15px] leading-relaxed" style={{ color: s.sub }}>{r.body}</p>
+            <footer className="mt-5 border-t pt-4 text-sm" style={{ borderColor: s.cardBorder }}>
+              <div className="flex items-center gap-2 font-semibold">
+                {r.author}
+                {r.verified && (
+                  <span
+                    className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium"
+                    style={{ background: `${ctx.brand.color}1f`, color: ctx.brand.color }}
+                  >
+                    <Icon name="check" size={12} strokeWidth={2.2} />
+                    {verifiedLabel}
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-[13px]" style={{ color: s.muted }}>{r.product}</p>
+            </footer>
+          </article>
+        ))}
+      </div>
+
+      <div className="mt-4 text-center">
+        <a
+          href={allHref}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 text-sm font-semibold"
+          style={{ color: ctx.brand.color }}
+        >
+          {allLabel}
+          <Arrow />
+        </a>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Fressi "hakkında" bölümü — jenerik başlık + üç kutu düzeni yerine dergi
+ * sayfası kurgusu: pattern zemin, kadrajdan taşan fotoğraf, el yazısı vurgu ve
+ * metnin içine giren istatistik şeridi.
+ */
+export function FressiIntro({
+  ctx,
+  kicker,
+  title,
+  body,
+  stats,
+  image,
+  pattern,
+  signature,
+}: {
+  ctx: BrandCtx;
+  kicker: string;
+  title: string;
+  body: string;
+  stats: { n: string; l: string }[];
+  image: string;
+  pattern?: string;
+  /** Başlığın üstündeki el yazısı vurgu */
+  signature?: string;
+}) {
+  const s = toneStyles[ctx.tone];
+  return (
+    <section className="relative overflow-hidden py-24">
+      {pattern && <PatternLayer src={pattern} opacity={0.22} fade="both" />}
+      <div className="relative mx-auto grid max-w-[1400px] items-center gap-12 px-5 md:grid-cols-[0.95fr_1.05fr] md:gap-16 md:px-8">
+        <div className="relative">
+          {/* Fotoğrafın arkasında marka renginde kağıt katmanı — hafif çevrik */}
+          <div
+            aria-hidden
+            className="absolute inset-0 -rotate-2 rounded-[2rem]"
+            style={{ background: `${ctx.brand.color}26` }}
+          />
+          <img
+            src={image}
+            alt=""
+            loading="lazy"
+            className="relative aspect-[4/5] w-full rounded-[2rem] object-cover shadow-[0_30px_60px_-30px_rgba(89,68,57,0.55)]"
+            style={{ objectPosition: ctx.brand.heroFocus ?? "50% 50%" }}
+          />
+          <div
+            className="absolute -bottom-6 left-6 rounded-2xl px-5 py-4 shadow-lg md:-right-8 md:left-auto"
+            style={{ background: s.card, border: `1px solid ${s.cardBorder}` }}
+          >
+            <p className="font-script text-lg" style={{ color: ctx.brand.color }}>{signature ?? kicker}</p>
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: ctx.brand.color }}>
+            {kicker}
+          </p>
+          <h2 className={`${ctx.font} text-3xl font-bold leading-[1.08] tracking-tightest md:text-[2.75rem]`}>{title}</h2>
+          <p className="mt-6 text-lg leading-relaxed" style={{ color: s.sub }}>
+            <span
+              className={`${ctx.font} float-left mr-3 mt-1 text-[3.25rem] font-extrabold leading-[0.8]`}
+              style={{ color: ctx.brand.color }}
+            >
+              {body.slice(0, 1)}
+            </span>
+            {body.slice(1)}
+          </p>
+          <dl className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-6">
+            {stats.map((st, idx) => (
+              <div key={st.l} className="flex items-center gap-10">
+                {idx > 0 && <span aria-hidden className="h-10 w-px" style={{ background: s.cardBorder }} />}
+                <div>
+                  <dt className={`${ctx.font} text-3xl font-extrabold leading-none tracking-tightest`}>{st.n}</dt>
+                  <dd className="mt-2 text-sm" style={{ color: s.muted }}>{st.l}</dd>
+                </div>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>
