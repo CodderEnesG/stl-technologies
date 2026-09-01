@@ -314,7 +314,7 @@ export const tr = {
     bnk: {
       tagline: "Kore ışıltısı, günlük ritüel.",
       summary: "K-beauty cilt bakımını sade ve etkili bir rutine dönüştürür.",
-      channel: "Yakında",
+      channel: "beautynetkorea.com.tr'de keşfet",
       about: {
         kicker: "BNK hakkında",
         title: "Kore cilt bakımı, sade bir rutinde.",
@@ -336,15 +336,26 @@ export const tr = {
         { title: "Kore formülleri", text: "K-beauty'nin denenmiş içerik yaklaşımı." },
         { title: "Günlük ritüel", text: "Sabah ve akşam; iki dakikada tamamlanan bakım." },
       ],
+      hero: {
+        slides: [
+          { cta: "Güneş bakımını keşfet" },
+          { cta: "Tonikleri incele" },
+        ],
+        prev: "Önceki görsel",
+        next: "Sonraki görsel",
+      },
+      circles: {
+        eyebrow: "Kategoriler",
+        title: "Rutinini nereden kuracaksın?",
+      },
       categoriesLabel: "Rutin",
-      vitrineTitle: "Rutinin adımları",
+      vitrineTitle: "Öne çıkan ürünler",
       editorial: {
         title: "Işıltı, düzenli bakımın sonucu.",
         text: "K-beauty'nin sırrı mucize değil, süreklilik. BNK rutini bu sürekliliği kolaylaştırmak için sade tutar.",
       },
       quote: { text: "Kore ışıltısı, günlük ritüel.", source: "BNK" },
       ctaTitle: "Rutinini oluştur",
-      launchNote: "BNK satış kanalları yakında duyurulacak.",
     },
   },
 
