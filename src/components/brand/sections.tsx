@@ -999,8 +999,9 @@ export function ProductSpotlight({
 }
 
 /* ---------------------------------------------------------------------------
- * Fressi'ye özel bölümler — fressihome.com'daki mağaza diliyle aynı gramer:
- * yatay banner slaytı, kategori barı, daire ürün rayı ve müşteri yorumları.
+ * Mağaza dili bölümleri — markanın kendi e-ticaret sitesindeki gramerin
+ * karşılığı: yatay banner slaytı, kategori barı, daire kategori rayı,
+ * yorum slider'ı ve marka dünyası galerisi. Fressi ve BNK ortak kullanıyor.
  * ------------------------------------------------------------------------- */
 
 /** Marka pattern'ini bölüm zeminine döşer — kılavuz gereği düşük yoğunlukta. */
@@ -1073,16 +1074,17 @@ function Stars({ value, size = 15, color }: { value: number; size?: number; colo
   );
 }
 
-export type FressiSlide = {
+export type HeroSlide = {
   image: string;
-  title: string;
+  /** Görselin üstüne binen başlık — banner metni görselde gömülüyse boş bırakılır */
+  title?: string;
   sub?: string;
   cta: string;
   href: string;
   /** Masaüstünde metin bloğunun yatay konumu */
   align?: "left" | "center";
   /** Masaüstünde metin bloğunun dikey konumu — ürünlerin üstüne düşmesin diye */
-  valign?: "top" | "center";
+  valign?: "top" | "center" | "bottom";
   /** Görselin üzerindeki metin beyaz mı */
   onDark?: boolean;
   /** Mobilde kırpma odağı */
@@ -1094,7 +1096,7 @@ export type FressiSlide = {
  * banner + üstünde marka metni. Banner'lardaki kampanya yazıları görselden
  * temizlendi; metin artık HTML katmanında, yani dil değişince o da değişiyor.
  */
-export function FressiHeroSlideshow({
+export function BrandHeroSlideshow({
   ctx,
   slides,
   pattern,
@@ -1103,7 +1105,7 @@ export function FressiHeroSlideshow({
   nextLabel,
 }: {
   ctx: BrandCtx;
-  slides: FressiSlide[];
+  slides: HeroSlide[];
   pattern?: string;
   /** Slaytın üstünde duran marka lockup'ı (ilk slayt) */
   logo?: string;
@@ -1164,7 +1166,11 @@ export function FressiHeroSlideshow({
               <div
                 key={sl.image}
                 className={`absolute inset-0 flex px-[6%] transition-opacity duration-700 ${
-                  sl.valign === "top" ? "items-start pt-[6%]" : "items-center"
+                  sl.valign === "top"
+                    ? "items-start pt-[6%]"
+                    : sl.valign === "bottom"
+                      ? "items-end pb-[7%]"
+                      : "items-center"
                 } ${sl.align === "center" ? "justify-center text-center" : "justify-start"}`}
                 style={{ opacity: idx === i ? 1 : 0, pointerEvents: idx === i ? "auto" : "none" }}
               >
@@ -1175,18 +1181,22 @@ export function FressiHeroSlideshow({
                     textShadow: sl.onDark ? "0 2px 24px rgba(0,0,0,0.35)" : undefined,
                   }}
                 >
-                  {logo && idx === 0 && (
+                  {logo && idx === 0 && sl.title && (
                     <img src={ctx.brand.logoDark} alt="" aria-hidden className="mb-6 h-9 w-auto object-contain object-left" />
                   )}
-                  <h1 className={`${ctx.font} text-3xl font-bold leading-[1.1] tracking-tightest lg:text-[2.9rem]`}>
-                    {sl.title}
-                  </h1>
+                  {sl.title && (
+                    <h1 className={`${ctx.font} text-3xl font-bold leading-[1.1] tracking-tightest lg:text-[2.9rem]`}>
+                      {sl.title}
+                    </h1>
+                  )}
                   {sl.sub && <p className="mt-3 text-base opacity-85 lg:text-lg">{sl.sub}</p>}
                   <a
                     href={sl.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-7 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5"
+                    className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5 ${
+                      sl.title || sl.sub ? "mt-7" : ""
+                    }`}
                     style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
                   >
                     {sl.cta}
@@ -1237,7 +1247,9 @@ export function FressiHeroSlideshow({
 
         {/* Mobil metin bloğu */}
         <div className="px-5 pb-10 pt-7 text-center md:hidden">
-          <h1 className={`${ctx.font} text-2xl font-bold leading-tight tracking-tightest`}>{active.title}</h1>
+          {active.title && (
+            <h1 className={`${ctx.font} text-2xl font-bold leading-tight tracking-tightest`}>{active.title}</h1>
+          )}
           {active.sub && <p className="mt-2 text-sm" style={{ color: s.sub }}>{active.sub}</p>}
           <a
             href={active.href}
@@ -1259,7 +1271,7 @@ export function FressiHeroSlideshow({
  * Kategori barı — mağazadaki üst menünün karşılığı: dört kategori, ince
  * çizgiler arasında, doğrudan fressihome.com koleksiyonlarına gider.
  */
-export function FressiCategoryBar({
+export function BrandCategoryBar({
   ctx,
   categories,
 }: {
@@ -1300,7 +1312,7 @@ export function FressiCategoryBar({
  * Daire ürün rayı — mağazadaki dairesel kategori karuselinin birebir karşılığı.
  * Kaydırmalı ray; oklar ve sayfa noktaları scroll konumundan türetiliyor.
  */
-export function FressiCircleRail({
+export function CircleRail({
   ctx,
   eyebrow,
   title,
@@ -1425,7 +1437,7 @@ export function FressiCircleRail({
  * Müşteri yorumları — fressihome.com'daki Entrfy yorum karuselinin karşılığı.
  * Veri mağazadan alınmış statik anlık görüntü (bkz. data/fressiReviews.ts).
  */
-export function FressiReviews({
+export function ReviewSlider({
   ctx,
   eyebrow,
   title,
@@ -1580,7 +1592,7 @@ export function FressiReviews({
  * sayfası kurgusu: pattern zemin, kadrajdan taşan fotoğraf, el yazısı vurgu ve
  * metnin içine giren istatistik şeridi.
  */
-export function FressiIntro({
+export function EditorialIntro({
   ctx,
   kicker,
   title,
@@ -1647,7 +1659,7 @@ export function FressiIntro({
  * ImageBand'in yerini aldı: eşit yükseklikte dört kesit yerine, ilk görselin
  * öne çıktığı ızgara.
  */
-export function FressiGallery({
+export function BrandGallery({
   ctx,
   eyebrow,
   title,

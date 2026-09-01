@@ -314,7 +314,7 @@ export const en: SiteContent = {
     bnk: {
       tagline: "Korean glow, daily ritual.",
       summary: "Turns K-beauty skincare into a simple, effective routine.",
-      channel: "Coming soon",
+      channel: "Shop at beautynetkorea.com.tr",
       about: {
         kicker: "About BNK",
         title: "Korean skincare, in a simple routine.",
@@ -336,15 +336,26 @@ export const en: SiteContent = {
         { title: "Korean formulas", text: "K-beauty's proven approach to ingredients." },
         { title: "Daily ritual", text: "Morning and evening; care completed in two minutes." },
       ],
+      hero: {
+        slides: [
+          { cta: "Explore sun care" },
+          { cta: "See the toners" },
+        ],
+        prev: "Previous slide",
+        next: "Next slide",
+      },
+      circles: {
+        eyebrow: "Categories",
+        title: "Where does your routine start?",
+      },
       categoriesLabel: "Routine",
-      vitrineTitle: "Steps of the routine",
+      vitrineTitle: "Featured products",
       editorial: {
         title: "Glow is the result of consistent care.",
         text: "The secret of K-beauty isn't a miracle, it's consistency. BNK keeps the routine simple to make that consistency easy.",
       },
       quote: { text: "Korean glow, daily ritual.", source: "BNK" },
       ctaTitle: "Build your routine",
-      launchNote: "BNK sales channels will be announced soon.",
     },
   },
 

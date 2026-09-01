@@ -5,12 +5,12 @@ import { usePageMeta } from "../hooks/usePageMeta";
 import {
   BrandCTA,
   Editorial,
-  FressiCategoryBar,
-  FressiCircleRail,
-  FressiGallery,
-  FressiHeroSlideshow,
-  FressiIntro,
-  FressiReviews,
+  BrandCategoryBar,
+  CircleRail,
+  BrandGallery,
+  BrandHeroSlideshow,
+  EditorialIntro,
+  ReviewSlider,
   ProductVitrine,
   BrandShell,
   type BrandCtx,
@@ -28,7 +28,7 @@ export default function Fressi() {
 
   return (
     <BrandShell ctx={ctx}>
-      <FressiHeroSlideshow
+      <BrandHeroSlideshow
         ctx={ctx}
         pattern={PATTERN}
         logo={ctx.brand.logoDark}
@@ -57,8 +57,8 @@ export default function Fressi() {
           },
         ]}
       />
-      <FressiCategoryBar ctx={ctx} categories={fressiCategories} />
-      <FressiIntro
+      <BrandCategoryBar ctx={ctx} categories={fressiCategories} />
+      <EditorialIntro
         ctx={ctx}
         kicker={c.about.kicker}
         title={c.about.title}
@@ -67,7 +67,7 @@ export default function Fressi() {
         image="/images/fressi/life-cay-keyfi.webp"
         pattern={PATTERN}
       />
-      <FressiCircleRail
+      <CircleRail
         ctx={ctx}
         eyebrow={c.circles.eyebrow}
         title={c.circles.title}
@@ -84,7 +84,7 @@ export default function Fressi() {
         title={c.editorial.title}
         text={c.editorial.text}
       />
-      <FressiReviews
+      <ReviewSlider
         ctx={ctx}
         eyebrow={c.reviews.eyebrow}
         title={c.reviews.title}
@@ -97,7 +97,7 @@ export default function Fressi() {
         prevLabel={c.hero.prev}
         nextLabel={c.hero.next}
       />
-      <FressiGallery
+      <BrandGallery
         ctx={ctx}
         eyebrow={c.gallery.eyebrow}
         title={c.gallery.title}
