@@ -206,6 +206,34 @@ export const en: SiteContent = {
         { title: "Colors that suit your home", text: "Cream, green and navy tones; a palette that speaks together." },
         { title: "Benefit-focused", text: "Not a pile of specs; concrete value for daily life." },
       ],
+      hero: {
+        slides: [
+          {
+            title: "Technology that feels good at home.",
+            sub: "Retro lines, everyday practicality.",
+            cta: "Explore Fressi products",
+          },
+          {
+            title: "You're the head chef in your kitchen.",
+            sub: "Get it perfectly right the first time.",
+            cta: "See the products",
+          },
+        ],
+        prev: "Previous slide",
+        next: "Next slide",
+      },
+      aboutSignature: "the elegance of the past",
+      circles: {
+        eyebrow: "Product world",
+        title: "What are we making today?",
+      },
+      reviews: {
+        eyebrow: "Customer reviews",
+        title: "What Fressi owners say",
+        count: (n: number) => `${n} reviews`,
+        verified: "Verified purchase",
+        all: "Read all reviews on fressihome.com",
+      },
       categoriesLabel: "What are you looking for?",
       vitrineTitle: "Highlights",
       editorial: {
