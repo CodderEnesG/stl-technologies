@@ -642,12 +642,33 @@ export function ManufacturingStory({
   );
 }
 
-export function Editorial({ ctx, image, title, text, blend }: { ctx: BrandCtx; image: string; title: string; text: string; blend?: boolean }) {
+export function Editorial({
+  ctx,
+  image,
+  title,
+  text,
+  blend,
+  ratio,
+}: {
+  ctx: BrandCtx;
+  image: string;
+  title: string;
+  text: string;
+  blend?: boolean;
+  /**
+   * Görsel oranı (tailwind aspect sınıfı). Verilmezse masaüstünde görsel
+   * metin sütununun boyuna uzar — kısa metinlerde fotoğrafı kırpar.
+   */
+  ratio?: string;
+}) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   return (
     <section className="mx-auto grid max-w-[1400px] items-stretch gap-6 px-5 pb-24 md:grid-cols-2 md:px-8">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl md:aspect-auto" style={{ background: blend ? "#ffffff" : "rgba(127,127,127,0.08)" }}>
+      <div
+        className={`relative overflow-hidden rounded-2xl ${ratio ?? "aspect-[4/3] md:aspect-auto"}`}
+        style={{ background: blend ? "#ffffff" : "rgba(127,127,127,0.08)" }}
+      >
         <img
           src={resolveImg(image, 1000, 800)}
           alt={title}
