@@ -80,6 +80,7 @@ export default function Fressi() {
       <Editorial
         ctx={ctx}
         image="/images/fressi/life-tezgah-renkli.webp"
+        ratio="aspect-[3/2]"
         title={c.editorial.title}
         text={c.editorial.text}
       />
