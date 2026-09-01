@@ -222,7 +222,10 @@ export const en: SiteContent = {
         prev: "Previous slide",
         next: "Next slide",
       },
-      aboutSignature: "the elegance of the past",
+      gallery: {
+        eyebrow: "Brand world",
+        title: "Fressi at home",
+      },
       circles: {
         eyebrow: "Product world",
         title: "What are we making today?",
