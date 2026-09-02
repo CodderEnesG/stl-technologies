@@ -341,6 +341,11 @@ export const en: SiteContent = {
           { cta: "Explore sun care" },
           { cta: "See the toners" },
         ],
+        editorialHero: {
+          title: "Korean glow, a daily ritual.",
+          sub: "Not a crowded shelf — products with a clear job: cleanse, balance, feed, protect.",
+          cta: "Explore the routine",
+        },
         prev: "Previous slide",
         next: "Next slide",
       },
