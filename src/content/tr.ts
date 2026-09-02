@@ -321,9 +321,9 @@ export const tr = {
         body: "BNK — Beauty Net Korea — Kore kozmetiğinin özenli formül yaklaşımını Türkiye'ye taşır. Kalabalık raflar yerine az sayıda, işlevi net ürün: temizle, nemlendir, koru.",
       },
       stats: [
-        { n: "K-beauty", l: "Menşei Kore" },
-        { n: "3", l: "Adımlı rutin" },
-        { n: "2026", l: "Türkiye lansmanı" },
+        { n: "70+", l: "Ürün" },
+        { n: "3", l: "Kore markası" },
+        { n: "12", l: "Kategori" },
       ],
       specBand: [
         { k: "Yaklaşım", v: "Kore cilt bakımı" },
@@ -344,14 +344,47 @@ export const tr = {
         prev: "Önceki görsel",
         next: "Sonraki görsel",
       },
-      gallery: {
-        eyebrow: "Ürün dünyası",
-        title: "Rafın hâli",
+      routine: {
+        eyebrow: "Kore rutini",
+        title: "Rutinin olmazsa olmaz adımları",
+        description: "Kore cilt bakımının mantığı sırayla ilerlemek: önce temizle, sonra dengele, sonra besle, en son koru.",
+        steps: [
+          { n: "01", label: "Temizle", text: "Gün içinde biriken kir ve fazla sebumu, cildi kurutmadan alır." },
+          { n: "02", label: "Dengele", text: "Tonik pH'ı dengeler; sonraki adımların emilimini kolaylaştırır." },
+          { n: "03", label: "Besle", text: "Serum ve nemlendirici, cildin ihtiyacı olan nemi ve etken maddeyi verir." },
+          { n: "04", label: "Koru", text: "Güneş kremi olmadan rutin tamamlanmaz; sabah adımlarının sonuncusu." },
+        ],
       },
-      circles: {
-        eyebrow: "Kategoriler",
-        title: "Rutinini nereden kuracaksın?",
+      bestSellers: {
+        eyebrow: "Mağazadan",
+        title: "En çok satanlar",
       },
+      blog: {
+        eyebrow: "Cilt günlüğü",
+        title: "Kore rutininin püf noktaları",
+        soon: "Yakında",
+        posts: [
+          {
+            kicker: "Temel bilgi",
+            title: "Kore rutini neden sırayla uygulanır?",
+            excerpt: "İnce dokudan yoğun dokuya doğru ilerlemek, her ürünün cilde işlemesi için gereken sırayı kurar.",
+            readingTime: "4 dk",
+          },
+          {
+            kicker: "Güneş bakımı",
+            title: "SPF'yi doğru miktarda sürmenin püf noktası",
+            excerpt: "Etiketteki koruma değeri, ancak yeterli miktarda ve düzenli tazelemeyle gerçeğe dönüşür.",
+            readingTime: "3 dk",
+          },
+          {
+            kicker: "Cilt tipi",
+            title: "Karma ciltte nemlendirici seçimi",
+            excerpt: "T bölgesi parlarken yanaklar kuruyorsa sorun ürünün ağırlığında olabilir; hafif katmanlar işe yarar.",
+            readingTime: "5 dk",
+          },
+        ],
+      },
+      allProducts: "Tüm ürünler",
       categoriesLabel: "Rutin",
       vitrineTitle: "Öne çıkan ürünler",
       editorial: {

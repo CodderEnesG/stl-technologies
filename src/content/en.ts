@@ -321,9 +321,9 @@ export const en: SiteContent = {
         body: "BNK — Beauty Net Korea — brings the careful formulation approach of Korean cosmetics to Türkiye. Instead of crowded shelves, a small set of products with a clear purpose: cleanse, moisturize, protect.",
       },
       stats: [
-        { n: "K-beauty", l: "Origin: Korea" },
-        { n: "3", l: "Step routine" },
-        { n: "2026", l: "Türkiye launch" },
+        { n: "70+", l: "Products" },
+        { n: "3", l: "Korean brands" },
+        { n: "12", l: "Categories" },
       ],
       specBand: [
         { k: "Approach", v: "Korean skincare" },
@@ -344,14 +344,47 @@ export const en: SiteContent = {
         prev: "Previous slide",
         next: "Next slide",
       },
-      gallery: {
-        eyebrow: "Product world",
-        title: "What's on the shelf",
+      routine: {
+        eyebrow: "The Korean routine",
+        title: "The steps a routine can't skip",
+        description: "Korean skincare works in order: cleanse first, then balance, then feed, and protect last.",
+        steps: [
+          { n: "01", label: "Cleanse", text: "Lifts the day's dirt and excess sebum without stripping the skin." },
+          { n: "02", label: "Balance", text: "Toner rebalances pH so the following steps absorb properly." },
+          { n: "03", label: "Feed", text: "Serum and moisturiser deliver the actives and hydration skin needs." },
+          { n: "04", label: "Protect", text: "No routine is complete without SPF — the last morning step." },
+        ],
       },
-      circles: {
-        eyebrow: "Categories",
-        title: "Where does your routine start?",
+      bestSellers: {
+        eyebrow: "From the store",
+        title: "Best sellers",
       },
+      blog: {
+        eyebrow: "Skin journal",
+        title: "Tips from the Korean routine",
+        soon: "Coming soon",
+        posts: [
+          {
+            kicker: "Basics",
+            title: "Why the Korean routine follows an order",
+            excerpt: "Going from thin to rich textures gives every product the sequence it needs to work.",
+            readingTime: "4 min",
+          },
+          {
+            kicker: "Sun care",
+            title: "Applying the right amount of SPF",
+            excerpt: "The number on the label only becomes real with enough product and regular reapplication.",
+            readingTime: "3 min",
+          },
+          {
+            kicker: "Skin type",
+            title: "Choosing a moisturiser for combination skin",
+            excerpt: "If the T-zone shines while cheeks stay dry, the weight of the product is usually the problem.",
+            readingTime: "5 min",
+          },
+        ],
+      },
+      allProducts: "All products",
       categoriesLabel: "Routine",
       vitrineTitle: "Featured products",
       editorial: {

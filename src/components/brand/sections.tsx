@@ -1274,37 +1274,100 @@ export function BrandHeroSlideshow({
 export function BrandCategoryBar({
   ctx,
   categories,
+  allLabel,
 }: {
   ctx: BrandCtx;
-  categories: { key: string; label: string; color: string; href: string; icon?: IconName }[];
+  categories: {
+    key: string;
+    label: string;
+    color: string;
+    href: string;
+    icon?: IconName;
+    /** Hover panelindeki alt kırılımlar — verilmezse panel açılmaz */
+    sub?: { label: string; href: string }[];
+    /** Hover panelinin sağındaki kadraj */
+    image?: string;
+  }[];
+  /** Hover panelindeki "tüm ürünler" butonu */
+  allLabel?: string;
 }) {
   const s = toneStyles[ctx.tone];
+  const [open, setOpen] = useState<string | null>(null);
+  const active = categories.find((c) => c.key === open && c.sub?.length);
+
   return (
-    <nav
-      className="relative border-y"
-      style={{ borderColor: s.cardBorder, background: s.card }}
-      aria-label={ctx.brand.name}
-    >
-      <div className="mx-auto flex max-w-[1400px] overflow-x-auto px-2 md:px-8">
-        {categories.map((c) => (
-          <a
-            key={c.key}
-            href={c.href}
-            target="_blank"
-            rel="noreferrer"
-            className="group relative flex flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap px-6 py-4 text-sm font-semibold transition-colors"
-            style={{ color: s.fg }}
-          >
-            {c.icon && <Icon name={c.icon} size={17} strokeWidth={ctx.iconWeight ?? 1.7} style={{ color: c.color }} />}
-            {c.label}
-            <span
-              className="absolute inset-x-4 bottom-0 h-[2px] origin-center scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100"
-              style={{ background: c.color }}
-            />
-          </a>
-        ))}
-      </div>
-    </nav>
+    <div className="relative" onMouseLeave={() => setOpen(null)}>
+      <nav className="relative border-y" style={{ borderColor: s.cardBorder, background: s.card }} aria-label={ctx.brand.name}>
+        <div className="mx-auto flex max-w-[1400px] overflow-x-auto px-2 md:px-8">
+          {categories.map((c) => (
+            <a
+              key={c.key}
+              href={c.href}
+              target="_blank"
+              rel="noreferrer"
+              onMouseEnter={() => setOpen(c.key)}
+              onFocus={() => setOpen(c.key)}
+              className="group relative flex flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap px-6 py-4 text-sm font-semibold transition-colors"
+              style={{ color: s.fg }}
+            >
+              {c.icon && <Icon name={c.icon} size={17} strokeWidth={ctx.iconWeight ?? 1.7} style={{ color: c.color }} />}
+              {c.label}
+              <span
+                className="absolute inset-x-4 bottom-0 h-[2px] origin-center rounded-full transition-transform duration-300"
+                style={{ background: c.color, transform: open === c.key ? "scaleX(1)" : "scaleX(0)" }}
+              />
+            </a>
+          ))}
+        </div>
+      </nav>
+
+      {/* Hover paneli — alt kırılımlar ve kategori kadrajı */}
+      {active && (
+        <div
+          className="absolute inset-x-0 top-full z-30 hidden border-b shadow-[0_24px_40px_-28px_rgba(0,0,0,0.35)] md:block"
+          style={{ background: s.card, borderColor: s.cardBorder }}
+        >
+          <div className="mx-auto grid max-w-[1400px] grid-cols-[1.1fr_0.9fr] gap-10 px-8 py-8">
+            <div>
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: active.color }}>
+                {active.label}
+              </p>
+              <ul className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+                {active.sub?.map((x) => (
+                  <li key={x.label}>
+                    <a
+                      href={x.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-block py-1 text-[15px] transition-colors hover:underline"
+                      style={{ color: s.sub }}
+                    >
+                      {x.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {active.image && (
+              <div className="relative overflow-hidden rounded-2xl">
+                <img src={active.image} alt="" aria-hidden className="aspect-[16/10] w-full object-cover" />
+                {allLabel && (
+                  <a
+                    href={active.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full px-5 py-2 text-xs font-semibold"
+                    style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
+                  >
+                    {allLabel}
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -1697,6 +1760,305 @@ export function BrandGallery({
             </figure>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Yüz üzerinde rutin adımları — model portresi, adımların çıktığı noktalardan
+ * konturlu daire içinde ürün. Fare noktaya gelince ürün öne çıkar; dokunmatikte
+ * hepsi görünür durur.
+ *
+ * Not: model görseli mağazadan alınan geçici bir kadraj. Göz kırpma / fareyi
+ * takip eden bakış için gözlerin ayrı katman olduğu bir çekim gerekiyor.
+ */
+export function RoutineFace({
+  ctx,
+  eyebrow,
+  title,
+  description,
+  image,
+  steps,
+}: {
+  ctx: BrandCtx;
+  eyebrow: string;
+  title: string;
+  description?: string;
+  image: string;
+  /** x/y yüzde: noktanın yüz üzerindeki yeri; dx/dy: dairenin noktadan sapması */
+  steps: {
+    n: string;
+    label: string;
+    text: string;
+    product: string;
+    x: number;
+    y: number;
+    dx: number;
+    dy: number;
+    href: string;
+  }[];
+}) {
+  const s = toneStyles[ctx.tone];
+  const [active, setActive] = useState<number | null>(null);
+
+  return (
+    <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
+      <SectionHeader
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+        eyebrowColor={ctx.brand.color}
+        titleFont={ctx.font}
+        align="center"
+        className="mb-12"
+      />
+
+      <div className="relative mx-auto aspect-[4/5] w-full max-w-[560px] md:max-w-[620px]">
+        <img src={image} alt="" aria-hidden className="size-full rounded-[2rem] object-cover" />
+
+        {/* Noktalardan dairelere giden ince çizgiler */}
+        <svg aria-hidden className="pointer-events-none absolute inset-0 size-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          {steps.map((st, i) => (
+            <line
+              key={st.label}
+              x1={st.x}
+              y1={st.y}
+              x2={st.x + st.dx}
+              y2={st.y + st.dy}
+              stroke={ctx.brand.color}
+              strokeWidth={active === null || active === i ? 1.6 : 1}
+              strokeDasharray="5 5"
+              opacity={active === null || active === i ? 0.9 : 0.35}
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
+        </svg>
+
+        {steps.map((st, i) => (
+          <div key={st.label}>
+            {/* Yüz üzerindeki nokta */}
+            <span
+              aria-hidden
+              className="absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full ring-4"
+              style={{
+                left: `${st.x}%`,
+                top: `${st.y}%`,
+                background: ctx.brand.color,
+                // @ts-expect-error CSS değişkeni yerine doğrudan ring rengi
+                "--tw-ring-color": `${ctx.brand.color}33`,
+              }}
+            />
+            {/* Ürün dairesi */}
+            <a
+              href={st.href}
+              target="_blank"
+              rel="noreferrer"
+              onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive(null)}
+              onFocus={() => setActive(i)}
+              onBlur={() => setActive(null)}
+              className="group absolute -translate-x-1/2 -translate-y-1/2"
+              style={{ left: `${st.x + st.dx}%`, top: `${st.y + st.dy}%` }}
+            >
+              <span
+                className="grid size-20 place-items-center rounded-full border-2 bg-white/90 backdrop-blur transition-transform duration-300 group-hover:scale-105 md:size-24"
+                style={{ borderColor: ctx.brand.color }}
+              >
+                <img src={st.product} alt={st.label} loading="lazy" className="size-[86%] rounded-full object-cover" />
+              </span>
+              <span
+                className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[10px] font-bold"
+                style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
+              >
+                {st.n}
+              </span>
+            </a>
+          </div>
+        ))}
+      </div>
+
+      {/* Adım açıklamaları — mobilde tek okunur liste, masaüstünde şerit */}
+      <ol className="mx-auto mt-14 grid max-w-[1100px] gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {steps.map((st, i) => (
+          <li
+            key={st.label}
+            onMouseEnter={() => setActive(i)}
+            onMouseLeave={() => setActive(null)}
+            className="rounded-2xl border p-5 transition-transform duration-300 hover:-translate-y-1"
+            style={{
+              background: s.card,
+              borderColor: active === i ? ctx.brand.color : s.cardBorder,
+            }}
+          >
+            <span className={`${ctx.font} text-2xl font-extrabold`} style={{ color: ctx.brand.color }}>{st.n}</span>
+            <h3 className="mt-2 font-semibold">{st.label}</h3>
+            <p className="mt-1 text-sm leading-relaxed" style={{ color: s.sub }}>{st.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+/** Ürün rayı — kaydırmalı "en çok satanlar" şeridi; kart görselleri sade kadraj. */
+export function ProductRail({
+  ctx,
+  eyebrow,
+  title,
+  products,
+  prevLabel,
+  nextLabel,
+}: {
+  ctx: BrandCtx;
+  eyebrow?: string;
+  title: string;
+  products: Product[];
+  prevLabel: string;
+  nextLabel: string;
+}) {
+  const s = toneStyles[ctx.tone];
+  const rail = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState(0);
+  const [pages, setPages] = useState(1);
+
+  const sync = () => {
+    const el = rail.current;
+    if (!el) return;
+    setPages(Math.max(1, Math.ceil(el.scrollWidth / el.clientWidth)));
+    setPage(Math.round(el.scrollLeft / el.clientWidth));
+  };
+  useEffect(() => {
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, []);
+  const scrollTo = (p: number) => rail.current?.scrollTo({ left: p * rail.current.clientWidth, behavior: "smooth" });
+
+  return (
+    <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
+      <div className="mb-10 flex items-end justify-between gap-6">
+        <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} />
+        {pages > 1 && (
+          <div className="hidden shrink-0 gap-2 md:flex">
+            <button
+              type="button"
+              aria-label={prevLabel}
+              onClick={() => scrollTo(Math.max(0, page - 1))}
+              className="grid size-10 place-items-center rounded-full border transition hover:-translate-y-0.5"
+              style={{ borderColor: s.cardBorder, color: s.fg }}
+            >
+              <Chevron dir="left" />
+            </button>
+            <button
+              type="button"
+              aria-label={nextLabel}
+              onClick={() => scrollTo(Math.min(pages - 1, page + 1))}
+              className="grid size-10 place-items-center rounded-full border transition hover:-translate-y-0.5"
+              style={{ borderColor: s.cardBorder, color: s.fg }}
+            >
+              <Chevron dir="right" />
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div ref={rail} onScroll={sync} className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2">
+        {products.map((p) => (
+          <a
+            key={p.name}
+            href={p.href}
+            target="_blank"
+            rel="noreferrer"
+            className="group w-[72%] shrink-0 snap-start sm:w-[46%] lg:w-[30%] xl:w-[23%]"
+          >
+            <div className="overflow-hidden rounded-2xl" style={{ background: "#ffffff" }}>
+              <img
+                src={p.image}
+                alt={p.name}
+                loading="lazy"
+                className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+            </div>
+            <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: ctx.brand.color }}>
+              {p.category}
+            </p>
+            <h3 className="mt-1 font-semibold leading-snug">{p.name}</h3>
+          </a>
+        ))}
+      </div>
+
+      {pages > 1 && (
+        <div className="mt-8 flex justify-center gap-2">
+          {Array.from({ length: pages }).map((_, p) => (
+            <button
+              key={p}
+              type="button"
+              aria-label={`${p + 1}`}
+              aria-current={p === page}
+              onClick={() => scrollTo(p)}
+              className="h-2 rounded-full transition-all duration-300"
+              style={{ width: p === page ? 22 : 8, background: p === page ? ctx.brand.color : `${ctx.brand.color}33` }}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+/** Blog kartları — yazı henüz yayında değilse href boş bırakılır, kart pasif olur. */
+export function BlogTeasers({
+  ctx,
+  eyebrow,
+  title,
+  posts,
+  soonLabel,
+}: {
+  ctx: BrandCtx;
+  eyebrow: string;
+  title: string;
+  posts: { image: string; kicker: string; title: string; excerpt: string; href?: string; readingTime: string }[];
+  /** href yoksa kartta gösterilen etiket */
+  soonLabel: string;
+}) {
+  const s = toneStyles[ctx.tone];
+  return (
+    <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
+      <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} className="mb-10" />
+      <div className="grid gap-6 md:grid-cols-3">
+        {posts.map((post) => {
+          const inner = (
+            <>
+              <div className="overflow-hidden rounded-2xl">
+                <img
+                  src={post.image}
+                  alt=""
+                  loading="lazy"
+                  className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                />
+              </div>
+              <p className="mt-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: ctx.brand.color }}>
+                {post.kicker}
+                <span style={{ color: s.muted }}>{post.readingTime}</span>
+              </p>
+              <h3 className={`${ctx.font} mt-2 text-xl font-bold leading-snug`}>{post.title}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed" style={{ color: s.sub }}>{post.excerpt}</p>
+              {!post.href && (
+                <span className="mt-4 inline-block rounded-full px-3 py-1 text-[11px] font-semibold" style={{ background: `${ctx.brand.color}1a`, color: ctx.brand.color }}>
+                  {soonLabel}
+                </span>
+              )}
+            </>
+          );
+          return post.href ? (
+            <a key={post.title} href={post.href} target="_blank" rel="noreferrer" className="group block">
+              {inner}
+            </a>
+          ) : (
+            <article key={post.title} className="group">{inner}</article>
+          );
+        })}
       </div>
     </section>
   );
