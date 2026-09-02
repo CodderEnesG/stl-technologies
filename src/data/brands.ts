@@ -289,76 +289,122 @@ export const wextaProducts: Product[] = [
   },
 ];
 
-/** beautynetkorea.com.tr mağazasından seçilen gerçek ürünler */
+/**
+ * beautynetkorea.com.tr'den seçilen ürünler. Görseller mağazanın sade
+ * kadrajlarından: tek renk zemin veya beyaz fon, ürün ortada.
+ */
 export const bnkProducts: Product[] = [
-  {
-    name: "TENZERO Hyaluronik Asit Ampul Serum",
-    category: "Serum",
-    image: "/images/bnk/product-serum-hyaluronik.webp",
-    href: "https://beautynetkorea.com.tr/collections/cilt-serumu",
-  },
-  {
-    name: "FOODAHOLIC Premium Sun SPF50+",
-    category: "Güneş Kremi",
-    image: "/images/bnk/product-gunes-premium.webp",
-    href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi",
-  },
   {
     name: "TENZERO Perfect Cover BB Krem",
     category: "BB & CC Krem",
-    image: "/images/bnk/product-bb-perfect-cover.webp",
+    image: "/images/bnk/bb-sade.webp",
     href: "https://beautynetkorea.com.tr/collections/bb-cc-krem",
   },
   {
-    name: "FOODAHOLIC Aloe Vera Yatıştırıcı Jel Krem",
-    category: "Yüz Kremi",
-    image: "/images/bnk/product-krem-aloe.webp",
-    href: "https://beautynetkorea.com.tr/collections/yuz-kremi",
-  },
-  {
-    name: "FOODAHOLIC 24K Altın Özlü Göz Kremi",
+    name: "TENZERO Snail Göz Serumu",
     category: "Göz Bakımı",
-    image: "/images/bnk/product-goz-24k.webp",
-    href: "https://beautynetkorea.com.tr/collections/goz-kremi",
+    image: "/images/bnk/circle-goz-cevresi.webp",
+    href: "https://beautynetkorea.com.tr/collections/goz-serumu",
   },
   {
-    name: "FOODAHOLIC 3D Kağıt Maske 8'li",
-    category: "Yüz Maskesi",
-    image: "/images/bnk/product-maske-3d.webp",
-    href: "https://beautynetkorea.com.tr/collections/yuz-maskesi",
+    name: "TENZERO Collagen Tonik",
+    category: "Tonik",
+    image: "/images/bnk/circle-tonik.webp",
+    href: "https://beautynetkorea.com.tr/collections/tonik",
   },
   {
-    name: "FOODAHOLIC Pirinç Özlü Aydınlatıcı Temizleyici",
+    name: "TENZERO Hyaluronik Ampul Serum",
+    category: "Serum & Ampul",
+    image: "/images/bnk/circle-serum.webp",
+    href: "https://beautynetkorea.com.tr/collections/cilt-serumu",
+  },
+  {
+    name: "FOODAHOLIC Multi Sun Cream SPF50+",
+    category: "Güneş Kremi",
+    image: "/images/bnk/circle-gunes-kremi.webp",
+    href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi",
+  },
+  {
+    name: "DR. MELOSO Yuja C Peeling Jel",
     category: "Temizleyici",
-    image: "/images/bnk/product-temizleyici-pirinc.webp",
+    image: "/images/bnk/circle-temizleyici.webp",
     href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler",
   },
   {
-    name: "FOODAHOLIC Kolajen El ve Vücut Kremi",
-    category: "El Kremi",
-    image: "/images/bnk/product-el-kremi-kolajen.webp",
-    href: "https://beautynetkorea.com.tr/collections/el-kremi",
+    name: "Ceramide Royal Jelly Yüz Kremi",
+    category: "Nemlendirici",
+    image: "/images/bnk/circle-nemlendirici.webp",
+    href: "https://beautynetkorea.com.tr/collections/yuz-kremi",
+  },
+  {
+    name: "FOODAHOLIC 3D Kore Maskesi 8'li",
+    category: "Yüz Maskesi",
+    image: "/images/bnk/circle-kagit-maske.webp",
+    href: "https://beautynetkorea.com.tr/collections/yuz-maskesi",
   },
 ];
 
-/** Mağazanın anasayfasındaki "Kategorileri Keşfet" daireleri */
-export const bnkCircles = [
-  { label: "Güneş Kremi", image: "/images/bnk/circle-gunes-kremi.webp", href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi" },
-  { label: "Nemlendirici", image: "/images/bnk/circle-nemlendirici.webp", href: "https://beautynetkorea.com.tr/collections/yuz-kremi" },
-  { label: "Temizleyici", image: "/images/bnk/circle-temizleyici.webp", href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler" },
-  { label: "Tonik", image: "/images/bnk/circle-tonik.webp", href: "https://beautynetkorea.com.tr/collections/tonik" },
-  { label: "Serum", image: "/images/bnk/circle-serum.webp", href: "https://beautynetkorea.com.tr/collections/cilt-serumu" },
-  { label: "Kağıt Maske", image: "/images/bnk/circle-kagit-maske.webp", href: "https://beautynetkorea.com.tr/collections/yuz-maskesi" },
-  { label: "BB Krem", image: "/images/bnk/circle-bb-krem.webp", href: "https://beautynetkorea.com.tr/collections/bb-cc-krem" },
-  { label: "Göz Çevresi", image: "/images/bnk/circle-goz-cevresi.webp", href: "https://beautynetkorea.com.tr/collections/goz-serumu" },
-];
 
-/** Marka sayfasındaki kategori barı — mağaza menüsünün kısaltılmışı */
+/**
+ * Marka sayfasındaki kategori barı — mağaza menüsünün kısaltılmışı.
+ * `sub` alanı bardaki hover panelini besliyor.
+ */
 export const bnkCategories = [
-  { key: "sun", label: "Güneş Kremi", color: "#ed1651", icon: "sun-moon" as const, href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi" },
-  { key: "serum", label: "Serum & Ampul", color: "#ed1651", icon: "droplet" as const, href: "https://beautynetkorea.com.tr/collections/cilt-serumu" },
-  { key: "cream", label: "Yüz Kremi", color: "#ed1651", icon: "sparkles" as const, href: "https://beautynetkorea.com.tr/collections/yuz-kremi" },
-  { key: "cleanser", label: "Temizleyici", color: "#ed1651", icon: "flask-conical" as const, href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler" },
+  {
+    key: "sun",
+    label: "Güneş Bakımı",
+    color: "#ed1651",
+    icon: "sun-moon" as const,
+    href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi",
+    image: "/images/bnk/circle-gunes-kremi.webp",
+    sub: [
+      { label: "Yüz Güneş Kremleri", href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi" },
+      { label: "Vücut Güneş Kremleri", href: "https://beautynetkorea.com.tr/collections/vucut-gunes-kremi" },
+      { label: "BB & CC Krem", href: "https://beautynetkorea.com.tr/collections/bb-cc-krem" },
+      { label: "Tüm Ürünler", href: "https://beautynetkorea.com.tr/collections/all" },
+    ],
+  },
+  {
+    key: "serum",
+    label: "Serum & Ampul",
+    color: "#ed1651",
+    icon: "droplet" as const,
+    href: "https://beautynetkorea.com.tr/collections/cilt-serumu",
+    image: "/images/bnk/circle-serum.webp",
+    sub: [
+      { label: "Serum & Ampul", href: "https://beautynetkorea.com.tr/collections/cilt-serumu" },
+      { label: "Göz Serumu", href: "https://beautynetkorea.com.tr/collections/goz-serumu" },
+      { label: "Göz Kremi", href: "https://beautynetkorea.com.tr/collections/goz-kremi" },
+      { label: "Göz Maskesi", href: "https://beautynetkorea.com.tr/collections/goz-maskesi" },
+    ],
+  },
+  {
+    key: "cream",
+    label: "Nemlendirici",
+    color: "#ed1651",
+    icon: "sparkles" as const,
+    href: "https://beautynetkorea.com.tr/collections/yuz-kremi",
+    image: "/images/bnk/circle-nemlendirici.webp",
+    sub: [
+      { label: "Yüz Kremi", href: "https://beautynetkorea.com.tr/collections/yuz-kremi" },
+      { label: "El Kremi", href: "https://beautynetkorea.com.tr/collections/el-kremi" },
+      { label: "Yüz Maskesi", href: "https://beautynetkorea.com.tr/collections/yuz-maskesi" },
+      { label: "Vücut Spreyleri", href: "https://beautynetkorea.com.tr/collections/vucut-spreyleri" },
+    ],
+  },
+  {
+    key: "cleanser",
+    label: "Temizlik",
+    color: "#ed1651",
+    icon: "flask-conical" as const,
+    href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler",
+    image: "/images/bnk/circle-temizleyici.webp",
+    sub: [
+      { label: "Temizleyici", href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler" },
+      { label: "Tonik", href: "https://beautynetkorea.com.tr/collections/tonik" },
+      { label: "Peeling", href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler" },
+    ],
+  },
 ];
 
 // Fressi kategori renk sistemi (marka kılavuzu)
