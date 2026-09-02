@@ -1,11 +1,11 @@
 import { bnkCategories, bnkProducts, getBrand } from "../data/brands";
 import { useI18n } from "../i18n";
 import { usePageMeta } from "../hooks/usePageMeta";
+import { BnkHero } from "../components/brand/bnkHero";
 import {
   BlogTeasers,
   BrandCTA,
   BrandCategoryBar,
-  BrandHeroSlideshow,
   BrandIntro,
   BrandShell,
   Editorial,
@@ -30,10 +30,17 @@ export default function BNK() {
   return (
     <BrandShell ctx={ctx}>
       {/* Banner metinleri görselin içinde geldiği için üstüne başlık binmiyor */}
-      <BrandHeroSlideshow
+      <BnkHero
         ctx={ctx}
         prevLabel={c.hero.prev}
         nextLabel={c.hero.next}
+        editorial={{
+          image: "/images/bnk/model-routine.webp",
+          title: c.hero.editorialHero.title,
+          sub: c.hero.editorialHero.sub,
+          cta: c.hero.editorialHero.cta,
+          href: `${STORE}all`,
+        }}
         slides={[
           {
             image: "/images/bnk/hero-banner-1.webp",

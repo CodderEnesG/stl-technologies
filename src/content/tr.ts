@@ -341,6 +341,11 @@ export const tr = {
           { cta: "Güneş bakımını keşfet" },
           { cta: "Tonikleri incele" },
         ],
+        editorialHero: {
+          title: "Kore ışıltısı, günlük ritüel.",
+          sub: "Kalabalık raflar yerine işlevi net ürünler: temizle, dengele, besle, koru.",
+          cta: "Rutini keşfet",
+        },
         prev: "Önceki görsel",
         next: "Sonraki görsel",
       },
