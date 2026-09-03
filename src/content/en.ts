@@ -363,7 +363,14 @@ export const en: SiteContent = {
       bestSellers: {
         eyebrow: "From the store",
         title: "Best sellers",
+        badges: { best: "Best seller", new: "New" },
+        view: "View in store",
       },
+      barLinks: [
+        { label: "Best Sellers", href: "#en-cok-satanlar" },
+        { label: "Routine", href: "#rutin" },
+        { label: "Blog", href: "#blog" },
+      ],
       blog: {
         eyebrow: "Skin journal",
         title: "Tips from the Korean routine",

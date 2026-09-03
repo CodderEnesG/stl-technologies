@@ -12,7 +12,6 @@ import {
   ProductRail,
   PullQuote,
   RoutineFace,
-  SpecBand,
   type BrandCtx,
 } from "../components/brand/sections";
 
@@ -58,7 +57,7 @@ export default function BNK() {
           },
         ]}
       />
-      <BrandCategoryBar ctx={ctx} categories={bnkCategories} allLabel={c.allProducts} />
+      <BrandCategoryBar ctx={ctx} categories={bnkCategories} allLabel={c.allProducts} links={c.barLinks} />
       <BrandIntro
         ctx={ctx}
         mark="/logos/bnk-dark.svg"
@@ -69,6 +68,7 @@ export default function BNK() {
       />
       <RoutineFace
         ctx={ctx}
+        id="rutin"
         eyebrow={c.routine.eyebrow}
         title={c.routine.title}
         description={c.routine.description}
@@ -112,31 +112,35 @@ export default function BNK() {
           },
         ]}
       />
-      <SpecBand ctx={ctx} specs={c.specBand} icons={["sparkles", "sun-moon", "clock", "droplet"]} />
       <ProductRail
         ctx={ctx}
+        id="en-cok-satanlar"
         eyebrow={c.bestSellers.eyebrow}
         title={c.bestSellers.title}
         products={bnkProducts}
         prevLabel={c.hero.prev}
         nextLabel={c.hero.next}
+        badges={c.bestSellers.badges}
+        viewLabel={c.bestSellers.view}
       />
+      {/* Mağazanın kolaj kadrajı (lookbook) fazla hareketliydi; krem dokulu sade çekim */}
       <Editorial
         ctx={ctx}
-        image="/images/bnk/lookbook.webp"
-        ratio="aspect-[16/9]"
+        image="/images/bnk/peeling-bej.webp"
+        ratio="aspect-[5/4]"
         title={c.editorial.title}
         text={c.editorial.text}
       />
       <BlogTeasers
         ctx={ctx}
+        id="blog"
         eyebrow={c.blog.eyebrow}
         title={c.blog.title}
         soonLabel={c.blog.soon}
         posts={[
           { ...c.blog.posts[0], image: "/images/bnk/model-bb.webp" },
           { ...c.blog.posts[1], image: "/images/bnk/circle-gunes-kremi.webp" },
-          { ...c.blog.posts[2], image: "/images/bnk/peeling-bej.webp" },
+          { ...c.blog.posts[2], image: "/images/bnk/circle-nemlendirici.webp" },
         ]}
       />
       <PullQuote ctx={ctx} text={c.quote.text} source={c.quote.source} />

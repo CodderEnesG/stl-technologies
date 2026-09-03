@@ -10,6 +10,10 @@ export type Product = {
   blend?: boolean;
   /** Seri renk seçenekleri (katalog renk noktaları) */
   colors?: string[];
+  /** Kart rozeti: çok satan / yeni */
+  badge?: "best" | "new";
+  /** Kartta isim altındaki tek satırlık fayda */
+  benefit?: string;
 };
 
 export type BrandVisual = {
@@ -297,50 +301,62 @@ export const bnkProducts: Product[] = [
   {
     name: "TENZERO Perfect Cover BB Krem",
     category: "BB & CC Krem",
-    image: "/images/bnk/bb-sade.webp",
+    image: "/images/bnk/circle-bb-krem.webp",
     href: "https://beautynetkorea.com.tr/collections/bb-cc-krem",
+    badge: "best",
+    benefit: "Yoğun kapatıcılık, doğal bitiş",
   },
   {
     name: "TENZERO Snail Göz Serumu",
     category: "Göz Bakımı",
     image: "/images/bnk/circle-goz-cevresi.webp",
     href: "https://beautynetkorea.com.tr/collections/goz-serumu",
+    badge: "best",
+    benefit: "Göz çevresini nemlendirir, aydınlatır",
   },
   {
     name: "TENZERO Collagen Tonik",
     category: "Tonik",
     image: "/images/bnk/circle-tonik.webp",
     href: "https://beautynetkorea.com.tr/collections/tonik",
+    badge: "best",
+    benefit: "pH dengesi, esneklik desteği",
   },
   {
     name: "TENZERO Hyaluronik Ampul Serum",
     category: "Serum & Ampul",
     image: "/images/bnk/circle-serum.webp",
     href: "https://beautynetkorea.com.tr/collections/cilt-serumu",
+    benefit: "Derin nem, dolgun görünüm",
   },
   {
     name: "FOODAHOLIC Multi Sun Cream SPF50+",
     category: "Güneş Kremi",
     image: "/images/bnk/circle-gunes-kremi.webp",
     href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi",
+    badge: "new",
+    benefit: "SPF50+ PA+++, yağlı his bırakmaz",
   },
   {
     name: "DR. MELOSO Yuja C Peeling Jel",
     category: "Temizleyici",
     image: "/images/bnk/circle-temizleyici.webp",
     href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler",
+    benefit: "Nazik arındırma, C vitamini",
   },
   {
     name: "Ceramide Royal Jelly Yüz Kremi",
     category: "Nemlendirici",
     image: "/images/bnk/circle-nemlendirici.webp",
     href: "https://beautynetkorea.com.tr/collections/yuz-kremi",
+    benefit: "Bariyer onarımı, uzun süreli nem",
   },
   {
     name: "FOODAHOLIC 3D Kore Maskesi 8'li",
     category: "Yüz Maskesi",
     image: "/images/bnk/circle-kagit-maske.webp",
     href: "https://beautynetkorea.com.tr/collections/yuz-maskesi",
+    benefit: "Haftalık yoğun bakım, 8 çeşit",
   },
 ];
 
@@ -353,6 +369,8 @@ export const bnkCategories = [
   {
     key: "sun",
     label: "Güneş Bakımı",
+    tagline: "SPF50+ ile günün son adımı",
+    model: "/images/bnk/model-routine.webp",
     color: "#ed1651",
     icon: "sun-moon" as const,
     href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi",
@@ -367,6 +385,8 @@ export const bnkCategories = [
   {
     key: "serum",
     label: "Serum & Ampul",
+    tagline: "Yoğun nem ve etken madde",
+    model: "/images/bnk/model-bb.webp",
     color: "#ed1651",
     icon: "droplet" as const,
     href: "https://beautynetkorea.com.tr/collections/cilt-serumu",
@@ -381,6 +401,8 @@ export const bnkCategories = [
   {
     key: "cream",
     label: "Nemlendirici",
+    tagline: "Bariyeri koruyan hafif katman",
+    model: "/images/bnk/model-routine.webp",
     color: "#ed1651",
     icon: "sparkles" as const,
     href: "https://beautynetkorea.com.tr/collections/yuz-kremi",
@@ -395,6 +417,8 @@ export const bnkCategories = [
   {
     key: "cleanser",
     label: "Temizlik",
+    tagline: "Rutinin ilk ve en nazik adımı",
+    model: "/images/bnk/model-bb.webp",
     color: "#ed1651",
     icon: "flask-conical" as const,
     href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler",
