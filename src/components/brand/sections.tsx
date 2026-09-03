@@ -1275,6 +1275,7 @@ export function BrandCategoryBar({
   ctx,
   categories,
   allLabel,
+  links,
 }: {
   ctx: BrandCtx;
   categories: {
@@ -1285,11 +1286,17 @@ export function BrandCategoryBar({
     icon?: IconName;
     /** Hover panelindeki alt kırılımlar — verilmezse panel açılmaz */
     sub?: { label: string; href: string }[];
-    /** Hover panelinin sağındaki kadraj */
+    /** Hover panelinin sağındaki kadraj (ürün) */
     image?: string;
+    /** Panelde ürünün yanına gelen model kadrajı — verilirse ürün daire içinde üstüne biner */
+    model?: string;
+    /** Panel başlığı — kategorinin tek cümlelik vaadi */
+    tagline?: string;
   }[];
   /** Hover panelindeki "tüm ürünler" butonu */
   allLabel?: string;
+  /** Kategorilerden sonra gelen sayfa içi bağlantılar (çok satanlar, blog…) */
+  links?: { label: string; href: string }[];
 }) {
   const s = toneStyles[ctx.tone];
   const [open, setOpen] = useState<string | null>(null);
@@ -1298,7 +1305,7 @@ export function BrandCategoryBar({
   return (
     <div className="relative" onMouseLeave={() => setOpen(null)}>
       <nav className="relative border-y" style={{ borderColor: s.cardBorder, background: s.card }} aria-label={ctx.brand.name}>
-        <div className="mx-auto flex max-w-[1400px] overflow-x-auto px-2 md:px-8">
+        <div className="mx-auto flex max-w-[1400px] items-stretch overflow-x-auto px-2 md:px-8">
           {categories.map((c) => (
             <a
               key={c.key}
@@ -1307,10 +1314,10 @@ export function BrandCategoryBar({
               rel="noreferrer"
               onMouseEnter={() => setOpen(c.key)}
               onFocus={() => setOpen(c.key)}
-              className="group relative flex flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap px-6 py-4 text-sm font-semibold transition-colors"
-              style={{ color: s.fg }}
+              className="group relative flex flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap px-6 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] transition-colors"
+              style={{ color: open === c.key ? c.color : s.fg }}
             >
-              {c.icon && <Icon name={c.icon} size={17} strokeWidth={ctx.iconWeight ?? 1.7} style={{ color: c.color }} />}
+              {c.icon && <Icon name={c.icon} size={16} strokeWidth={ctx.iconWeight ?? 1.7} style={{ color: c.color }} />}
               {c.label}
               <span
                 className="absolute inset-x-4 bottom-0 h-[2px] origin-center rounded-full transition-transform duration-300"
@@ -1318,6 +1325,21 @@ export function BrandCategoryBar({
               />
             </a>
           ))}
+          {links?.length ? (
+            <div className="ml-auto hidden items-stretch border-l pl-2 md:flex" style={{ borderColor: s.cardBorder }}>
+              {links.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onMouseEnter={() => setOpen(null)}
+                  className="relative flex items-center whitespace-nowrap px-5 py-4 text-[13px] font-semibold uppercase tracking-[0.12em] transition-colors hover:opacity-70"
+                  style={{ color: s.sub }}
+                >
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          ) : null}
         </div>
       </nav>
 
@@ -1327,40 +1349,66 @@ export function BrandCategoryBar({
           className="absolute inset-x-0 top-full z-30 hidden border-b shadow-[0_24px_40px_-28px_rgba(0,0,0,0.35)] md:block"
           style={{ background: s.card, borderColor: s.cardBorder }}
         >
-          <div className="mx-auto grid max-w-[1400px] grid-cols-[1.1fr_0.9fr] gap-10 px-8 py-8">
+          <div className="mx-auto grid max-w-[1400px] grid-cols-[1fr_auto] items-center gap-12 px-8 py-8">
             <div>
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: active.color }}>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: active.color }}>
                 {active.label}
               </p>
-              <ul className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+              {active.tagline && (
+                <p className={`${ctx.font} mt-2 text-2xl font-bold leading-tight tracking-tight`} style={{ color: s.fg }}>
+                  {active.tagline}
+                </p>
+              )}
+              <ul className="mt-5 grid max-w-md gap-x-10 gap-y-1.5 sm:grid-cols-2">
                 {active.sub?.map((x) => (
                   <li key={x.label}>
                     <a
                       href={x.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-block py-1 text-[15px] transition-colors hover:underline"
+                      className="group/link inline-flex items-center gap-2 py-1 text-[15px] transition-colors"
                       style={{ color: s.sub }}
                     >
+                      <span className="h-px w-0 transition-all duration-300 group-hover/link:w-4" style={{ background: active.color }} />
                       {x.label}
                     </a>
                   </li>
                 ))}
               </ul>
+              {allLabel && (
+                <a
+                  href={active.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2 text-xs font-semibold transition hover:-translate-y-0.5"
+                  style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
+                >
+                  {allLabel}
+                  <Icon name="arrow-up-right" size={14} strokeWidth={2} />
+                </a>
+              )}
             </div>
-            {active.image && (
-              <div className="relative overflow-hidden rounded-2xl">
-                <img src={active.image} alt="" aria-hidden className="aspect-[16/10] w-full object-cover" />
-                {allLabel && (
-                  <a
-                    href={active.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full px-5 py-2 text-xs font-semibold"
-                    style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
-                  >
-                    {allLabel}
-                  </a>
+            {(active.model || active.image) && (
+              <div className="relative flex items-center gap-0 pr-6">
+                {/* Model kadrajı + üstüne binen ürün dairesi (Purest kartı düzeni) */}
+                {active.model ? (
+                  <>
+                    <div className="h-[220px] w-[170px] overflow-hidden rounded-2xl">
+                      <img src={active.model} alt="" aria-hidden className="size-full object-cover object-top" />
+                    </div>
+                    {active.image && (
+                      <span
+                        className="absolute -right-0 bottom-4 grid size-[120px] place-items-center rounded-full border-2 bg-white shadow-[0_18px_30px_-16px_rgba(0,0,0,0.35)]"
+                        style={{ borderColor: active.color }}
+                      >
+                        <img src={active.image} alt="" aria-hidden className="size-[84%] rounded-full object-cover" />
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  <div className="h-[220px] w-[300px] overflow-hidden rounded-2xl">
+                    <img src={active.image} alt="" aria-hidden className="size-full object-cover" />
+                  </div>
                 )}
               </div>
             )}
@@ -1775,6 +1823,7 @@ export function BrandGallery({
  */
 export function RoutineFace({
   ctx,
+  id,
   eyebrow,
   title,
   description,
@@ -1782,6 +1831,7 @@ export function RoutineFace({
   steps,
 }: {
   ctx: BrandCtx;
+  id?: string;
   eyebrow: string;
   title: string;
   description?: string;
@@ -1803,7 +1853,7 @@ export function RoutineFace({
   const [active, setActive] = useState<number | null>(null);
 
   return (
-    <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
+    <section id={id} className="mx-auto max-w-[1400px] scroll-mt-24 px-5 py-24 md:px-8">
       <SectionHeader
         eyebrow={eyebrow}
         title={title}
@@ -1904,18 +1954,26 @@ export function RoutineFace({
 /** Ürün rayı — kaydırmalı "en çok satanlar" şeridi; kart görselleri sade kadraj. */
 export function ProductRail({
   ctx,
+  id,
   eyebrow,
   title,
   products,
   prevLabel,
   nextLabel,
+  badges,
+  viewLabel,
 }: {
   ctx: BrandCtx;
+  id?: string;
   eyebrow?: string;
   title: string;
   products: Product[];
   prevLabel: string;
   nextLabel: string;
+  /** Rozet metinleri (ürünün `badge` anahtarına göre) */
+  badges?: Record<NonNullable<Product["badge"]>, string>;
+  /** Kart altındaki mağaza bağlantısı metni */
+  viewLabel?: string;
 }) {
   const s = toneStyles[ctx.tone];
   const rail = useRef<HTMLDivElement>(null);
@@ -1936,7 +1994,7 @@ export function ProductRail({
   const scrollTo = (p: number) => rail.current?.scrollTo({ left: p * rail.current.clientWidth, behavior: "smooth" });
 
   return (
-    <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
+    <section id={id} className="mx-auto max-w-[1400px] scroll-mt-24 px-5 py-24 md:px-8">
       <div className="mb-10 flex items-end justify-between gap-6">
         <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} />
         {pages > 1 && (
@@ -1970,20 +2028,49 @@ export function ProductRail({
             href={p.href}
             target="_blank"
             rel="noreferrer"
-            className="group w-[72%] shrink-0 snap-start sm:w-[46%] lg:w-[30%] xl:w-[23%]"
+            className="group flex w-[72%] shrink-0 snap-start flex-col rounded-3xl border p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_40px_-28px_rgba(0,0,0,0.35)] sm:w-[46%] lg:w-[30%] xl:w-[23%]"
+            style={{ background: s.card, borderColor: s.cardBorder }}
           >
-            <div className="overflow-hidden rounded-2xl" style={{ background: "#ffffff" }}>
+            <div className="relative overflow-hidden rounded-2xl" style={{ background: "#ffffff" }}>
               <img
                 src={p.image}
                 alt={p.name}
                 loading="lazy"
                 className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
               />
+              {p.badge && badges?.[p.badge] && (
+                <span
+                  className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em]"
+                  style={
+                    p.badge === "best"
+                      ? { background: ctx.brand.color, color: ctx.brand.onColor }
+                      : { background: "#ffffff", color: s.fg, boxShadow: `inset 0 0 0 1px ${s.cardBorder}` }
+                  }
+                >
+                  {badges[p.badge]}
+                </span>
+              )}
             </div>
-            <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: ctx.brand.color }}>
-              {p.category}
-            </p>
-            <h3 className="mt-1 font-semibold leading-snug">{p.name}</h3>
+            <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: ctx.brand.color }}>
+                {p.category}
+              </p>
+              <h3 className="mt-1 font-semibold leading-snug">{p.name}</h3>
+              {p.benefit && (
+                <p className="mt-1 text-sm" style={{ color: s.sub }}>
+                  {p.benefit}
+                </p>
+              )}
+              {viewLabel && (
+                <span
+                  className="mt-4 inline-flex items-center gap-1.5 self-start border-t pt-3 text-[13px] font-semibold"
+                  style={{ borderColor: s.cardBorder, color: s.fg }}
+                >
+                  {viewLabel}
+                  <Icon name="arrow-up-right" size={14} strokeWidth={2} className="transition-transform group-hover:translate-x-1" />
+                </span>
+              )}
+            </div>
           </a>
         ))}
       </div>
@@ -2010,12 +2097,14 @@ export function ProductRail({
 /** Blog kartları — yazı henüz yayında değilse href boş bırakılır, kart pasif olur. */
 export function BlogTeasers({
   ctx,
+  id,
   eyebrow,
   title,
   posts,
   soonLabel,
 }: {
   ctx: BrandCtx;
+  id?: string;
   eyebrow: string;
   title: string;
   posts: { image: string; kicker: string; title: string; excerpt: string; href?: string; readingTime: string }[];
@@ -2024,7 +2113,7 @@ export function BlogTeasers({
 }) {
   const s = toneStyles[ctx.tone];
   return (
-    <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
+    <section id={id} className="mx-auto max-w-[1400px] scroll-mt-24 px-5 py-24 md:px-8">
       <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} className="mb-10" />
       <div className="grid gap-6 md:grid-cols-3">
         {posts.map((post) => {

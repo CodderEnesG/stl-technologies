@@ -363,7 +363,14 @@ export const tr = {
       bestSellers: {
         eyebrow: "Mağazadan",
         title: "En çok satanlar",
+        badges: { best: "Çok satan", new: "Yeni" },
+        view: "Mağazada gör",
       },
+      barLinks: [
+        { label: "Çok Satanlar", href: "#en-cok-satanlar" },
+        { label: "Rutin", href: "#rutin" },
+        { label: "Blog", href: "#blog" },
+      ],
       blog: {
         eyebrow: "Cilt günlüğü",
         title: "Kore rutininin püf noktaları",
