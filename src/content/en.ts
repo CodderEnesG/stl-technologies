@@ -223,8 +223,8 @@ export const en: SiteContent = {
         next: "Next slide",
       },
       gallery: {
-        eyebrow: "Brand world",
-        title: "Fressi at home",
+        eyebrow: "Fressi at home",
+        title: "When Fressi moves in",
       },
       circles: {
         eyebrow: "Product world",
@@ -240,8 +240,8 @@ export const en: SiteContent = {
       categoriesLabel: "What are you looking for?",
       vitrineTitle: "Highlights",
       editorial: {
-        title: "Designed to be seen, built to be used.",
-        text: "Fressi products sit on the counter like an object; but their real purpose is making every morning a little more enjoyable.",
+        title: "From the first coffee of the morning to the evening tea.",
+        text: "Fressi products look good on the counter; but their real job is making every hour of the day a little more enjoyable.",
       },
       quote: { text: "Fressi is technology that makes daily life easier, suits the home, and feels good.", source: "Brand statement" },
       ctaTitle: "A fresh breath for your kitchen",
