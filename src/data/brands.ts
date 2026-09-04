@@ -295,6 +295,115 @@ export const wextaProducts: Product[] = [
   },
 ];
 
+/** Katalog seri kartları için görsel/teknik veri — metinler content/*.ts içinde (kod anahtarlı). */
+export type WextaSeries = {
+  /** Katalog seri kodu (VL-280, WX-1 …) — iki dilde de aynı */
+  code: string;
+  /** Şeffaf zeminli katalog kesiti (webp) ya da beyaz zeminli site fotoğrafı (blend) */
+  image: string;
+  blend?: boolean;
+  /** Katalogdaki renk sayısı ("8 color options") */
+  colorCount: number;
+  /** Gösterilen renk noktaları — katalog renk adlarından yaklaşık hex */
+  colors: string[];
+  material: "abs" | "pp";
+  /** stlteknoloji.com ürün sayfası — yoksa teklif CTA'sı tek başına kalır */
+  href?: string;
+  /** Çocuk serisi: 20/24/28 boy yerine tek çocuk boyu */
+  kids?: boolean;
+};
+
+/**
+ * Wexta 2023 katalogundan (stlteknoloji.com/tr/kataloglar → 68.pdf):
+ * seriler katalog sırasıyla, renk sayıları kataloğun kendi ifadesi.
+ * Görseller kataloğun kendi ürün kesitleri (public/images/wexta/).
+ */
+export const wextaCatalogPdf = "https://www.stlteknoloji.com/stlteknoloji/dosyalar/albumler/3/68.pdf";
+
+export const wextaSeries: WextaSeries[] = [
+  {
+    code: "VL-280",
+    image: "/images/wexta/series-milano.webp",
+    colorCount: 8,
+    colors: ["#1c1c1e", "#c89a9a", "#b3202a", "#b89b6a", "#a9abad", "#63bfb0"],
+    material: "abs",
+    href: stlUrun("valja-milano-serisi-mavi-valiz"),
+  },
+  {
+    code: "WX-1",
+    image: "/images/wexta/series-wx1.webp",
+    colorCount: 8,
+    colors: ["#3a3d42", "#4fb3e0", "#1f3f8f", "#c0272d", "#7a2fa0", "#d9c400", "#9a9da1"],
+    material: "abs",
+    href: stlUrun("abs-wx-1-siyah-valiz"),
+  },
+  {
+    code: "WL-240",
+    image: "/images/wexta/series-wl240.webp",
+    colorCount: 4,
+    colors: ["#8b6a55", "#cfc6b8", "#3a3d42", "#1f6f7a"],
+    material: "abs",
+  },
+  {
+    code: "WX-230",
+    image: "/images/wexta/series-wx230.webp",
+    colorCount: 4,
+    colors: ["#e8a9b8", "#b05a6a", "#2f7f6f", "#e2c11a"],
+    material: "abs",
+  },
+  {
+    code: "WX-300",
+    image: "/images/stl/valiz-wx300-1.jpg",
+    blend: true,
+    colorCount: 4,
+    colors: ["#3b5aa0", "#e2694f", "#3e9c8a", "#1c1c1e"],
+    material: "abs",
+    href: stlUrun("abs-wx-300-baskili-mint-yesili-valiz"),
+  },
+  {
+    code: "WX-330",
+    image: "/images/wexta/series-wx330.webp",
+    colorCount: 4,
+    colors: ["#b8865a", "#a9abad", "#1c1c1e", "#d99ab0"],
+    material: "abs",
+    href: stlUrun("abs-wx-330-sari-valiz"),
+  },
+  {
+    code: "WX-1001",
+    image: "/images/wexta/series-wx1001.webp",
+    colorCount: 6,
+    colors: ["#6d4fc4", "#b9a08a", "#c9948f", "#7a1f2b", "#1c1c1e", "#5fbf6a"],
+    material: "abs",
+    href: stlUrun("abs-wx-1001-antrasit-valiz"),
+  },
+  {
+    code: "WX-PP10",
+    image: "/images/wexta/series-pp10.webp",
+    colorCount: 4,
+    colors: ["#1f2f7a", "#d9708a", "#c0272d", "#1c1c1e"],
+    material: "pp",
+    href: stlUrun("mavi-polipropilen-valiz"),
+  },
+  {
+    code: "WX-41x",
+    image: "/images/wexta/series-kids-414.webp",
+    colorCount: 4,
+    colors: ["#f28c5a", "#f2c318", "#5ab8e6", "#f2a0b8"],
+    material: "abs",
+    href: stlUrun("wx-414-turuncu-cocuk-valizi"),
+    kids: true,
+  },
+];
+
+export const wextaImages = {
+  /** Boy rehberi — şeffaf kesit, üç boyda ölçeklenir */
+  sizeCutout: "/images/wexta/series-wx1.webp",
+  /** Katalog yaşam kadrajları */
+  escalator: "/images/wexta/lifestyle-escalator.webp",
+  family: "/images/wexta/lifestyle-family.webp",
+  kids: "/images/wexta/lifestyle-kids.webp",
+};
+
 /**
  * beautynetkorea.com.tr'den seçilen ürünler. Görseller mağazanın sade
  * kadrajlarından: tek renk zemin veya beyaz fon, ürün ortada.
