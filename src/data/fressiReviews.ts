@@ -1,10 +1,14 @@
 /**
  * fressihome.com'daki gerçek müşteri yorumları (Entrfy Reviews).
- * Mağaza şifreli olduğu için canlı API dışarıdan 302 dönüyor; bu yüzden
- * yorumlar statik anlık görüntü olarak tutuluyor.
- * Anlık görüntü: 2026-09-01 — kaynak /apps/reviews/api/list
+ *
+ * Canlı kaynak: `fetchLiveFressiReviews` mağazanın Entrfy ucunu tarayıcıdan
+ * çeker (uç, isteği yapan origin'i CORS'ta yansıtıyor). Mağaza şifreliyken
+ * anonim istek /password'a 302 döner ve fetch hata verir; o durumda sayfa
+ * aşağıdaki statik anlık görüntüyü gösterir. Şifre kalkınca kod değişmeden
+ * canlıya geçer.
+ *
+ * Anlık görüntü: 2026-09-04 — kaynak /apps/reviews/api/list (295 yorum, 4.02).
  * Seçim: 4-5 yıldız + gerçek kullanım deneyimi (stok/kargo soruları elendi).
- * Yeni yorum eklemek için aynı uçtan çekip bu listeyi güncelleyin.
  */
 
 export type FressiReview = {
@@ -17,12 +21,68 @@ export type FressiReview = {
   verified: boolean;
 };
 
-/** fressihome.com mağaza geneli değerlendirme özeti */
+/** fressihome.com mağaza geneli değerlendirme özeti (anlık görüntü) */
 export const fressiReviewStats = {
   count: 295,
   average: 4.0,
   distribution: { 5: 180, 4: 37, 3: 25, 2: 10, 1: 43 },
 };
+
+const LIVE_URL = "https://fressihome.com/apps/reviews/api/list?shop=fressihome.myshopify.com&limit=100";
+
+/** Ürün deneyimi olmayan yorumlar (stok/kargo/sipariş soruları) vitrine girmez */
+const NOISE = /stok|stoğ|kargo|sipariş|siparis|ne zaman|yanlış ürün|gelmedi|ulaşamıyor/i;
+
+type EntrfyItem = {
+  rating: number;
+  title: string;
+  body: string;
+  authorName: string;
+  verifiedPurchase: boolean;
+  productTitle: string;
+};
+
+/** Baş harf büyük, gerisi küçük — mağazada isimler karışık büyük/küçük geliyor */
+const tidyName = (name: string) =>
+  name
+    .trim()
+    .split(/\s+/)
+    .map((w) => w.charAt(0).toLocaleUpperCase("tr-TR") + w.slice(1).toLocaleLowerCase("tr-TR"))
+    .join(" ");
+
+/** "A KATEGORİ" (outlet) öneki ve renk eki ürün adından düşer */
+const tidyProduct = (title: string) =>
+  title
+    .replace(/^A KATEGORİ\s+/i, "")
+    .replace(/\s+-\s+[^-]+$/, "")
+    .trim();
+
+/**
+ * Entrfy ucundan canlı yorumları çeker ve vitrin için süzer. Ağ/CORS/şifre
+ * hatasında `null` döner; çağıran taraf statik listeye düşer.
+ */
+export async function fetchLiveFressiReviews(signal?: AbortSignal): Promise<FressiReview[] | null> {
+  try {
+    const res = await fetch(LIVE_URL, { signal, mode: "cors" });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { ok?: boolean; items?: EntrfyItem[] };
+    if (!data.ok || !Array.isArray(data.items)) return null;
+    const picked = data.items
+      .filter((r) => r.rating >= 4 && r.body.trim().length >= 40 && !NOISE.test(`${r.title} ${r.body}`))
+      .slice(0, 12)
+      .map<FressiReview>((r) => ({
+        rating: r.rating,
+        title: r.title.trim() || undefined,
+        body: r.body.trim(),
+        author: tidyName(r.authorName),
+        product: tidyProduct(r.productTitle),
+        verified: r.verifiedPurchase,
+      }));
+    return picked.length >= 3 ? picked : null;
+  } catch {
+    return null;
+  }
+}
 
 export const fressiReviews: FressiReview[] = [
   {

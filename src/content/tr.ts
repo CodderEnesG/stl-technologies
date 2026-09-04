@@ -223,7 +223,7 @@ export const tr = {
         next: "Sonraki görsel",
       },
       gallery: {
-        eyebrow: "Marka dünyası",
+        eyebrow: "Evde Fressi",
         title: "Fressi eve girince",
       },
       circles: {
@@ -240,8 +240,8 @@ export const tr = {
       categoriesLabel: "Ne aramıştınız?",
       vitrineTitle: "Öne çıkanlar",
       editorial: {
-        title: "Görülmek için tasarlandı, kullanılmak için üretildi.",
-        text: "Fressi ürünleri tezgahın üzerinde bir obje gibi durur; ama asıl amacı her sabahı biraz daha keyifli kılmaktır.",
+        title: "Sabahın ilk kahvesinden akşam çayına.",
+        text: "Fressi ürünleri tezgahın üstünde güzel durur; ama asıl işi günün her saatini biraz daha keyifli kılmak.",
       },
       quote: { text: "Fressi, gündelik yaşamı kolaylaştıran, eve yakışan ve iyi hissettiren teknolojidir.", source: "Marka söylemi" },
       ctaTitle: "Mutfağınıza taze bir soluk",

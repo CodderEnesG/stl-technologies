@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { fressiCategories, fressiCircles, fressiProducts, getBrand } from "../data/brands";
-import { fressiReviews, fressiReviewStats } from "../data/fressiReviews";
+import { fetchLiveFressiReviews, fressiReviews, type FressiReview } from "../data/fressiReviews";
 import { useI18n } from "../i18n";
 import { usePageMeta } from "../hooks/usePageMeta";
 import {
@@ -25,6 +26,16 @@ export default function Fressi() {
   usePageMeta(t.meta.fressi.title, t.meta.fressi.desc);
 
   const ctx: BrandCtx = { brand: getBrand("fressi"), tone: "cream", font: "font-nunito", bodyFont: "font-nunito", iconWeight: 1.7 };
+
+  // Yorumlar: önce statik anlık görüntü, mağazanın Entrfy ucu erişilebilirse canlı liste
+  const [reviews, setReviews] = useState<FressiReview[]>(fressiReviews);
+  useEffect(() => {
+    const ac = new AbortController();
+    fetchLiveFressiReviews(ac.signal).then((live) => {
+      if (live) setReviews(live);
+    });
+    return () => ac.abort();
+  }, []);
 
   return (
     <BrandShell ctx={ctx}>
@@ -63,8 +74,9 @@ export default function Fressi() {
         kicker={c.about.kicker}
         title={c.about.title}
         body={c.about.body}
-        stats={c.stats}
-        image="/images/fressi/life-cay-keyfi.webp"
+        signature={c.tagline}
+        image="/images/fressi/home-tk302-sofra.webp"
+        imageAlt="Fressi Türk kahvesi makinesiyle sofrada kahve keyfi"
         pattern={PATTERN}
       />
       <CircleRail
@@ -79,7 +91,7 @@ export default function Fressi() {
       <ProductVitrine ctx={ctx} title={c.vitrineTitle} products={fressiProducts} />
       <Editorial
         ctx={ctx}
-        image="/images/fressi/life-tezgah-renkli.webp"
+        image="/images/fressi/home-tk302-mutfak.webp"
         ratio="aspect-[3/2]"
         title={c.editorial.title}
         text={c.editorial.text}
@@ -88,9 +100,7 @@ export default function Fressi() {
         ctx={ctx}
         eyebrow={c.reviews.eyebrow}
         title={c.reviews.title}
-        reviews={fressiReviews}
-        stats={fressiReviewStats}
-        ratingLabel={c.reviews.count}
+        reviews={reviews}
         verifiedLabel={c.reviews.verified}
         allLabel={c.reviews.all}
         allHref={ctx.brand.channelHref}
@@ -103,13 +113,13 @@ export default function Fressi() {
         title={c.gallery.title}
         pattern={PATTERN}
         images={[
+          { src: "/images/fressi/life-tezgah-renkli.webp", alt: "Fressi yeşil kettle, espresso makinesi, tost makinesi, blender ve airfryer mutfak tezgahında", wide: true },
+          { src: "/images/fressi/home-p101-salon.webp", alt: "Fressi Zenitte pikap salonda sehpanın üzerinde" },
+          { src: "/images/fressi/home-cd183-salon.webp", alt: "Salonda Fressi Riona CD çalar eşliğinde kahve molası" },
+          { src: "/images/fressi/home-tm26-tost.webp", alt: "Fressi Duobello tost makinesiyle kahvaltı" },
+          { src: "/images/fressi/home-kt07-cay.webp", alt: "Fressi Mavera kettle ile masada çay servisi" },
           { src: "/images/fressi/life-tezgah-sade.webp", alt: "Fressi kahve makinesi, kettle ve ekmek kızartma makinesi mutfak tezgahında", wide: true },
-          { src: "/images/fressi/dunya-mutfak-set.webp", alt: "Fressi ürün ve ambalaj seti mutfakta" },
-          { src: "/images/fressi/life-kettle-makro.webp", alt: "Fressi kettle yakın çekim" },
-          { src: "/images/fressi/dunya-ambalaj.webp", alt: "Fressi ambalaj ve kurumsal basılı malzemeler" },
-          { src: "/images/fressi/dunya-magaza.webp", alt: "Fressi mağaza konsepti" },
-          { src: "/images/fressi/dunya-billboard.webp", alt: "Fressi açıkhava reklam konsepti" },
-          { src: "/images/fressi/dunya-lansman.webp", alt: "Fressi lansman sahnesi konsepti", wide: true },
+          { src: "/images/fressi/home-p1990-koltuk.webp", alt: "Koltukta kahve içerken Fressi pikap çalıyor" },
         ]}
       />
       <BrandCTA

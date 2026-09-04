@@ -1549,16 +1549,16 @@ export function CircleRail({
 }
 
 /**
- * Müşteri yorumları — fressihome.com'daki Entrfy yorum karuselinin karşılığı.
- * Veri mağazadan alınmış statik anlık görüntü (bkz. data/fressiReviews.ts).
+ * Müşteri yorumları — fressihome.com'daki Entrfy yorum karuselinin birebir
+ * karşılığı: beyaz kart, sağ üstte tırnak, amber yıldızlar, 5 satır kırpılmış
+ * gövde, baş harfli avatar ve yeşil "doğrulanmış" rozeti. Veri canlı API'den
+ * gelir; erişilemezse statik anlık görüntüye düşer (bkz. data/fressiReviews.ts).
  */
 export function ReviewSlider({
   ctx,
   eyebrow,
   title,
   reviews,
-  stats,
-  ratingLabel,
   verifiedLabel,
   allLabel,
   allHref,
@@ -1569,16 +1569,12 @@ export function ReviewSlider({
   eyebrow: string;
   title: string;
   reviews: { rating: number; title?: string; body: string; author: string; product: string; verified: boolean }[];
-  stats: { count: number; average: number };
-  /** "295 değerlendirme" gibi — sayıyı alıp metni kuran fonksiyon */
-  ratingLabel: (n: number) => string;
   verifiedLabel: string;
   allLabel: string;
   allHref: string;
   prevLabel: string;
   nextLabel: string;
 }) {
-  const s = toneStyles[ctx.tone];
   const rail = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
   const [pages, setPages] = useState(1);
@@ -1593,81 +1589,102 @@ export function ReviewSlider({
     sync();
     window.addEventListener("resize", sync);
     return () => window.removeEventListener("resize", sync);
-  }, []);
+  }, [reviews.length]);
   const scrollTo = (p: number) => {
     const el = rail.current;
     if (!el) return;
     el.scrollTo({ left: p * el.clientWidth, behavior: "smooth" });
   };
 
+  const initials = (name: string) =>
+    name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((w) => w[0]?.toLocaleUpperCase("tr-TR") ?? "")
+      .join("");
+
+  const navBtn = (dir: "left" | "right") => (
+    <button
+      type="button"
+      aria-label={dir === "left" ? prevLabel : nextLabel}
+      disabled={dir === "left" ? page === 0 : page >= pages - 1}
+      onClick={() => scrollTo(dir === "left" ? Math.max(0, page - 1) : Math.min(pages - 1, page + 1))}
+      className={`absolute top-1/2 z-10 hidden size-10 -translate-y-1/2 place-items-center rounded-full bg-white text-[#17181a] shadow-[0_4px_14px_rgba(0,0,0,0.14)] transition hover:scale-105 disabled:pointer-events-none disabled:opacity-30 md:grid ${
+        dir === "left" ? "-left-5" : "-right-5"
+      }`}
+    >
+      <Chevron dir={dir} />
+    </button>
+  );
+
   return (
     <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
-      <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} />
-        <div className="flex shrink-0 items-center gap-4">
-          <div className={`${ctx.font} text-5xl font-extrabold leading-none tracking-tightest`}>
-            {stats.average.toFixed(1).replace(".", ",")}
-          </div>
-          <div>
-            <Stars value={stats.average} color={ctx.brand.color} size={16} />
-            <p className="mt-1 text-sm" style={{ color: s.muted }}>{ratingLabel(stats.count)}</p>
-          </div>
-          {pages > 1 && (
-            <div className="ml-2 hidden gap-2 md:flex">
-              <button
-                type="button"
-                aria-label={prevLabel}
-                onClick={() => scrollTo(Math.max(0, page - 1))}
-                className="grid size-10 place-items-center rounded-full border transition hover:-translate-y-0.5"
-                style={{ borderColor: s.cardBorder, color: s.fg }}
-              >
-                <Chevron dir="left" />
-              </button>
-              <button
-                type="button"
-                aria-label={nextLabel}
-                onClick={() => scrollTo(Math.min(pages - 1, page + 1))}
-                className="grid size-10 place-items-center rounded-full border transition hover:-translate-y-0.5"
-                style={{ borderColor: s.cardBorder, color: s.fg }}
-              >
-                <Chevron dir="right" />
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+      <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} className="mb-12" />
 
-      <div
-        ref={rail}
-        onScroll={sync}
-        className="hide-scrollbar flex snap-x snap-mandatory items-stretch gap-6 overflow-x-auto pb-2"
-      >
-        {reviews.map((r) => (
-          <article
-            key={`${r.author}-${r.product}`}
-            className="flex w-[86%] shrink-0 snap-start flex-col rounded-2xl border p-6 sm:w-[48%] lg:w-[31.5%]"
-            style={{ background: s.card, borderColor: s.cardBorder }}
-          >
-            <Stars value={r.rating} color={ctx.brand.color} />
-            {r.title && <h3 className="mt-3 font-semibold">{r.title}</h3>}
-            <p className="mt-2 text-[15px] leading-relaxed" style={{ color: s.sub }}>{r.body}</p>
-            <footer className="mt-auto border-t pt-4 text-sm" style={{ borderColor: s.cardBorder }}>
-              <div className="flex items-center gap-2 font-semibold">
-                {r.author}
-                {r.verified && (
-                  <span
-                    className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium"
-                    style={{ background: `${ctx.brand.color}1f`, color: ctx.brand.color }}
-                  >
-                    <Icon name="check" size={12} strokeWidth={2.2} />
-                    {verifiedLabel}
-                  </span>
-                )}
-              </div>
-              <p className="mt-1 text-[13px]" style={{ color: s.muted }}>{r.product}</p>
-            </footer>
-          </article>
-        ))}
+      <div className="relative">
+        {pages > 1 && navBtn("left")}
+        {pages > 1 && navBtn("right")}
+        <div
+          ref={rail}
+          onScroll={sync}
+          className="hide-scrollbar flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto pb-2"
+        >
+          {reviews.map((r, i) => (
+            <article
+              key={`${r.author}-${i}`}
+              className="relative flex w-[86%] shrink-0 snap-start flex-col rounded-xl border bg-white p-6 sm:w-[48.5%] lg:w-[32%]"
+              style={{ borderColor: "#e5e7eb", color: "#17181a" }}
+            >
+              <span
+                aria-hidden
+                className="absolute right-5 top-2 select-none font-serif text-[64px] leading-none"
+                style={{ color: "#d1d5db" }}
+              >
+                “
+              </span>
+              <Stars value={r.rating} color="#f5a524" size={15} />
+              {r.title && <h3 className="mt-3 text-[15px] font-bold">{r.title}</h3>}
+              <p
+                className="mt-1.5 text-[14px] leading-[1.6]"
+                style={{
+                  color: "#374151",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 5,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+                title={r.body}
+              >
+                {r.body}
+              </p>
+              <footer className="mt-auto flex items-center gap-3 pt-6">
+                <span
+                  aria-hidden
+                  className="grid size-8 shrink-0 place-items-center rounded-full text-[11.5px] font-semibold"
+                  style={{ background: "#f3f4f6", color: "#374151" }}
+                >
+                  {initials(r.author)}
+                </span>
+                <span className="flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-1">
+                  <span className="truncate text-[14px] font-bold">{r.author}</span>
+                  {r.verified && (
+                    <span
+                      className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11.5px] font-medium"
+                      style={{ background: "#f0fdf4", borderColor: "#86efac", color: "#15803d" }}
+                    >
+                      <Icon name="check" size={11} strokeWidth={2.4} />
+                      {verifiedLabel}
+                    </span>
+                  )}
+                </span>
+              </footer>
+              <p className="mt-2 truncate pl-11 text-[12px]" style={{ color: "#9ca3af" }} title={r.product}>
+                {r.product}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
 
       {pages > 1 && (
@@ -1713,15 +1730,21 @@ export function EditorialIntro({
   title,
   body,
   stats,
+  signature,
   image,
+  imageAlt = "",
   pattern,
 }: {
   ctx: BrandCtx;
   kicker: string;
   title: string;
   body: string;
-  stats: { n: string; l: string }[];
+  /** İstatistik şeridi — verilmezse çizilmez */
+  stats?: { n: string; l: string }[];
+  /** Metnin altına el yazısı imza (marka script fontu) */
+  signature?: string;
   image: string;
+  imageAlt?: string;
   pattern?: string;
 }) {
   const s = toneStyles[ctx.tone];
@@ -1738,10 +1761,9 @@ export function EditorialIntro({
           />
           <img
             src={image}
-            alt=""
+            alt={imageAlt}
             loading="lazy"
             className="relative aspect-[4/5] w-full rounded-[2rem] object-cover shadow-[0_30px_60px_-30px_rgba(89,68,57,0.55)]"
-            style={{ objectPosition: ctx.brand.heroFocus ?? "50% 50%" }}
           />
         </div>
 
@@ -1751,6 +1773,12 @@ export function EditorialIntro({
           </p>
           <h2 className={`${ctx.font} text-3xl font-bold leading-[1.08] tracking-tightest md:text-[2.75rem]`}>{title}</h2>
           <p className="mt-6 text-lg leading-relaxed" style={{ color: s.sub }}>{body}</p>
+          {signature && (
+            <p className="font-script mt-8 text-2xl" style={{ color: ctx.brand.color }}>
+              {signature}
+            </p>
+          )}
+          {stats && stats.length > 0 && (
           <dl className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-6">
             {stats.map((st, idx) => (
               <div key={st.l} className="flex items-center gap-10">
@@ -1762,6 +1790,7 @@ export function EditorialIntro({
               </div>
             ))}
           </dl>
+          )}
         </div>
       </div>
     </section>
