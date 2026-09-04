@@ -187,7 +187,8 @@ export function BrandIntro({
   kicker: string;
   title: string;
   body: string;
-  stats: { n: string; l: string }[];
+  /** Verilmezse istatistik şeridi çizilmez */
+  stats?: { n: string; l: string }[];
   /** Verilirse metnin yanında ürün görseli gösterilir (arkasında marka renginde hafif ışık) */
   image?: string;
   /**
@@ -257,6 +258,7 @@ export function BrandIntro({
         </div>
       )}
 
+      {stats && (
       <div className="mt-16 grid grid-cols-3 gap-6 md:gap-12">
         {stats.map((st) => (
           <div key={st.l} className="border-t-2 pt-5" style={{ borderColor: brand.color }}>
@@ -265,6 +267,7 @@ export function BrandIntro({
           </div>
         ))}
       </div>
+      )}
     </section>
   );
 }
@@ -1393,12 +1396,13 @@ export function BrandCategoryBar({
                 {/* Model kadrajı + üstüne binen ürün dairesi (Purest kartı düzeni) */}
                 {active.model ? (
                   <>
-                    <div className="h-[220px] w-[170px] overflow-hidden rounded-2xl">
-                      <img src={active.model} alt="" aria-hidden className="size-full object-cover object-top" />
+                    {/* Portre kırpılmadan, kendi oranında; ürün dairesi sağ alta biner */}
+                    <div className="h-[250px] overflow-hidden rounded-2xl" style={{ background: "#fff5f8" }}>
+                      <img src={active.model} alt="" aria-hidden className="h-full w-auto object-contain" />
                     </div>
                     {active.image && (
                       <span
-                        className="absolute -right-0 bottom-4 grid size-[120px] place-items-center rounded-full border-2 bg-white shadow-[0_18px_30px_-16px_rgba(0,0,0,0.35)]"
+                        className="absolute -right-0 bottom-3 grid size-[120px] place-items-center rounded-full border-2 bg-white shadow-[0_18px_30px_-16px_rgba(0,0,0,0.35)]"
                         style={{ borderColor: active.color }}
                       >
                         <img src={active.image} alt="" aria-hidden className="size-[84%] rounded-full object-cover" />
@@ -1851,9 +1855,21 @@ export function RoutineFace({
 }) {
   const s = toneStyles[ctx.tone];
   const [active, setActive] = useState<number | null>(null);
+  // Masaüstünde daireler fotoğraf çerçevesinin dışına taşar (yanlardaki boşluğu
+  // doldurur); dar ekranda aynı sapmalar taşacağı için katsayı küçülür.
+  const [spread, setSpread] = useState(1);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const apply = () => setSpread(mq.matches ? 1 : 0.42);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+  const cx = (st: { x: number; dx: number }) => st.x + st.dx * spread;
+  const cy = (st: { y: number; dy: number }) => st.y + st.dy * spread;
 
   return (
-    <section id={id} className="mx-auto max-w-[1400px] scroll-mt-24 px-5 py-24 md:px-8">
+    <section id={id} className="mx-auto max-w-[1400px] scroll-mt-24 overflow-x-clip px-5 py-24 md:px-8">
       <SectionHeader
         eyebrow={eyebrow}
         title={title}
@@ -1864,18 +1880,23 @@ export function RoutineFace({
         className="mb-12"
       />
 
-      <div className="relative mx-auto aspect-[4/5] w-full max-w-[560px] md:max-w-[620px]">
+      <div className="relative mx-auto aspect-[4/5] w-full max-w-[560px] md:max-w-[640px]">
         <img src={image} alt="" aria-hidden className="size-full rounded-[2rem] object-cover" />
 
-        {/* Noktalardan dairelere giden ince çizgiler */}
-        <svg aria-hidden className="pointer-events-none absolute inset-0 size-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        {/* Noktalardan dairelere giden ince çizgiler — çerçevenin dışına uzayabilir */}
+        <svg
+          aria-hidden
+          className="pointer-events-none absolute inset-0 size-full overflow-visible"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
           {steps.map((st, i) => (
             <line
               key={st.label}
               x1={st.x}
               y1={st.y}
-              x2={st.x + st.dx}
-              y2={st.y + st.dy}
+              x2={cx(st)}
+              y2={cy(st)}
               stroke={ctx.brand.color}
               strokeWidth={active === null || active === i ? 1.6 : 1}
               strokeDasharray="5 5"
@@ -1909,19 +1930,25 @@ export function RoutineFace({
               onFocus={() => setActive(i)}
               onBlur={() => setActive(null)}
               className="group absolute -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${st.x + st.dx}%`, top: `${st.y + st.dy}%` }}
+              style={{ left: `${cx(st)}%`, top: `${cy(st)}%` }}
             >
               <span
-                className="grid size-20 place-items-center rounded-full border-2 bg-white/90 backdrop-blur transition-transform duration-300 group-hover:scale-105 md:size-24"
+                className="grid size-24 place-items-center rounded-full border-2 bg-white shadow-[0_24px_40px_-24px_rgba(0,0,0,0.35)] transition-transform duration-300 group-hover:scale-105 md:size-32 lg:size-40"
                 style={{ borderColor: ctx.brand.color }}
               >
-                <img src={st.product} alt={st.label} loading="lazy" className="size-[86%] rounded-full object-cover" />
+                <img src={st.product} alt={st.label} loading="lazy" className="size-[84%] rounded-full object-cover" />
               </span>
               <span
-                className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[10px] font-bold"
+                className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full px-2.5 py-1 text-[11px] font-bold lg:text-xs"
                 style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
               >
                 {st.n}
+              </span>
+              <span
+                className="absolute left-1/2 top-full mt-4 hidden -translate-x-1/2 whitespace-nowrap text-sm font-semibold lg:block"
+                style={{ color: s.fg }}
+              >
+                {st.label}
               </span>
             </a>
           </div>
@@ -2036,8 +2063,18 @@ export function ProductRail({
                 src={p.image}
                 alt={p.name}
                 loading="lazy"
-                className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                className={`aspect-square w-full object-cover transition-transform duration-700 ${p.hoverImage ? "" : "group-hover:scale-[1.04]"}`}
               />
+              {/* rhodeskin.com kart etkileşimi: hover'da kullanım karesine çapraz geçiş */}
+              {p.hoverImage && (
+                <img
+                  src={p.hoverImage}
+                  alt=""
+                  aria-hidden
+                  loading="lazy"
+                  className="absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
+                />
+              )}
               {p.badge && badges?.[p.badge] && (
                 <span
                   className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em]"
@@ -2107,7 +2144,8 @@ export function BlogTeasers({
   id?: string;
   eyebrow: string;
   title: string;
-  posts: { image: string; kicker: string; title: string; excerpt: string; href?: string; readingTime: string }[];
+  /** `images`: üçlü kare — ürün / kullanım / doku (rhodeskin.com kart dili) */
+  posts: { images: [string, string, string]; kicker: string; title: string; excerpt: string; href?: string; readingTime: string }[];
   /** href yoksa kartta gösterilen etiket */
   soonLabel: string;
 }) {
@@ -2119,13 +2157,17 @@ export function BlogTeasers({
         {posts.map((post) => {
           const inner = (
             <>
-              <div className="overflow-hidden rounded-2xl">
-                <img
-                  src={post.image}
-                  alt=""
-                  loading="lazy"
-                  className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                />
+              <div className="grid grid-cols-3 gap-1.5 rounded-2xl p-1.5" style={{ background: s.card, boxShadow: `inset 0 0 0 1px ${s.cardBorder}` }}>
+                {post.images.map((src, i) => (
+                  <div key={src} className="overflow-hidden rounded-xl" style={{ background: "#ffffff" }}>
+                    <img
+                      src={src}
+                      alt=""
+                      loading="lazy"
+                      className={`aspect-[4/5] w-full transition-transform duration-700 group-hover:scale-[1.04] ${i === 0 ? "object-contain p-2" : "object-cover"}`}
+                    />
+                  </div>
+                ))}
               </div>
               <p className="mt-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: ctx.brand.color }}>
                 {post.kicker}

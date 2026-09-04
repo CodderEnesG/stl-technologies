@@ -1,7 +1,7 @@
 import { bnkCategories, bnkProducts, getBrand } from "../data/brands";
 import { useI18n } from "../i18n";
 import { usePageMeta } from "../hooks/usePageMeta";
-import { BnkHero } from "../components/brand/bnkHero";
+import { BnkEditorialHero } from "../components/brand/bnkHero/BnkEditorialHero";
 import {
   BlogTeasers,
   BrandCTA,
@@ -28,34 +28,14 @@ export default function BNK() {
 
   return (
     <BrandShell ctx={ctx}>
-      {/* Banner metinleri görselin içinde geldiği için üstüne başlık binmiyor */}
-      <BnkHero
+      {/* Giriş: sade editoryal kadraj (müşteri kararı, 2026-09-04) */}
+      <BnkEditorialHero
         ctx={ctx}
-        prevLabel={c.hero.prev}
-        nextLabel={c.hero.next}
-        editorial={{
-          image: "/images/bnk/model-routine.webp",
-          title: c.hero.editorialHero.title,
-          sub: c.hero.editorialHero.sub,
-          cta: c.hero.editorialHero.cta,
-          href: `${STORE}all`,
-        }}
-        slides={[
-          {
-            image: "/images/bnk/hero-banner-1.webp",
-            cta: c.hero.slides[0].cta,
-            href: `${STORE}yuz-gunes-kremi`,
-            align: "left",
-            valign: "bottom",
-          },
-          {
-            image: "/images/bnk/hero-banner-2.webp",
-            cta: c.hero.slides[1].cta,
-            href: `${STORE}tonik`,
-            align: "left",
-            valign: "bottom",
-          },
-        ]}
+        image="/images/bnk/model-routine.webp"
+        title={c.hero.editorialHero.title}
+        sub={c.hero.editorialHero.sub}
+        cta={c.hero.editorialHero.cta}
+        href={`${STORE}all`}
       />
       <BrandCategoryBar ctx={ctx} categories={bnkCategories} allLabel={c.allProducts} links={c.barLinks} />
       <BrandIntro
@@ -64,7 +44,6 @@ export default function BNK() {
         kicker={c.about.kicker}
         title={c.about.title}
         body={c.about.body}
-        stats={c.stats}
       />
       <RoutineFace
         ctx={ctx}
@@ -79,8 +58,8 @@ export default function BNK() {
             product: "/images/bnk/circle-temizleyici.webp",
             x: 55,
             y: 15,
-            dx: 26,
-            dy: -6,
+            dx: 74,
+            dy: -3,
             href: `${STORE}yuz-temizleyiciler`,
           },
           {
@@ -88,8 +67,8 @@ export default function BNK() {
             product: "/images/bnk/circle-tonik.webp",
             x: 34,
             y: 33,
-            dx: -22,
-            dy: -6,
+            dx: -64,
+            dy: -9,
             href: `${STORE}tonik`,
           },
           {
@@ -97,7 +76,7 @@ export default function BNK() {
             product: "/images/bnk/circle-serum.webp",
             x: 63,
             y: 40,
-            dx: 20,
+            dx: 66,
             dy: 14,
             href: `${STORE}cilt-serumu`,
           },
@@ -106,7 +85,7 @@ export default function BNK() {
             product: "/images/bnk/circle-gunes-kremi.webp",
             x: 45,
             y: 58,
-            dx: -28,
+            dx: -75,
             dy: 16,
             href: `${STORE}yuz-gunes-kremi`,
           },
@@ -138,9 +117,9 @@ export default function BNK() {
         title={c.blog.title}
         soonLabel={c.blog.soon}
         posts={[
-          { ...c.blog.posts[0], image: "/images/bnk/model-bb.webp" },
-          { ...c.blog.posts[1], image: "/images/bnk/circle-gunes-kremi.webp" },
-          { ...c.blog.posts[2], image: "/images/bnk/circle-nemlendirici.webp" },
+          { ...c.blog.posts[0], images: ["/images/bnk/circle-tonik.webp", "/images/bnk/tile-face.webp", "/images/bnk/tile-swatch.webp"] },
+          { ...c.blog.posts[1], images: ["/images/bnk/circle-gunes-kremi.webp", "/images/bnk/tile-hand.webp", "/images/bnk/tile-water.webp"] },
+          { ...c.blog.posts[2], images: ["/images/bnk/circle-nemlendirici.webp", "/images/bnk/tile-maskmodel.webp", "/images/bnk/tile-pinkswatch.webp"] },
         ]}
       />
       <PullQuote ctx={ctx} text={c.quote.text} source={c.quote.source} />

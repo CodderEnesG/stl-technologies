@@ -318,7 +318,7 @@ export const tr = {
       about: {
         kicker: "BNK hakkında",
         title: "Kore cilt bakımı, sade bir rutinde.",
-        body: "BNK — Beauty Net Korea — Kore kozmetiğinin özenli formül yaklaşımını Türkiye'ye taşır. Kalabalık raflar yerine az sayıda, işlevi net ürün: temizle, nemlendir, koru.",
+        body: "BNK — Beauty Net Korea — Kore kozmetiğinin özenli formül yaklaşımını Türkiye'ye taşır. Seçkide üç Kore markası var: TENZERO, FOODAHOLIC ve DR. MELOSO. Kalabalık raflar yerine az sayıda, işlevi net ürün: temizle, dengele, besle, koru. Her ürün Kore'de üretilir, beautynetkorea.com.tr üzerinden Türkiye'ye ulaşır; rutin dört adımda, sabah ve akşam iki dakikada tamamlanır.",
       },
       stats: [
         { n: "70+", l: "Ürün" },
@@ -337,10 +337,6 @@ export const tr = {
         { title: "Günlük ritüel", text: "Sabah ve akşam; iki dakikada tamamlanan bakım." },
       ],
       hero: {
-        slides: [
-          { cta: "Güneş bakımını keşfet" },
-          { cta: "Tonikleri incele" },
-        ],
         editorialHero: {
           title: "Kore ışıltısı, günlük ritüel.",
           sub: "Kalabalık raflar yerine işlevi net ürünler: temizle, dengele, besle, koru.",
