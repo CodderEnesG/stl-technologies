@@ -14,6 +14,8 @@ export type Product = {
   badge?: "best" | "new";
   /** Kartta isim altındaki tek satırlık fayda */
   benefit?: string;
+  /** Hover'da çapraz geçişle gelen ikinci kare (kullanım / doku) */
+  hoverImage?: string;
 };
 
 export type BrandVisual = {
@@ -301,7 +303,8 @@ export const bnkProducts: Product[] = [
   {
     name: "TENZERO Perfect Cover BB Krem",
     category: "BB & CC Krem",
-    image: "/images/bnk/circle-bb-krem.webp",
+    image: "/images/bnk/product-bb-white.webp",
+    hoverImage: "/images/bnk/hover-bb.webp",
     href: "https://beautynetkorea.com.tr/collections/bb-cc-krem",
     badge: "best",
     benefit: "Yoğun kapatıcılık, doğal bitiş",
@@ -310,6 +313,7 @@ export const bnkProducts: Product[] = [
     name: "TENZERO Snail Göz Serumu",
     category: "Göz Bakımı",
     image: "/images/bnk/circle-goz-cevresi.webp",
+    hoverImage: "/images/bnk/gallery-goz-kremi.webp",
     href: "https://beautynetkorea.com.tr/collections/goz-serumu",
     badge: "best",
     benefit: "Göz çevresini nemlendirir, aydınlatır",
@@ -318,6 +322,7 @@ export const bnkProducts: Product[] = [
     name: "TENZERO Collagen Tonik",
     category: "Tonik",
     image: "/images/bnk/circle-tonik.webp",
+    hoverImage: "/images/bnk/gallery-vitac-tonik.webp",
     href: "https://beautynetkorea.com.tr/collections/tonik",
     badge: "best",
     benefit: "pH dengesi, esneklik desteği",
@@ -326,6 +331,7 @@ export const bnkProducts: Product[] = [
     name: "TENZERO Hyaluronik Ampul Serum",
     category: "Serum & Ampul",
     image: "/images/bnk/circle-serum.webp",
+    hoverImage: "/images/bnk/gallery-collagen-serum.webp",
     href: "https://beautynetkorea.com.tr/collections/cilt-serumu",
     benefit: "Derin nem, dolgun görünüm",
   },
@@ -333,6 +339,7 @@ export const bnkProducts: Product[] = [
     name: "FOODAHOLIC Multi Sun Cream SPF50+",
     category: "Güneş Kremi",
     image: "/images/bnk/circle-gunes-kremi.webp",
+    hoverImage: "/images/bnk/gallery-spf-pembe.webp",
     href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi",
     badge: "new",
     benefit: "SPF50+ PA+++, yağlı his bırakmaz",
@@ -341,6 +348,7 @@ export const bnkProducts: Product[] = [
     name: "DR. MELOSO Yuja C Peeling Jel",
     category: "Temizleyici",
     image: "/images/bnk/circle-temizleyici.webp",
+    hoverImage: "/images/bnk/peeling-bej.webp",
     href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler",
     benefit: "Nazik arındırma, C vitamini",
   },
@@ -354,7 +362,8 @@ export const bnkProducts: Product[] = [
   {
     name: "FOODAHOLIC 3D Kore Maskesi 8'li",
     category: "Yüz Maskesi",
-    image: "/images/bnk/circle-kagit-maske.webp",
+    image: "/images/bnk/product-maske-white.webp",
+    hoverImage: "/images/bnk/hover-maske.webp",
     href: "https://beautynetkorea.com.tr/collections/yuz-maskesi",
     benefit: "Haftalık yoğun bakım, 8 çeşit",
   },
@@ -370,7 +379,7 @@ export const bnkCategories = [
     key: "sun",
     label: "Güneş Bakımı",
     tagline: "SPF50+ ile günün son adımı",
-    model: "/images/bnk/model-routine.webp",
+    model: "/images/bnk/panel-face-1.webp",
     color: "#ed1651",
     icon: "sun-moon" as const,
     href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi",
@@ -386,7 +395,7 @@ export const bnkCategories = [
     key: "serum",
     label: "Serum & Ampul",
     tagline: "Yoğun nem ve etken madde",
-    model: "/images/bnk/model-bb.webp",
+    model: "/images/bnk/panel-face-2.webp",
     color: "#ed1651",
     icon: "droplet" as const,
     href: "https://beautynetkorea.com.tr/collections/cilt-serumu",
@@ -402,7 +411,7 @@ export const bnkCategories = [
     key: "cream",
     label: "Nemlendirici",
     tagline: "Bariyeri koruyan hafif katman",
-    model: "/images/bnk/model-routine.webp",
+    model: "/images/bnk/panel-face-3.webp",
     color: "#ed1651",
     icon: "sparkles" as const,
     href: "https://beautynetkorea.com.tr/collections/yuz-kremi",
@@ -418,7 +427,7 @@ export const bnkCategories = [
     key: "cleanser",
     label: "Temizlik",
     tagline: "Rutinin ilk ve en nazik adımı",
-    model: "/images/bnk/model-bb.webp",
+    model: "/images/bnk/panel-face-4.webp",
     color: "#ed1651",
     icon: "flask-conical" as const,
     href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler",

@@ -318,7 +318,7 @@ export const en: SiteContent = {
       about: {
         kicker: "About BNK",
         title: "Korean skincare, in a simple routine.",
-        body: "BNK — Beauty Net Korea — brings the careful formulation approach of Korean cosmetics to Türkiye. Instead of crowded shelves, a small set of products with a clear purpose: cleanse, moisturize, protect.",
+        body: "BNK — Beauty Net Korea — brings the careful formulation approach of Korean cosmetics to Türkiye. The range covers three Korean brands: TENZERO, FOODAHOLIC and DR. MELOSO. Instead of crowded shelves, a small set of products with a clear purpose: cleanse, balance, feed, protect. Every product is made in Korea and reaches Türkiye through beautynetkorea.com.tr; the routine takes four steps and two minutes, morning and evening.",
       },
       stats: [
         { n: "70+", l: "Products" },
@@ -337,10 +337,6 @@ export const en: SiteContent = {
         { title: "Daily ritual", text: "Morning and evening; care completed in two minutes." },
       ],
       hero: {
-        slides: [
-          { cta: "Explore sun care" },
-          { cta: "See the toners" },
-        ],
         editorialHero: {
           title: "Korean glow, a daily ritual.",
           sub: "Not a crowded shelf — products with a clear job: cleanse, balance, feed, protect.",
