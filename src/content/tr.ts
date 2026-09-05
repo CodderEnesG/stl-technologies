@@ -77,9 +77,9 @@ export const tr = {
       roleDescription: "Marka seçici küp",
       hint: "Fareyi soldan sağa gezdirin veya ok tuşlarını kullanın.",
     },
-    partnersKicker: "Satış kanalları",
-    partnersTitle: "Markalarımız Türkiye'nin önde gelen satış noktalarında.",
-    partnersNote: "Logolar temsilidir; kanal listesi güncellenecektir.",
+    partnersKicker: "Referanslar",
+    partnersTitle: "Birlikte çalıştığımız markalar.",
+    partnersNote: "Kurumsal üretim ve tedarik iş birliklerimizden bir seçki.",
     ctaButton: "İletişime geçin",
   },
 

@@ -1,13 +1,14 @@
 import { Suspense, lazy } from "react";
-import { partners, stlImages } from "../data/brands";
+import { stlImages } from "../data/brands";
+import { partnerLogos } from "../data/partners";
 import { useI18n } from "../i18n";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { BrandCube } from "../components/BrandCube";
 import { Hero } from "../components/hero";
+import { PartnerLogos } from "../components/PartnerLogos";
 import {
   AboutBlock,
   ContactSection,
-  MarqueeBand,
   MissionVision,
   stlCtx,
 } from "../components/sections";
@@ -71,12 +72,12 @@ export default function Home() {
         description={t.home.portfolioDescription}
       />
 
-      <MarqueeBand
+      <PartnerLogos
         ctx={stlCtx}
         kicker={t.home.partnersKicker}
         title={t.home.partnersTitle}
         note={t.home.partnersNote}
-        items={partners}
+        items={partnerLogos}
         icon="store"
       />
 

@@ -78,9 +78,9 @@ export const en: SiteContent = {
       roleDescription: "Brand selector cube",
       hint: "Move the pointer across, or use the arrow keys.",
     },
-    partnersKicker: "Sales channels",
-    partnersTitle: "Our brands are available at Türkiye's leading retailers.",
-    partnersNote: "Logos are representative; the channel list will be updated.",
+    partnersKicker: "References",
+    partnersTitle: "Brands we work with.",
+    partnersNote: "A selection of our corporate manufacturing and supply partnerships.",
     ctaButton: "Get in touch",
   },
 
