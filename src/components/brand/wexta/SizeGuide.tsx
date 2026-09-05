@@ -54,7 +54,8 @@ export function SizeGuide({
         <span>20 · 24 · 28″</span>
       </div>
 
-      <div className="mt-10 grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:gap-16">
+      {/* items-start: sütunlar birbirinin boyuna bağlı değil — seçim değişince hiçbir şey kaymaz */}
+      <div className="mt-10 grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:items-start md:gap-16">
         <div>
           <h2 className={`${ctx.font} text-3xl font-bold leading-[1.05] tracking-tightest md:text-5xl`}>{title}</h2>
           <p className="mt-5 max-w-md text-lg leading-relaxed" style={{ color: s.sub }}>{lead}</p>
@@ -70,7 +71,7 @@ export function SizeGuide({
                     onFocus={() => setActive(i)}
                     onClick={() => setActive(i)}
                     aria-pressed={on}
-                    className="grid w-full grid-cols-[4.5rem_1fr_auto] items-baseline gap-4 py-5 text-left outline-none"
+                    className="grid w-full grid-cols-[4.5rem_1fr_auto] items-center gap-4 py-4 text-left outline-none"
                   >
                     <span
                       className={`${ctx.font} text-4xl font-bold leading-none tracking-tightest transition-colors md:text-5xl`}
@@ -79,15 +80,7 @@ export function SizeGuide({
                       {z.inch}
                       <span className="text-lg align-top">″</span>
                     </span>
-                    <span>
-                      <span className="block font-semibold">{z.label}</span>
-                      <span
-                        className="block overflow-hidden text-sm leading-relaxed transition-[max-height,opacity,margin] duration-500"
-                        style={{ color: s.sub, maxHeight: on ? 120 : 0, opacity: on ? 1 : 0, marginTop: on ? 6 : 0 }}
-                      >
-                        {z.text}
-                      </span>
-                    </span>
+                    <span className="font-semibold transition-colors" style={{ color: on ? s.fg : s.sub }}>{z.label}</span>
                     <span
                       className="rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors"
                       style={{
@@ -102,6 +95,20 @@ export function SizeGuide({
               );
             })}
           </ul>
+
+          {/* Açıklama: sabit yükseklikli tek alan, metinler üst üste çapraz geçişle — satır boyları hiç değişmez */}
+          <div className="relative mt-5 min-h-[4.5rem]">
+            {sizes.map((z, i) => (
+              <p
+                key={z.inch}
+                aria-hidden={i !== active}
+                className="absolute inset-x-0 top-0 text-base leading-relaxed transition-opacity duration-500"
+                style={{ color: s.sub, opacity: i === active ? 1 : 0 }}
+              >
+                <strong className="font-semibold" style={{ color: brand.color }}>{z.inch}″ {z.label}.</strong> {z.text}
+              </p>
+            ))}
+          </div>
 
           <p className="mt-5 flex items-center gap-3 text-sm" style={{ color: s.muted }}>
             <span className="inline-block size-2 rounded-full" style={{ background: brand.color }} />
@@ -129,7 +136,7 @@ export function SizeGuide({
                   style={{ width: `calc(${RATIO * scale} * ${H})` }}
                 >
                   <span
-                    className="absolute inset-x-0 text-center text-[11px] font-semibold uppercase tracking-[0.24em] transition-all duration-500"
+                    className="absolute inset-x-0 text-center text-[11px] font-semibold uppercase tracking-[0.24em] transition-[color,opacity] duration-500"
                     style={{
                       bottom: `calc(${scale * 100}% + 14px)`,
                       color: on ? brand.color : s.muted,
@@ -143,12 +150,11 @@ export function SizeGuide({
                     alt=""
                     aria-hidden
                     loading="lazy"
-                    className="w-full object-contain object-bottom transition-all duration-500"
+                    className="w-full object-contain object-bottom transition-[opacity,filter] duration-500"
                     style={{
                       height: `${scale * 100}%`,
                       opacity: on ? 1 : 0.28,
                       filter: on ? "none" : "grayscale(1)",
-                      transform: on ? "translateY(0)" : "translateY(4px)",
                     }}
                   />
                 </button>

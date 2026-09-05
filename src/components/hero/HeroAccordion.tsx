@@ -41,7 +41,8 @@ export function HeroAccordion() {
 
   return (
     <section
-      className="relative flex h-[calc(100svh-var(--nav-h))] min-h-[560px] w-full flex-col md:flex-row"
+      // overflow-hidden: açılışta paneller yukarıdan inerek gelir, taşan kısım görünmesin
+      className="relative flex h-[calc(100svh-var(--nav-h))] min-h-[560px] w-full flex-col overflow-hidden md:flex-row"
       onMouseLeave={() => {
         setActive(null);
         interacted.current = false;
@@ -64,8 +65,10 @@ export function HeroAccordion() {
               setActive(i);
             }}
             onClick={handleTouchNav(i)}
-            className="group relative overflow-hidden border-b border-black/10 outline-none transition-[flex-grow] duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-white/70 md:border-b-0 md:border-r"
+            className="hero-panel-in group relative overflow-hidden border-b border-black/10 outline-none transition-[flex-grow] duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-white/70 md:border-b-0 md:border-r"
             style={{
+              // Açılış sırası: soldan sağa 120 ms arayla (index.css → .hero-panel-in)
+              ["--i" as string]: i,
               flexGrow: grow,
               flexBasis: 0,
               background: b.panelBg,
