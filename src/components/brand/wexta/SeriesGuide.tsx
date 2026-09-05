@@ -17,6 +17,8 @@ export type SeriesCopy = {
   material: Record<WextaSeries["material"], string>;
   productCta: string;
   quoteCta: string;
+  /** Lead altındaki küçük katalog bağlantısı metni */
+  catalogLabel: string;
   /** Seri koduna göre ad + tek cümle */
   items: Record<string, { name: string; text: string }>;
 };
@@ -27,7 +29,18 @@ export type SeriesCopy = {
  * katalog kesiti solda, sağda ad, tek cümle ve teknik satırlar. Görseller
  * kataloğun kendi çekimleri; jpg olanlar multiply ile beyaza kaynaşır.
  */
-export function SeriesGuide({ ctx, copy, series }: { ctx: BrandCtx; copy: SeriesCopy; series: WextaSeries[] }) {
+export function SeriesGuide({
+  ctx,
+  copy,
+  series,
+  catalogHref,
+}: {
+  ctx: BrandCtx;
+  copy: SeriesCopy;
+  series: WextaSeries[];
+  /** 2023 katalog PDF'i — hizmet kartları kaldırıldı, tek bağlantı burada yaşıyor */
+  catalogHref?: string;
+}) {
   const { s: sec } = useI18n();
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
@@ -48,7 +61,20 @@ export function SeriesGuide({ ctx, copy, series }: { ctx: BrandCtx; copy: Series
 
       <div className="mt-10 grid gap-6 md:grid-cols-[1fr_1fr] md:items-end">
         <h2 className={`${ctx.font} text-3xl font-bold leading-[1.05] tracking-tightest md:text-5xl`}>{copy.title}</h2>
-        <p className="max-w-md text-lg leading-relaxed md:justify-self-end" style={{ color: s.sub }}>{copy.lead}</p>
+        <div className="max-w-md md:justify-self-end">
+          <p className="text-lg leading-relaxed" style={{ color: s.sub }}>{copy.lead}</p>
+          {catalogHref && (
+            <a
+              href={catalogHref}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
+              style={{ color: brand.color }}
+            >
+              {copy.catalogLabel} <Arrow />
+            </a>
+          )}
+        </div>
       </div>
 
       {/* Seri şeridi */}
