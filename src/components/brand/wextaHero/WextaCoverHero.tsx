@@ -6,7 +6,7 @@ import { type BrandCtx } from "../sections";
 /**
  * Katalog kapağı hero'su (müşteri seçimi, 2026-09-05).
  * Oxyra'daki tam ekran görselli hero'nun (BrandHeroFull) wexta karşılığı:
- * kataloğun yatay yaşam karesi tam ekran, üstünde ince katalog künyesi,
+ * terminal koridoru karesi (Pexels 4173231) tam ekran, üstünde ince katalog künyesi,
  * altta perde üzerinde wordmark + tagline. Siyah-beyaz kapak (wexta-cover.jpg)
  * "alakasız duruyor" notuyla havalimanı karesine çevrildi.
  */
@@ -14,7 +14,7 @@ export function WextaCoverHero({
   ctx,
   channelHref,
   image = wextaImages.cover,
-  focus = "50% 12%",
+  focus = "66% 28%", // kadın karenin sağ üçte birinde; mobil dikey kırpmada kadrajda kalsın
 }: {
   ctx: BrandCtx;
   channelHref: string;
