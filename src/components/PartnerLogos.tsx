@@ -3,7 +3,7 @@ import { Icon, type IconName } from "./Icon";
 import type { Partner } from "../data/partners";
 
 /**
- * Referans logo şeridi.
+ * Referans logo şeridi. Logolar markanın kendi renginde durur.
  *
  * Logolar birbirinden çok farklı oranlarda geliyor (LC Waikiki 7:1 uzun bir
  * kelime işareti, D'S Damat neredeyse kare). Hepsini aynı yüksekliğe ya da aynı
@@ -12,9 +12,9 @@ import type { Partner } from "../data/partners";
  * ve tamamı dolu kutulu logolar `scale` ile bir tık küçültülüyor. Sonuçta
  * kutular birebir aynı dikdörtgen, içindeki logolar da eşit ağırlıkta.
  */
-const AREA = 2600;
-const MAX_H = 40;
-const MAX_W = 132;
+const AREA = 4000;
+const MAX_H = 46;
+const MAX_W = 146;
 
 function fit(p: Partner) {
   const k = p.scale ?? 1;
@@ -58,14 +58,15 @@ export function PartnerLogos({
         </h2>
       </div>
 
-      <ul className="mx-auto mt-12 flex max-w-[1000px] flex-wrap justify-center gap-3 px-5 md:px-8">
+      {/* Genişlik 5 kutu + boşluk kadar: satırlar 5 + 4 diziliyor, altta tek kutu kalmıyor. */}
+      <ul className="mx-auto mt-12 flex max-w-[1078px] flex-wrap justify-center gap-3 px-5 md:px-8">
         {items.map((p) => {
           const box = fit(p);
           return (
             <li
               key={p.name}
-              className="group grid w-[calc(50%-0.375rem)] place-items-center rounded-xl border transition-colors duration-300 sm:w-[150px] lg:w-[172px]"
-              style={{ height: 84, background: s.card, borderColor: s.cardBorder }}
+              className="group grid w-[calc(50%-0.375rem)] place-items-center rounded-xl border transition-colors duration-300 sm:w-[168px] lg:w-[190px]"
+              style={{ height: 92, background: s.card, borderColor: s.cardBorder }}
             >
               <img
                 src={p.src}
@@ -74,8 +75,8 @@ export function PartnerLogos({
                 decoding="async"
                 width={Math.round(box.width)}
                 height={Math.round(box.height)}
-                className="max-w-[78%] object-contain opacity-80 transition duration-300 [filter:var(--logo-filter)] group-hover:opacity-100 group-hover:[filter:none]"
-                style={{ ...box, "--logo-filter": `grayscale(1) ${p.filter ?? ""}`.trim() } as React.CSSProperties}
+                className="max-w-[86%] object-contain transition-transform duration-300 group-hover:scale-[1.04]"
+                style={box}
               />
             </li>
           );
