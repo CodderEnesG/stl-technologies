@@ -174,7 +174,7 @@ export const stlImages = {
   factory: "/images/stl/fabrika-uretim.jpg",
   /** Tesis dış cephe — STL + segment binası */
   building: "/images/stl/fabrika-bina.jpg",
-  cover: "/images/wexta/cover-airport.webp",
+  cover: "/images/stl/wexta-cover.jpg",
   /** Seyahat anı — katalogdan, kimliksiz kadraj */
   travel: "/images/stl/wexta-travel.jpg",
   store: "/images/stl/wexta-lifestyle-1.jpg",
@@ -385,8 +385,8 @@ export const wextaSeries: WextaSeries[] = [
 ];
 
 export const wextaImages = {
-  /** Hero kapağı (varyant 2) — katalog 4. sayfa yaşam karesi (havalimanı) */
-  cover: "/images/wexta/cover-airport.webp",
+  /** Hero kapağı (varyant 2) — Pexels 4173231 (camel palto, terminal koridoru; ücretsiz lisans). Kullanıcı seçimi 2026-09-05 */
+  cover: "/images/wexta/cover-corridor.webp",
   /** Siyah-beyaz sahnede mavi valiz — katalog kapağı; landing paneli ve hero varyant 4 */
   coverMono: "/images/stl/wexta-cover.jpg",
   /** Boy rehberi — şeffaf kesit, üç boyda ölçeklenir */
