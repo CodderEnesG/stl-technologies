@@ -166,19 +166,6 @@ export const stlBrand: BrandVisual = {
 
 export const getBrand = (slug: string) => brands.find((b) => b.slug === slug)!;
 
-// Satış kanalları — logolar gelene kadar metin; gerçek liste netleşecek
-export const partners = [
-  "Trendyol",
-  "Hepsiburada",
-  "Amazon",
-  "Teknosa",
-  "MediaMarkt",
-  "n11",
-  "Vatan",
-  "A101",
-  "Migros",
-];
-
 // Gerçek STL fotoğrafları: tesis (firma arşivi) + Wexta katalog görselleri
 export const stlImages = {
   /** STL markalı üretim bandı — Arnavutköy tesisi */
