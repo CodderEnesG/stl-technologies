@@ -15,6 +15,8 @@ import { Arrow } from "../Arrow";
 import { Icon, type IconName } from "../Icon";
 import { LogoSlot } from "../LogoSlot";
 import { SectionHeader } from "../SectionHeader";
+import { revealItem } from "../Reveal";
+import { CountUp } from "../CountUp";
 import { toneStyles, type BrandCtx } from "../brand/sections";
 
 /** Çatı sitenin kendi ctx'i — marka sayfalarındaki ctx literalinin karşılığı. */
@@ -36,6 +38,7 @@ export function AboutBlock({
   imageAlt,
   stats,
   statIcons,
+  countUp,
 }: {
   ctx: BrandCtx;
   id?: string;
@@ -47,6 +50,8 @@ export function AboutBlock({
   stats: Stat[];
   /** Her istatistiğin üstünde gösterilecek ikon (sırayla) */
   statIcons?: IconName[];
+  /** Sayılar görünürken 0'dan saysın (CountUp) — şimdilik sadece landing */
+  countUp?: boolean;
 }) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
@@ -82,7 +87,7 @@ export function AboutBlock({
           {/* Satır-içi istatistik şeridi — marka sayfalarındaki BrandIntro düzeninin çatı karşılığı */}
           <div className="mt-12 grid grid-cols-3 gap-6 md:gap-10">
             {stats.map((st, i) => (
-              <div key={st.l} className="border-t-2 pt-4" style={{ borderColor: brand.color }}>
+              <div key={st.l} {...revealItem(i)} className="border-t-2 pt-4" style={{ ...revealItem(i).style, borderColor: brand.color }}>
                 {statIcons?.[i] && (
                   <Icon
                     name={statIcons[i]}
@@ -93,7 +98,7 @@ export function AboutBlock({
                   />
                 )}
                 <div className={`${ctx.font} text-2xl font-extrabold leading-none tracking-tightest md:text-4xl`}>
-                  {st.n}
+                  {countUp ? <CountUp value={st.n} delay={120 + i * 90} /> : st.n}
                 </div>
                 <div className="mt-2.5 text-sm" style={{ color: s.muted }}>
                   {st.l}
@@ -128,8 +133,12 @@ export function MissionVision({
         {items.map((m, i) => (
           <div
             key={m.label}
+            data-reveal-item=""
             className="rounded-3xl p-8 md:p-10"
-            style={i === 0 ? { background: "#2b2828", color: "#fff" } : { background: ctx.brand.color, color: ctx.brand.onColor }}
+            style={{
+              ...revealItem(i).style,
+              ...(i === 0 ? { background: "#2b2828", color: "#fff" } : { background: ctx.brand.color, color: ctx.brand.onColor }),
+            }}
           >
             <div className="flex items-center gap-3">
               {icons?.[i] && (

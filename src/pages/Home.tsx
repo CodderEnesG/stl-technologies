@@ -1,22 +1,23 @@
-import { Suspense, lazy } from "react";
-import { stlImages } from "../data/brands";
-import { partnerLogos } from "../data/partners";
-import { useI18n } from "../i18n";
-import { usePageMeta } from "../hooks/usePageMeta";
-import { BrandCube } from "../components/BrandCube";
-import { Hero } from "../components/hero";
-import { PartnerLogos } from "../components/PartnerLogos";
+import { Suspense, lazy } from "react"
+import { stlImages } from "../data/brands"
+import { partnerLogos } from "../data/partners"
+import { useI18n } from "../i18n"
+import { usePageMeta } from "../hooks/usePageMeta"
+import { BrandCube } from "../components/BrandCube"
+import { Hero } from "../components/hero"
+import { PartnerLogos } from "../components/PartnerLogos"
+import { Reveal } from "../components/Reveal"
 import {
   AboutBlock,
   ContactSection,
   MissionVision,
   stlCtx,
-} from "../components/sections";
+} from "../components/sections"
 
 // Dünya haritası path verisi ~100 KB — ilk yükte değil, ayrı parçada gelsin.
 const ExportMap = lazy(() =>
   import("../components/ExportMap").then((m) => ({ default: m.ExportMap })),
-);
+)
 
 /**
  * Çatı site tek sayfa: hakkımızda, markalar ve iletişim ayrı sayfa değil,
@@ -24,35 +25,43 @@ const ExportMap = lazy(() =>
  * #iletisim çıpalarına gider.
  */
 export default function Home() {
-  const { t } = useI18n();
-  usePageMeta(t.meta.home.title, t.meta.home.desc);
-  const w = t.home.whoWeAre;
-  const a = t.about;
+  const { t } = useI18n()
+  usePageMeta(t.meta.home.title, t.meta.home.desc)
+  const w = t.home.whoWeAre
+  const a = t.about
 
   return (
     <>
       <h1 className="sr-only">{t.meta.home.title}</h1>
-      <Hero />
+      {/* Kaydırma girişleri (Reveal) şimdilik sadece bu sayfada — müşteri kararı sonrası yayılır */}
+      <Reveal mode="fade">
+        <Hero />
+      </Reveal>
 
-      <AboutBlock
-        ctx={stlCtx}
-        id="hakkimizda"
-        eyebrow={w.eyebrow}
-        title={w.title}
-        paragraphs={w.paragraphs}
-        image={stlImages.building}
-        imageAlt={a.buildingAlt}
-        stats={t.home.stats}
-        statIcons={["calendar-days", "factory", "globe"]}
-      />
+      <Reveal>
+        <AboutBlock
+          ctx={stlCtx}
+          id="hakkimizda"
+          eyebrow={w.eyebrow}
+          title={w.title}
+          paragraphs={w.paragraphs}
+          image={stlImages.building}
+          imageAlt={a.buildingAlt}
+          stats={t.home.stats}
+          statIcons={["calendar-days", "factory", "globe"]}
+        countUp
+        />
+      </Reveal>
 
-      <MissionVision
-        ctx={stlCtx}
-        eyebrow={a.missionEyebrow}
-        title={a.missionTitle}
-        items={[a.mission, a.vision]}
-        icons={["target", "eye"]}
-      />
+      <Reveal>
+        <MissionVision
+          ctx={stlCtx}
+          eyebrow={a.missionEyebrow}
+          title={a.missionTitle}
+          items={[a.mission, a.vision]}
+          icons={["target", "eye"]}
+        />
+      </Reveal>
 
       {/* "STL Dünyası" bento bölümü müşteri kararına kadar kapalı.
           Metinler t.home.bento'da, bileşen components/sections içinde duruyor. */}
@@ -64,28 +73,36 @@ export default function Home() {
         productionAlt={a.lineAlt}
       /> */}
 
-      <BrandCube
-        ctx={stlCtx}
-        id="markalar"
-        eyebrow={t.home.portfolioEyebrow}
-        title={t.home.portfolioTitle}
-        description={t.home.portfolioDescription}
-      />
+      <Reveal>
+        <BrandCube
+          ctx={stlCtx}
+          id="markalar"
+          eyebrow={t.home.portfolioEyebrow}
+          title={t.home.portfolioTitle}
+          description={t.home.portfolioDescription}
+        />
+      </Reveal>
 
-      <PartnerLogos
-        ctx={stlCtx}
-        kicker={t.home.partnersKicker}
-        title={t.home.partnersTitle}
-        note={t.home.partnersNote}
-        items={partnerLogos}
-        icon="store"
-      />
+      <Reveal>
+        <PartnerLogos
+          ctx={stlCtx}
+          kicker={t.home.partnersKicker}
+          title={t.home.partnersTitle}
+          note={t.home.partnersNote}
+          items={partnerLogos}
+          icon="store"
+        />
+      </Reveal>
 
-      <Suspense fallback={<div className="min-h-[520px]" aria-hidden />}>
-        <ExportMap ctx={stlCtx} />
-      </Suspense>
+      <Reveal>
+        <Suspense fallback={<div className="min-h-[520px]" aria-hidden />}>
+          <ExportMap ctx={stlCtx} />
+        </Suspense>
+      </Reveal>
 
-      <ContactSection ctx={stlCtx} id="iletisim" />
+      <Reveal>
+        <ContactSection ctx={stlCtx} id="iletisim" />
+      </Reveal>
     </>
-  );
+  )
 }
