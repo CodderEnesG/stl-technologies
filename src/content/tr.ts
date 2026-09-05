@@ -250,6 +250,11 @@ export const tr = {
       tagline: "Her yolculuk bir hayalle başlar.",
       summary: "İstanbul'da üretilen dayanıklı, ferah valizler; 20 ülkeye ihracat.",
       channel: "stlteknoloji.com'da incele",
+      slider: [
+        { title: "Zamanın bir adım ötesinde", cta: "İncele" },
+        { title: "Her yolculuk bir hayalle başlar", cta: "Ürünleri incele" },
+        { title: "Özgün, şık ve estetik modeller", cta: "Ürünleri incele" },
+      ],
       heroAlt: {
         label: "Seyahat koleksiyonu",
         title: "Fabrikadan çıkar, yolculuğa hazır.",
