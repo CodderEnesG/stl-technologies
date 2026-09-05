@@ -144,10 +144,13 @@ export function Navbar() {
                       className="group relative flex min-h-[108px] flex-col justify-between overflow-hidden rounded-2xl p-4 transition-transform duration-300 hover:-translate-y-0.5"
                       style={{ background: b.panelBg, color: b.panelText }}
                     >
-                      <div className="flex items-center justify-between">
-                        <LogoSlot src={logo} label={b.name} height={20} onDark={cardOnDark} />
+                      <div className="flex items-center justify-between gap-3">
+                        {/* Geniş wordmark'lar (BNK) ok butonunu dışarı itmesin: logo daralır, ok sabit */}
+                        <div className="min-w-0 flex-1">
+                          <LogoSlot src={logo} label={b.name} height={20} onDark={cardOnDark} className="max-w-full object-left" />
+                        </div>
                         <span
-                          className="grid size-7 place-items-center rounded-full opacity-0 transition-all duration-300 group-hover:opacity-100"
+                          className="grid size-7 shrink-0 place-items-center rounded-full opacity-0 transition-all duration-300 group-hover:opacity-100"
                           style={{ background: b.color, color: b.onColor }}
                         >
                           <Arrow />
@@ -233,7 +236,7 @@ export function Navbar() {
                   className="flex items-center justify-center rounded-xl px-3 py-3.5"
                   style={{ background: b.panelBg }}
                 >
-                  <LogoSlot src={cardOnDark ? (b.logoLightWide ?? b.logoLight) : (b.logoDarkWide ?? b.logoDark)} label={b.name} height={18} onDark={cardOnDark} />
+                  <LogoSlot src={cardOnDark ? (b.logoLightWide ?? b.logoLight) : (b.logoDarkWide ?? b.logoDark)} label={b.name} height={18} onDark={cardOnDark} className="max-w-full" />
                 </Link>
               );
             })}
