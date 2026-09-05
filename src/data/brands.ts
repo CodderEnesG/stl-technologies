@@ -70,9 +70,9 @@ export const brands: BrandVisual[] = [
     // Katalog kapağı: portre sahne, panel kadrajına birebir oturuyor.
     // Beyaz zeminli ürün kesiti + mix-blend-multiply, panel açılırken kırpılıp
     // her kare yeniden boyandığı için sekme/titreme yapıyordu.
-    hero: "/images/wexta/cover-airport.webp",
-    // Kadın karenin sağ üçte birinde; dar panelde ortalanınca kadraj dışında kalıyordu
-    heroFocus: "74% 40%",
+    // Landing paneli: siyah-beyaz sahnede mavi valiz (katalog kapağı) — kullanıcı tercihi 2026-09-05
+    hero: "/images/stl/wexta-cover.jpg",
+    heroFocus: "50% 45%",
     heroNameColor: "rgb(41, 174, 198)",
     channelHref: "https://www.stlteknoloji.com/tr/urunler/valiz",
     logoDark: "/logos/wexta.svg",
@@ -108,6 +108,7 @@ export const brands: BrandVisual[] = [
     onColor: "#ffffff",
     panelBg: "linear-gradient(160deg, #ffffff 0%, #ffe7ef 55%, #ffd0de 135%)",
     panelText: "#231f20",
+    heroNameColor: "#ed1651",
     hero: "/images/bnk/hero-panel.webp",
     heroFocus: "50% 30%",
     channelHref: "https://beautynetkorea.com.tr",
@@ -384,8 +385,10 @@ export const wextaSeries: WextaSeries[] = [
 ];
 
 export const wextaImages = {
-  /** Hero kapağı — katalog 4. sayfa yaşam karesi (havalimanı); eski siyah-beyaz kapak müşteri notuyla kaldırıldı */
+  /** Hero kapağı (varyant 2) — katalog 4. sayfa yaşam karesi (havalimanı) */
   cover: "/images/wexta/cover-airport.webp",
+  /** Siyah-beyaz sahnede mavi valiz — katalog kapağı; landing paneli ve hero varyant 4 */
+  coverMono: "/images/stl/wexta-cover.jpg",
   /** Boy rehberi — şeffaf kesit, üç boyda ölçeklenir */
   sizeCutout: "/images/wexta/series-wx1.webp",
 };
