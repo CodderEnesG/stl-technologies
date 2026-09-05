@@ -10,19 +10,31 @@ import { type BrandCtx } from "../sections";
  * altta perde üzerinde wordmark + tagline. Siyah-beyaz kapak (wexta-cover.jpg)
  * "alakasız duruyor" notuyla havalimanı karesine çevrildi.
  */
-export function WextaCoverHero({ ctx, channelHref }: { ctx: BrandCtx; channelHref: string }) {
+export function WextaCoverHero({
+  ctx,
+  channelHref,
+  image = wextaImages.cover,
+  focus = "50% 12%",
+}: {
+  ctx: BrandCtx;
+  channelHref: string;
+  /** Tam ekran kapak görseli — varsayılan havalimanı karesi; varyant 4 siyah-beyaz kapağı verir */
+  image?: string;
+  /** object-position — künye yazısıyla yüz çakışmasın diye kadraja göre ayarlanır */
+  focus?: string;
+}) {
   const { t } = useI18n();
   const h = t.brands.wexta.heroAlt;
 
   return (
     <section className="relative flex min-h-[560px] flex-col justify-end overflow-hidden md:h-[calc(100svh-var(--nav-h))]">
       <img
-        src={wextaImages.cover}
+        src={image}
         alt=""
         aria-hidden
         fetchPriority="high"
         className="absolute inset-0 size-full object-cover"
-        style={{ objectPosition: "50% 12%" }} // üst künye yazısı yüzle çakışmasın: kare aşağı kaydırıldı
+        style={{ objectPosition: focus }}
       />
 
       {/* Katalog künyesi — üst şerit */}
