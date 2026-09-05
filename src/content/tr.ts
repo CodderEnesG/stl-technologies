@@ -183,7 +183,7 @@ export const tr = {
         title: "Refleksinle aynı hızda.",
         text: "Bir hamlenin sonucu milisaniyelerde belli olur. Oxyra mouse; hafif gövdesi, hassas sensörü ve dengeli ağırlığıyla eli yormadan takip eder.",
       },
-      quote: { text: "Üreten biziz; arkasında duran da biz.", source: "Oxyra" },
+      quote: { text: "Oyunun kurallarını yeniden yazan ödüllü tasarım.", source: "Oxyra" },
       ctaTitle: "Kurulumunu tamamla",
     },
     fressi: {
