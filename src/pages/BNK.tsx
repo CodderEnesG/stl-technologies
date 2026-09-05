@@ -51,42 +51,42 @@ export default function BNK() {
         eyebrow={c.routine.eyebrow}
         title={c.routine.title}
         description={c.routine.description}
-        image="/images/bnk/model-routine.webp"
+        image="/images/bnk/model-routine-2.webp"
         steps={[
           {
             ...c.routine.steps[0],
             product: "/images/bnk/circle-temizleyici.webp",
-            x: 55,
-            y: 15,
-            dx: 74,
+            x: 41,
+            y: 13,
+            dx: 88,
             dy: -3,
             href: `${STORE}yuz-temizleyiciler`,
           },
           {
             ...c.routine.steps[1],
             product: "/images/bnk/circle-tonik.webp",
-            x: 34,
-            y: 33,
-            dx: -64,
-            dy: -9,
+            x: 26,
+            y: 50,
+            dx: -54,
+            dy: -20,
             href: `${STORE}tonik`,
           },
           {
             ...c.routine.steps[2],
             product: "/images/bnk/circle-serum.webp",
-            x: 63,
-            y: 40,
-            dx: 66,
-            dy: 14,
+            x: 55,
+            y: 44,
+            dx: 74,
+            dy: 10,
             href: `${STORE}cilt-serumu`,
           },
           {
             ...c.routine.steps[3],
             product: "/images/bnk/circle-gunes-kremi.webp",
-            x: 45,
-            y: 58,
-            dx: -75,
-            dy: 16,
+            x: 44,
+            y: 73,
+            dx: -74,
+            dy: 5,
             href: `${STORE}yuz-gunes-kremi`,
           },
         ]}

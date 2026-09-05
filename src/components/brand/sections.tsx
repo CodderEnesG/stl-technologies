@@ -1873,7 +1873,7 @@ export function RoutineFace({
   const [spread, setSpread] = useState(1);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
-    const apply = () => setSpread(mq.matches ? 1 : 0.42);
+    const apply = () => setSpread(mq.matches ? 1 : 0.36);
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);

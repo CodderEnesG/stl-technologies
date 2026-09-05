@@ -250,6 +250,11 @@ export const en: SiteContent = {
       tagline: "Every journey starts with a dream.",
       summary: "Durable, spacious luggage made in Istanbul; exported to 20 countries.",
       channel: "Browse on stlteknoloji.com",
+      slider: [
+        { title: "One step ahead of time", cta: "Explore" },
+        { title: "Every journey starts with a dream", cta: "Browse products" },
+        { title: "Original, stylish and elegant models", cta: "Browse products" },
+      ],
       heroAlt: {
         label: "Travel collection",
         title: "Off the line, ready for the trip.",
