@@ -250,11 +250,6 @@ export const en: SiteContent = {
       tagline: "Every journey starts with a dream.",
       summary: "Durable, spacious luggage made in Istanbul; exported to 20 countries.",
       channel: "Browse on stlteknoloji.com",
-      slider: [
-        { title: "One step ahead of time", cta: "Explore" },
-        { title: "Every journey starts with a dream", cta: "Browse products" },
-        { title: "Original, stylish and elegant models", cta: "Browse products" },
-      ],
       heroAlt: {
         label: "Travel collection",
         title: "Off the line, ready for the trip.",
@@ -277,6 +272,16 @@ export const en: SiteContent = {
         { k: "Assembly", v: "Steel screws" },
         { k: "Production", v: "100% local" },
       ],
+      shells: {
+        eyebrow: "Shell",
+        title: "Three shells, three journeys.",
+        cta: "See the series",
+        items: [
+          { title: "ABS shell", text: "The shell of most series: 100% ABS. Flexes on impact and returns to shape; steel-screwed accessories." },
+          { title: "Polypropylene", text: "The PP10 series: a wave-formed, more flexible shell. Absorbs impact and keeps the weight down." },
+          { title: "Kids' size", text: "WX-412 / 414 / 415: embossed character, coloured wheels and handle. A child's first suitcase of their own." },
+        ],
+      },
       guide: {
         eyebrow: "Size guide",
         title: "Pick the size for your journey.",
@@ -293,6 +298,7 @@ export const en: SiteContent = {
         eyebrow: "Series guide",
         title: "Browse by series.",
         lead: "Eight adult series and a kids' series. All come off the same line in the same three sizes; the surface pattern and the palette make the difference.",
+        catalogLabel: "2023 catalogue (PDF)",
         colorsLabel: (n: number) => `${n} colours`,
         sizesLabel: "Sizes",
         sizesValue: "20 · 24 · 28 inch",
@@ -341,15 +347,6 @@ export const en: SiteContent = {
         text: "A good suitcase makes you forget it exists: it's light, rolls silently, and comes out of baggage claim intact. That's exactly what wexta aims for.",
       },
       quote: { text: "Every journey starts with a dream.", source: "wexta" },
-      services: {
-        eyebrow: "Services",
-        title: "Catalogue, quotes, OEM.",
-        tiles: [
-          { title: "2023 catalogue", text: "Every series, colour and product code in one PDF.", cta: "Open the PDF" },
-          { title: "Get a quote", text: "Send us the series code for wholesale and corporate orders.", cta: "Go to the form" },
-          { title: "OEM production", text: "Shell, colour and print options for your own brand.", cta: "Contact us" },
-        ],
-      },
       ctaTitle: "Ready for the journey?",
     },
     bnk: {

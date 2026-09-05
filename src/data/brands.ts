@@ -70,8 +70,9 @@ export const brands: BrandVisual[] = [
     // Katalog kapağı: portre sahne, panel kadrajına birebir oturuyor.
     // Beyaz zeminli ürün kesiti + mix-blend-multiply, panel açılırken kırpılıp
     // her kare yeniden boyandığı için sekme/titreme yapıyordu.
-    hero: "/images/stl/wexta-cover.jpg",
-    heroFocus: "50% 45%",
+    hero: "/images/wexta/cover-airport.webp",
+    // Kadın karenin sağ üçte birinde; dar panelde ortalanınca kadraj dışında kalıyordu
+    heroFocus: "74% 40%",
     heroNameColor: "rgb(41, 174, 198)",
     channelHref: "https://www.stlteknoloji.com/tr/urunler/valiz",
     logoDark: "/logos/wexta.svg",
@@ -172,7 +173,7 @@ export const stlImages = {
   factory: "/images/stl/fabrika-uretim.jpg",
   /** Tesis dış cephe — STL + segment binası */
   building: "/images/stl/fabrika-bina.jpg",
-  cover: "/images/stl/wexta-cover.jpg",
+  cover: "/images/wexta/cover-airport.webp",
   /** Seyahat anı — katalogdan, kimliksiz kadraj */
   travel: "/images/stl/wexta-travel.jpg",
   store: "/images/stl/wexta-lifestyle-1.jpg",
@@ -373,7 +374,7 @@ export const wextaSeries: WextaSeries[] = [
   },
   {
     code: "WX-41x",
-    image: "/images/wexta/series-kids-414.webp",
+    image: "/images/wexta/series-kids.webp",
     colorCount: 4,
     colors: ["#f28c5a", "#f2c318", "#5ab8e6", "#f2a0b8"],
     material: "abs",
@@ -383,12 +384,10 @@ export const wextaSeries: WextaSeries[] = [
 ];
 
 export const wextaImages = {
+  /** Hero kapağı — katalog 4. sayfa yaşam karesi (havalimanı); eski siyah-beyaz kapak müşteri notuyla kaldırıldı */
+  cover: "/images/wexta/cover-airport.webp",
   /** Boy rehberi — şeffaf kesit, üç boyda ölçeklenir */
   sizeCutout: "/images/wexta/series-wx1.webp",
-  /** Katalog yaşam kadrajları */
-  escalator: "/images/wexta/lifestyle-escalator.webp",
-  family: "/images/wexta/lifestyle-family.webp",
-  kids: "/images/wexta/lifestyle-kids.webp",
 };
 
 /**
@@ -401,7 +400,7 @@ export const bnkProducts: Product[] = [
     category: "BB & CC Krem",
     image: "/images/bnk/product-bb-white.webp",
     hoverImage: "/images/bnk/hover-bb.webp",
-    href: "https://beautynetkorea.com.tr/collections/bb-cc-krem",
+    href: "https://beautynetkorea.com.tr/products/tenzero-perfect-cover-bb-krem-kapatici-ve-koruyucu-yatistirici-50-gr",
     badge: "best",
     benefit: "Yoğun kapatıcılık, doğal bitiş",
   },
@@ -409,8 +408,8 @@ export const bnkProducts: Product[] = [
     name: "TENZERO Snail Göz Serumu",
     category: "Göz Bakımı",
     image: "/images/bnk/circle-goz-cevresi.webp",
-    hoverImage: "/images/bnk/gallery-goz-kremi.webp",
-    href: "https://beautynetkorea.com.tr/collections/goz-serumu",
+    hoverImage: "/images/bnk/hover-goz.webp",
+    href: "https://beautynetkorea.com.tr/products/tenzero-zenginlestirilmis-salyangoz-musini-iceren-yaslanma-karsiti-etkili-snail-goz-serumu-30ml",
     badge: "best",
     benefit: "Göz çevresini nemlendirir, aydınlatır",
   },
@@ -418,8 +417,8 @@ export const bnkProducts: Product[] = [
     name: "TENZERO Collagen Tonik",
     category: "Tonik",
     image: "/images/bnk/circle-tonik.webp",
-    hoverImage: "/images/bnk/gallery-vitac-tonik.webp",
-    href: "https://beautynetkorea.com.tr/collections/tonik",
+    hoverImage: "/images/bnk/hover-tonik.webp",
+    href: "https://beautynetkorea.com.tr/products/tenzero-yaslanma-karsiti-nemlendirici-ve-elastikiyet-artirici-kolajen-iceren-toner-300-ml",
     badge: "best",
     benefit: "pH dengesi, esneklik desteği",
   },
@@ -427,16 +426,16 @@ export const bnkProducts: Product[] = [
     name: "TENZERO Hyaluronik Ampul Serum",
     category: "Serum & Ampul",
     image: "/images/bnk/circle-serum.webp",
-    hoverImage: "/images/bnk/gallery-collagen-serum.webp",
-    href: "https://beautynetkorea.com.tr/collections/cilt-serumu",
+    hoverImage: "/images/bnk/hover-serum.webp",
+    href: "https://beautynetkorea.com.tr/products/tenzero-canlandirici-ve-yogun-nemlendirici-hyaluronik-asit-ampoule-serum-110-ml",
     benefit: "Derin nem, dolgun görünüm",
   },
   {
     name: "FOODAHOLIC Multi Sun Cream SPF50+",
     category: "Güneş Kremi",
     image: "/images/bnk/circle-gunes-kremi.webp",
-    hoverImage: "/images/bnk/gallery-spf-pembe.webp",
-    href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi",
+    hoverImage: "/images/bnk/hover-sun.webp",
+    href: "https://beautynetkorea.com.tr/products/foodaholic-multi-sun-250-ml-adenozin-iceren-yapiskan-his-birakmayan-leke-karsiti-spf50-pa-uva-uvb-gunes-kremi",
     badge: "new",
     benefit: "SPF50+ PA+++, yağlı his bırakmaz",
   },
@@ -444,15 +443,16 @@ export const bnkProducts: Product[] = [
     name: "DR. MELOSO Yuja C Peeling Jel",
     category: "Temizleyici",
     image: "/images/bnk/circle-temizleyici.webp",
-    hoverImage: "/images/bnk/peeling-bej.webp",
-    href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler",
+    hoverImage: "/images/bnk/hover-peel.webp",
+    href: "https://beautynetkorea.com.tr/products/dr-meloso-i-m-yuja-c-vitamini-aydinlatici-ve-puruzsuzlestirici-yuz-peeling-jeli-130-ml",
     benefit: "Nazik arındırma, C vitamini",
   },
   {
     name: "Ceramide Royal Jelly Yüz Kremi",
     category: "Nemlendirici",
     image: "/images/bnk/circle-nemlendirici.webp",
-    href: "https://beautynetkorea.com.tr/collections/yuz-kremi",
+    hoverImage: "/images/bnk/hover-krem.webp",
+    href: "https://beautynetkorea.com.tr/products/foodaholic-ceramide-aydinlatici-sikilastirici-ve-leke-karsiti-nemlendirici-saf-ari-sutu-krem-100-ml",
     benefit: "Bariyer onarımı, uzun süreli nem",
   },
   {
@@ -460,7 +460,7 @@ export const bnkProducts: Product[] = [
     category: "Yüz Maskesi",
     image: "/images/bnk/product-maske-white.webp",
     hoverImage: "/images/bnk/hover-maske.webp",
-    href: "https://beautynetkorea.com.tr/collections/yuz-maskesi",
+    href: "https://beautynetkorea.com.tr/products/foodaholic-meyve-sebze-ozleri-dogal-luks-8-li",
     benefit: "Haftalık yoğun bakım, 8 çeşit",
   },
 ];
@@ -475,7 +475,6 @@ export const bnkCategories = [
     key: "sun",
     label: "Güneş Bakımı",
     tagline: "SPF50+ ile günün son adımı",
-    model: "/images/bnk/panel-face-1.webp",
     color: "#ed1651",
     icon: "sun-moon" as const,
     href: "https://beautynetkorea.com.tr/collections/yuz-gunes-kremi",
@@ -491,7 +490,6 @@ export const bnkCategories = [
     key: "serum",
     label: "Serum & Ampul",
     tagline: "Yoğun nem ve etken madde",
-    model: "/images/bnk/panel-face-2.webp",
     color: "#ed1651",
     icon: "droplet" as const,
     href: "https://beautynetkorea.com.tr/collections/cilt-serumu",
@@ -507,7 +505,6 @@ export const bnkCategories = [
     key: "cream",
     label: "Nemlendirici",
     tagline: "Bariyeri koruyan hafif katman",
-    model: "/images/bnk/panel-face-3.webp",
     color: "#ed1651",
     icon: "sparkles" as const,
     href: "https://beautynetkorea.com.tr/collections/yuz-kremi",
@@ -523,7 +520,6 @@ export const bnkCategories = [
     key: "cleanser",
     label: "Temizlik",
     tagline: "Rutinin ilk ve en nazik adımı",
-    model: "/images/bnk/panel-face-4.webp",
     color: "#ed1651",
     icon: "flask-conical" as const,
     href: "https://beautynetkorea.com.tr/collections/yuz-temizleyiciler",

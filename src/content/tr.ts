@@ -250,11 +250,6 @@ export const tr = {
       tagline: "Her yolculuk bir hayalle başlar.",
       summary: "İstanbul'da üretilen dayanıklı, ferah valizler; 20 ülkeye ihracat.",
       channel: "stlteknoloji.com'da incele",
-      slider: [
-        { title: "Zamanın bir adım ötesinde", cta: "İncele" },
-        { title: "Her yolculuk bir hayalle başlar", cta: "Ürünleri incele" },
-        { title: "Özgün, şık ve estetik modeller", cta: "Ürünleri incele" },
-      ],
       heroAlt: {
         label: "Seyahat koleksiyonu",
         title: "Fabrikadan çıkar, yolculuğa hazır.",
@@ -277,6 +272,16 @@ export const tr = {
         { k: "Montaj", v: "Çelik vida" },
         { k: "Üretim", v: "%100 yerli" },
       ],
+      shells: {
+        eyebrow: "Gövde",
+        title: "Üç gövde, üç yolculuk.",
+        cta: "Seriyi incele",
+        items: [
+          { title: "ABS gövde", text: "Serilerin çoğunun gövdesi: %100 ABS. Darbede esner, formuna döner; çelik vidalı aksesuar." },
+          { title: "Polipropilen", text: "PP10 serisi: dalga formlu, daha esnek gövde. Darbeyi emer, ağırlığı düşük tutar." },
+          { title: "Çocuk boyu", text: "WX-412 / 414 / 415: kabartmalı figür, renkli teker ve kol. Çocuğun kendi çektiği ilk valiz." },
+        ],
+      },
       guide: {
         eyebrow: "Boy rehberi",
         title: "Yolculuğuna göre boy seç.",
@@ -293,6 +298,7 @@ export const tr = {
         eyebrow: "Seri rehberi",
         title: "Seriye göre incele.",
         lead: "Sekiz yetişkin serisi ve çocuk serisi. Hepsi aynı banttan çıkar, aynı üç boyda üretilir; farkı yüzey deseni ve renk paleti yapar.",
+        catalogLabel: "2023 kataloğu (PDF)",
         colorsLabel: (n: number) => `${n} renk`,
         sizesLabel: "Boylar",
         sizesValue: "20 · 24 · 28 inç",
@@ -341,15 +347,6 @@ export const tr = {
         text: "İyi bir valiz kendini unutturur: hafiftir, sessizce döner, bagajdan sağlam çıkar. wexta tam bunu hedefler.",
       },
       quote: { text: "Her yolculuk bir hayalle başlar.", source: "wexta" },
-      services: {
-        eyebrow: "Hizmetler",
-        title: "Katalog, teklif, OEM.",
-        tiles: [
-          { title: "2023 kataloğu", text: "Tüm seriler, renkler ve ürün kodları tek PDF'te.", cta: "PDF'i aç" },
-          { title: "Teklif al", text: "Toptan ve kurumsal sipariş için seri kodunu iletin.", cta: "Forma git" },
-          { title: "OEM üretim", text: "Kendi markanız için gövde, renk ve baskı seçenekleri.", cta: "Bize ulaşın" },
-        ],
-      },
       ctaTitle: "Yolculuğa hazır mısın?",
     },
     bnk: {

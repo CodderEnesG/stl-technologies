@@ -1289,10 +1289,8 @@ export function BrandCategoryBar({
     icon?: IconName;
     /** Hover panelindeki alt kırılımlar — verilmezse panel açılmaz */
     sub?: { label: string; href: string }[];
-    /** Hover panelinin sağındaki kadraj (ürün) */
+    /** Hover panelinde konturlu daire içindeki ürün karesi */
     image?: string;
-    /** Panelde ürünün yanına gelen model kadrajı — verilirse ürün daire içinde üstüne biner */
-    model?: string;
     /** Panel başlığı — kategorinin tek cümlelik vaadi */
     tagline?: string;
   }[];
@@ -1391,29 +1389,15 @@ export function BrandCategoryBar({
                 </a>
               )}
             </div>
-            {(active.model || active.image) && (
-              <div className="relative flex items-center gap-0 pr-6">
-                {/* Model kadrajı + üstüne binen ürün dairesi (Purest kartı düzeni) */}
-                {active.model ? (
-                  <>
-                    {/* Portre kırpılmadan, kendi oranında; ürün dairesi sağ alta biner */}
-                    <div className="h-[250px] overflow-hidden rounded-2xl" style={{ background: "#fff5f8" }}>
-                      <img src={active.model} alt="" aria-hidden className="h-full w-auto object-contain" />
-                    </div>
-                    {active.image && (
-                      <span
-                        className="absolute -right-0 bottom-3 grid size-[120px] place-items-center rounded-full border-2 bg-white shadow-[0_18px_30px_-16px_rgba(0,0,0,0.35)]"
-                        style={{ borderColor: active.color }}
-                      >
-                        <img src={active.image} alt="" aria-hidden className="size-[84%] rounded-full object-cover" />
-                      </span>
-                    )}
-                  </>
-                ) : (
-                  <div className="h-[220px] w-[300px] overflow-hidden rounded-2xl">
-                    <img src={active.image} alt="" aria-hidden className="size-full object-cover" />
-                  </div>
-                )}
+            {active.image && (
+              <div className="relative pr-6">
+                {/* Konturlu daire içinde ürün — model karesi yok (müşteri notu) */}
+                <span
+                  className="grid size-[220px] place-items-center rounded-full border-2 bg-white shadow-[0_24px_40px_-24px_rgba(0,0,0,0.3)]"
+                  style={{ borderColor: active.color }}
+                >
+                  <img src={active.image} alt="" aria-hidden className="size-[84%] rounded-full object-cover" />
+                </span>
               </div>
             )}
           </div>
@@ -2173,8 +2157,7 @@ export function BlogTeasers({
   id?: string;
   eyebrow: string;
   title: string;
-  /** `images`: üçlü kare — ürün / kullanım / doku (rhodeskin.com kart dili) */
-  posts: { images: [string, string, string]; kicker: string; title: string; excerpt: string; href?: string; readingTime: string }[];
+  posts: { image: string; kicker: string; title: string; excerpt: string; href?: string; readingTime: string }[];
   /** href yoksa kartta gösterilen etiket */
   soonLabel: string;
 }) {
@@ -2186,17 +2169,13 @@ export function BlogTeasers({
         {posts.map((post) => {
           const inner = (
             <>
-              <div className="grid grid-cols-3 gap-1.5 rounded-2xl p-1.5" style={{ background: s.card, boxShadow: `inset 0 0 0 1px ${s.cardBorder}` }}>
-                {post.images.map((src, i) => (
-                  <div key={src} className="overflow-hidden rounded-xl" style={{ background: "#ffffff" }}>
-                    <img
-                      src={src}
-                      alt=""
-                      loading="lazy"
-                      className={`aspect-[4/5] w-full transition-transform duration-700 group-hover:scale-[1.04] ${i === 0 ? "object-contain p-2" : "object-cover"}`}
-                    />
-                  </div>
-                ))}
+              <div className="overflow-hidden rounded-2xl">
+                <img
+                  src={post.image}
+                  alt=""
+                  loading="lazy"
+                  className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                />
               </div>
               <p className="mt-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: ctx.brand.color }}>
                 {post.kicker}

@@ -1,12 +1,14 @@
+import { wextaImages } from "../../../data/brands";
 import { useI18n } from "../../../i18n";
 import { Arrow } from "../../Arrow";
 import { type BrandCtx } from "../sections";
 
 /**
- * V2 — Katalog kapağı hero'su.
+ * Katalog kapağı hero'su (müşteri seçimi, 2026-09-05).
  * Oxyra'daki tam ekran görselli hero'nun (BrandHeroFull) wexta karşılığı:
- * markanın kendi katalog kapağı tam ekran, üstünde ince katalog künyesi,
- * altta perde üzerinde wordmark + tagline.
+ * kataloğun yatay yaşam karesi tam ekran, üstünde ince katalog künyesi,
+ * altta perde üzerinde wordmark + tagline. Siyah-beyaz kapak (wexta-cover.jpg)
+ * "alakasız duruyor" notuyla havalimanı karesine çevrildi.
  */
 export function WextaCoverHero({ ctx, channelHref }: { ctx: BrandCtx; channelHref: string }) {
   const { t } = useI18n();
@@ -15,12 +17,12 @@ export function WextaCoverHero({ ctx, channelHref }: { ctx: BrandCtx; channelHre
   return (
     <section className="relative flex min-h-[560px] flex-col justify-end overflow-hidden md:h-[calc(100svh-var(--nav-h))]">
       <img
-        src="/images/stl/wexta-cover.jpg"
+        src={wextaImages.cover}
         alt=""
         aria-hidden
         fetchPriority="high"
         className="absolute inset-0 size-full object-cover"
-        style={{ objectPosition: "50% 62%" }}
+        style={{ objectPosition: "50% 12%" }} // üst künye yazısı yüzle çakışmasın: kare aşağı kaydırıldı
       />
 
       {/* Katalog künyesi — üst şerit */}

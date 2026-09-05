@@ -8,7 +8,6 @@ import {
   BrandCategoryBar,
   BrandIntro,
   BrandShell,
-  Editorial,
   ProductRail,
   PullQuote,
   RoutineFace,
@@ -31,7 +30,8 @@ export default function BNK() {
       {/* Giriş: sade editoryal kadraj (müşteri kararı, 2026-09-04) */}
       <BnkEditorialHero
         ctx={ctx}
-        image="/images/bnk/model-routine.webp"
+        image="/images/bnk/hero-wide.webp"
+        mobileImage="/images/bnk/hero-wide-mobile.webp"
         title={c.hero.editorialHero.title}
         sub={c.hero.editorialHero.sub}
         cta={c.hero.editorialHero.cta}
@@ -102,14 +102,6 @@ export default function BNK() {
         badges={c.bestSellers.badges}
         viewLabel={c.bestSellers.view}
       />
-      {/* Mağazanın kolaj kadrajı (lookbook) fazla hareketliydi; krem dokulu sade çekim */}
-      <Editorial
-        ctx={ctx}
-        image="/images/bnk/peeling-bej.webp"
-        ratio="aspect-[5/4]"
-        title={c.editorial.title}
-        text={c.editorial.text}
-      />
       <BlogTeasers
         ctx={ctx}
         id="blog"
@@ -117,9 +109,9 @@ export default function BNK() {
         title={c.blog.title}
         soonLabel={c.blog.soon}
         posts={[
-          { ...c.blog.posts[0], images: ["/images/bnk/circle-tonik.webp", "/images/bnk/tile-face.webp", "/images/bnk/tile-swatch.webp"] },
-          { ...c.blog.posts[1], images: ["/images/bnk/circle-gunes-kremi.webp", "/images/bnk/tile-hand.webp", "/images/bnk/tile-water.webp"] },
-          { ...c.blog.posts[2], images: ["/images/bnk/circle-nemlendirici.webp", "/images/bnk/tile-maskmodel.webp", "/images/bnk/tile-pinkswatch.webp"] },
+          { ...c.blog.posts[0], image: "/images/bnk/blog-rutin.webp" },
+          { ...c.blog.posts[1], image: "/images/bnk/blog-spf.webp" },
+          { ...c.blog.posts[2], image: "/images/bnk/blog-nem.webp" },
         ]}
       />
       <PullQuote ctx={ctx} text={c.quote.text} source={c.quote.source} />
