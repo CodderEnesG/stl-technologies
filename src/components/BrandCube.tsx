@@ -356,7 +356,7 @@ function Cube({
                       {copy.summary}
                     </p>
                     <span
-                      className="mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold"
+                      className="mt-6 inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
                       style={{ background: b.color, color: b.onColor }}
                     >
                       {t.home.discoverBrand} <Arrow />

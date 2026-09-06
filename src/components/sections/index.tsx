@@ -11,7 +11,6 @@ import { Link } from "react-router";
 import { brands, stlBrand } from "../../data/brands";
 import { company } from "../../data/company";
 import { useI18n } from "../../i18n";
-import { Arrow } from "../Arrow";
 import { Icon, type IconName } from "../Icon";
 import { LogoSlot } from "../LogoSlot";
 import { SectionHeader } from "../SectionHeader";
@@ -37,7 +36,6 @@ export function AboutBlock({
   image,
   imageAlt,
   stats,
-  statIcons,
   countUp,
 }: {
   ctx: BrandCtx;
@@ -48,8 +46,6 @@ export function AboutBlock({
   image: string;
   imageAlt: string;
   stats: Stat[];
-  /** Her istatistiğin üstünde gösterilecek ikon (sırayla) */
-  statIcons?: IconName[];
   /** Sayılar görünürken 0'dan saysın (CountUp) — şimdilik sadece landing */
   countUp?: boolean;
 }) {
@@ -62,13 +58,8 @@ export function AboutBlock({
       style={{ background: "var(--surface)", borderColor: s.cardBorder }}
     >
       <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-5 py-24 md:grid-cols-[1.05fr_0.95fr] md:gap-16 md:px-8">
-        <figure>
-          <div className="overflow-hidden rounded-3xl">
-            <img src={image} alt={imageAlt} loading="lazy" className="aspect-square w-full object-cover" />
-          </div>
-          <figcaption className="mt-3 text-xs" style={{ color: s.muted }}>
-            {imageAlt}
-          </figcaption>
+        <figure className="overflow-hidden rounded-3xl">
+          <img src={image} alt={imageAlt} loading="lazy" className="aspect-[4/5] w-full object-cover" />
         </figure>
 
         <div>
@@ -88,15 +79,6 @@ export function AboutBlock({
           <div className="mt-12 grid grid-cols-3 gap-6 md:gap-10">
             {stats.map((st, i) => (
               <div key={st.l} {...revealItem(i)} className="border-t-2 pt-4" style={{ ...revealItem(i).style, borderColor: brand.color }}>
-                {statIcons?.[i] && (
-                  <Icon
-                    name={statIcons[i]}
-                    size={20}
-                    strokeWidth={ctx.iconWeight ?? 1.75}
-                    className="mb-3"
-                    style={{ color: brand.color }}
-                  />
-                )}
                 <div className={`${ctx.font} text-2xl font-extrabold leading-none tracking-tightest md:text-4xl`}>
                   {countUp ? <CountUp value={st.n} delay={120 + i * 90} /> : st.n}
                 </div>
@@ -112,43 +94,37 @@ export function AboutBlock({
   );
 }
 
-/** Misyon & Vizyon — iki kart. */
+/**
+ * Misyon & Vizyon — kart yok: geniş bir manifesto cümlesi, altında çizgiyle
+ * ayrılmış iki düz metin sütunu. (Referans: De'Longhi Group, Secretlab.)
+ */
 export function MissionVision({
   ctx,
   eyebrow,
   title,
   items,
-  icons,
 }: {
   ctx: BrandCtx;
   eyebrow: string;
   title: string;
   items: { label: string; text: string }[];
-  icons?: IconName[];
 }) {
+  const s = toneStyles[ctx.tone];
   return (
     <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
-      <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} className="mb-12" />
-      <div className="grid gap-4 md:grid-cols-2">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: ctx.brand.color }}>
+        {eyebrow}
+      </p>
+      <p className={`mt-6 max-w-[900px] ${ctx.font} text-2xl font-semibold leading-snug tracking-tightest md:text-[2rem]`}>
+        {title}
+      </p>
+      <div className="mt-14 grid gap-10 border-t pt-10 md:grid-cols-2 md:gap-16" style={{ borderColor: s.cardBorder }}>
         {items.map((m, i) => (
-          <div
-            key={m.label}
-            data-reveal-item=""
-            className="rounded-3xl p-8 md:p-10"
-            style={{
-              ...revealItem(i).style,
-              ...(i === 0 ? { background: "#2b2828", color: "#fff" } : { background: ctx.brand.color, color: ctx.brand.onColor }),
-            }}
-          >
-            <div className="flex items-center gap-3">
-              {icons?.[i] && (
-                <span className="grid size-10 place-items-center rounded-full bg-white/15">
-                  <Icon name={icons[i]} size={19} strokeWidth={ctx.iconWeight ?? 1.75} />
-                </span>
-              )}
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] opacity-70">{m.label}</p>
-            </div>
-            <p className={`mt-5 ${ctx.font} text-xl font-semibold leading-snug tracking-tightest md:text-2xl`}>
+          <div key={m.label} {...revealItem(i)}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: s.muted }}>
+              {m.label}
+            </p>
+            <p className="mt-3 text-base leading-relaxed md:text-lg" style={{ color: s.sub }}>
               {m.text}
             </p>
           </div>
@@ -274,23 +250,25 @@ export function BrandGrid({ ctx, id, eyebrow, title, description }: {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {brands.map((b) => {
           const copy = t.brands[b.slug as keyof typeof t.brands];
-          const onDark = b.panelText === "#ffffff";
           return (
             <Link
               key={b.slug}
               to={p[b.slug as keyof typeof p]}
-              className="group flex min-h-[220px] flex-col justify-between overflow-hidden rounded-2xl p-6 transition-transform hover:-translate-y-1"
-              style={{ background: b.panelBg, color: b.panelText }}
+              aria-label={b.name}
+              className="relative block aspect-[4/5] overflow-hidden rounded-2xl bg-[#111]"
             >
-              <LogoSlot src={onDark ? b.logoLight : b.logoDark} label={b.name} height={24} onDark={onDark} />
-              <div>
-                <p className="text-sm font-medium leading-snug opacity-90">{copy.summary}</p>
-                <span
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold"
-                  style={{ color: onDark ? "#fff" : b.color }}
-                >
-                  {t.home.explore} <Arrow />
-                </span>
+              <img
+                src={b.hero}
+                alt=""
+                aria-hidden
+                loading="lazy"
+                className="absolute inset-0 size-full object-cover"
+                style={{ objectPosition: b.heroFocus ?? "50% 50%" }}
+              />
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                <LogoSlot src={b.logoLight} label={b.name} height={22} onDark />
+                <p className="mt-2 text-sm leading-snug text-white/85">{copy.summary}</p>
               </div>
             </Link>
           );
@@ -470,7 +448,7 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
             href={company.instagram}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex w-fit items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition-colors"
+            className="inline-flex w-fit items-center gap-2 rounded-md border px-5 py-2.5 text-sm font-semibold transition-colors"
             style={{ borderColor: s.cardBorder }}
           >
             <Icon name="instagram" size={17} strokeWidth={ctx.iconWeight ?? 1.75} />
@@ -548,10 +526,10 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
 
           <button
             type="submit"
-            className="mt-7 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold transition-transform hover:scale-[1.02]"
+            className="mt-7 inline-flex items-center gap-2 rounded-md px-8 py-3.5 font-semibold"
             style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
           >
-            {c.submit} <Icon name="send" size={17} strokeWidth={ctx.iconWeight ?? 1.75} />
+            {c.submit}
           </button>
           <p className="mt-3 text-xs" style={{ color: s.muted }}>
             {c.submitNote}
@@ -565,7 +543,7 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
           <iframe
             title={c.mapTitle}
             src={`https://www.google.com/maps?q=${encodeURIComponent(company.mapsQuery)}&output=embed`}
-            className="h-[420px] w-full"
+            className="h-[420px] w-full grayscale contrast-[1.05]"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />

@@ -48,8 +48,7 @@ export default function Home() {
           image={stlImages.building}
           imageAlt={a.buildingAlt}
           stats={t.home.stats}
-          statIcons={["calendar-days", "factory", "globe"]}
-        countUp
+          countUp
         />
       </Reveal>
 
@@ -59,7 +58,6 @@ export default function Home() {
           eyebrow={a.missionEyebrow}
           title={a.missionTitle}
           items={[a.mission, a.vision]}
-          icons={["target", "eye"]}
         />
       </Reveal>
 
@@ -90,7 +88,6 @@ export default function Home() {
           title={t.home.partnersTitle}
           note={t.home.partnersNote}
           items={partnerLogos}
-          icon="store"
         />
       </Reveal>
 

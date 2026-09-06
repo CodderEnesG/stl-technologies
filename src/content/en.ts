@@ -457,14 +457,14 @@ export const en: SiteContent = {
   // mission/vision sections on the landing page.
   about: {
     missionEyebrow: "Mission & Vision",
-    missionTitle: "What we aim for",
+    missionTitle: "We started with luggage; every new product still has to pass the same three questions: can we build it on our own line in Arnavutköy, will it last for years, is the price fair?",
     mission: {
       label: "Mission",
-      text: "To hold the same manufacturing and design standard across all four of our brands, whatever the category. With our innovative approach, to offer products that fit every budget and last for years.",
+      text: "To hold every product of our four brands to one standard: made in our own facility, spare parts in stock, fair price, built to last for years.",
     },
     vision: {
       label: "Vision",
-      text: "To grow on a 100% local production principle at our 35,000 m² state-of-the-art facility, and to turn our brand portfolio — from gaming equipment to home appliances to skincare — into a group preferred worldwide.",
+      text: "To grow the OEM output that already ships to 20 countries under our own brands, and make wexta, Fressi, BNK and Oxyra the first local manufacturer that comes to mind in each category.",
     },
     lineAlt: "STL Teknoloji production line",
     buildingAlt: "STL Teknoloji production facility, Arnavutköy",

@@ -1,40 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import { brands } from "../../data/brands";
 import { useI18n } from "../../i18n";
 import { Arrow } from "../Arrow";
 import { LogoSlot } from "../LogoSlot";
 
-const reducedMotion = () =>
-  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 const touchOnly = () =>
   typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
 
-/**
- * V1 — Accordion: 4 dikey panel; hover/focus'ta aktif panel büyür.
- * Boşta 5 sn'de bir sıradaki panel "nefes alır"; etkileşimle durur.
- */
+/** V1 — Accordion: 4 dikey panel; hover/focus'ta aktif panel büyür. */
 export function HeroAccordion() {
   const { t, p } = useI18n();
   const [active, setActive] = useState<number | null>(null);
-  const [idle, setIdle] = useState(0);
-  const interacted = useRef(false);
-
-  useEffect(() => {
-    if (reducedMotion()) return;
-    const id = setInterval(() => {
-      if (!interacted.current) setIdle((i) => (i + 1) % brands.length);
-    }, 5000);
-    return () => clearInterval(id);
-  }, []);
-
-  const shown = active ?? idle;
+  const shown = active ?? 0;
 
   const handleTouchNav = (i: number) => (e: React.MouseEvent) => {
     if (touchOnly() && active !== i) {
       e.preventDefault();
-      interacted.current = true;
       setActive(i);
     }
   };
@@ -43,27 +25,18 @@ export function HeroAccordion() {
     <section
       // overflow-hidden: açılışta paneller yukarıdan inerek gelir, taşan kısım görünmesin
       className="relative flex h-[calc(100svh-var(--nav-h))] min-h-[560px] w-full flex-col overflow-hidden md:flex-row"
-      onMouseLeave={() => {
-        setActive(null);
-        interacted.current = false;
-      }}
+      onMouseLeave={() => setActive(null)}
     >
       {brands.map((b, i) => {
         const isActive = shown === i;
         const copy = t.brands[b.slug as keyof typeof t.brands];
-        const grow = active === i ? 3.2 : active === null && idle === i ? 1.35 : 1;
+        const grow = active === i ? 3.2 : 1;
         return (
           <Link
             key={b.slug}
             to={p[b.slug as keyof typeof p]}
-            onMouseEnter={() => {
-              interacted.current = true;
-              setActive(i);
-            }}
-            onFocus={() => {
-              interacted.current = true;
-              setActive(i);
-            }}
+            onMouseEnter={() => setActive(i)}
+            onFocus={() => setActive(i)}
             onClick={handleTouchNav(i)}
             className="hero-panel-in group relative overflow-hidden border-b border-black/10 outline-none transition-[flex-grow] duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-white/70 md:border-b-0 md:border-r"
             style={{
@@ -154,7 +127,7 @@ export function HeroAccordion() {
               />
               <p className="mt-1 max-w-sm text-lg font-medium">{copy.tagline}</p>
               <span
-                className="mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold shadow-lg transition-transform group-hover:translate-x-1"
+                className="mt-6 inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold transition-transform group-hover:translate-x-1"
                 style={{ background: b.color, color: b.onColor }}
               >
                 {t.home.discoverBrand}

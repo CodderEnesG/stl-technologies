@@ -457,14 +457,14 @@ export const tr = {
   // misyon/vizyon bölümlerinde kullanılıyor.
   about: {
     missionEyebrow: "Misyon & Vizyon",
-    missionTitle: "Neyi hedefliyoruz",
+    missionTitle: "Valizle başladık; bugün de her yeni ürüne aynı üç soruyla giriyoruz: Arnavutköy'de kendi bandımızda üretebiliyor muyuz, yıllarca dayanır mı, fiyatı makul mü?",
     mission: {
       label: "Misyon",
-      text: "Dört markamızın her birinde, kategorisi ne olursa olsun aynı üretim ve tasarım standardını kurmak. Yenilikçi yaklaşımımızla, herkesin bütçesine uygun ve yıllarca kullanılacak ürünler sunmak.",
+      text: "Dört markanın her ürününü aynı standarttan geçirmek: kendi tesisimizde üretmek, yedek parçasını stoklamak, makul fiyata yıllarca kullanılacak ürün vermek.",
     },
     vision: {
       label: "Vizyon",
-      text: "35.000 m²'lik son teknoloji üretim tesisimizde %100 yerli üretim prensibiyle büyüyerek, oyun ekipmanından ev aletlerine ve cilt bakımına uzanan marka portföyümüzü dünya çapında tercih edilen bir çatı hâline getirmek.",
+      text: "Bugün 20 ülkeye giden OEM üretimi kendi markalarımızla büyütmek; wexta, Fressi, BNK ve Oxyra'yı kendi kategorilerinde ilk akla gelen yerli üretici yapmak.",
     },
     lineAlt: "STL Teknoloji üretim bandı",
     buildingAlt: "STL Teknoloji üretim tesisi, Arnavutköy",

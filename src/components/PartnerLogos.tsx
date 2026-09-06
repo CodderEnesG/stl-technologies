@@ -65,8 +65,8 @@ export function PartnerLogos({
           return (
             <li
               key={p.name}
-              className="group grid w-[calc(50%-0.375rem)] place-items-center rounded-xl border transition-colors duration-300 sm:w-[168px] lg:w-[190px]"
-              style={{ height: 92, background: s.card, borderColor: s.cardBorder }}
+              className="grid w-[calc(50%-0.375rem)] place-items-center sm:w-[168px] lg:w-[190px]"
+              style={{ height: 92 }}
             >
               <img
                 src={p.src}
@@ -75,7 +75,7 @@ export function PartnerLogos({
                 decoding="async"
                 width={Math.round(box.width)}
                 height={Math.round(box.height)}
-                className="max-w-[86%] object-contain transition-transform duration-300 group-hover:scale-[1.04]"
+                className="max-w-[86%] object-contain"
                 style={box}
               />
             </li>

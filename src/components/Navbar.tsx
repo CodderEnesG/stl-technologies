@@ -181,7 +181,7 @@ export function Navbar() {
 
           <Link
             to={sec("contact")}
-            className="ml-2 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-transform hover:scale-[1.03]"
+            className={`ml-2 inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-transform hover:scale-[1.03] ${active ? "rounded-full" : "rounded-md"}`}
             style={{ background: accent, color: active?.onColor ?? "#ffffff" }}
           >
             {t.nav.contact}
@@ -247,7 +247,7 @@ export function Navbar() {
           <Link
             to={sec("contact")}
             onClick={() => setOpenMobile(false)}
-            className="mt-2 inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold"
+            className={`mt-2 inline-flex items-center gap-2 px-5 py-2.5 font-semibold ${active ? "rounded-full" : "rounded-md"}`}
             style={{ background: accent, color: active?.onColor ?? "#ffffff" }}
           >
             {t.nav.contact}
