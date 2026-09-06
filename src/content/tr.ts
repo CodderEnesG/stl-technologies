@@ -136,7 +136,7 @@ export const tr = {
         ],
       },
       hotspotsEyebrow: "Yakından bakın",
-      hotspotsTitle: "Uzun oturuşlar için tasarlandı.",
+      hotspotsTitle: "Koltuğun üç kritik noktası.",
       hotspotsHint: "Noktalara gelin veya dokunun",
       hotspots: [
         {
@@ -183,7 +183,7 @@ export const tr = {
         text: "Bir hamlenin sonucu milisaniyelerde belli olur. Oxyra mouse; hafif gövdesi, hassas sensörü ve dengeli ağırlığıyla eli yormadan takip eder.",
       },
       quote: { text: "Oyunun kurallarını yeniden yazan ödüllü tasarım.", source: "Oxyra" },
-      ctaTitle: "Kurulumunu tamamla",
+      ctaTitle: "Kurulumu Mooncha ile tamamla.",
     },
     fressi: {
       tagline: "Evde iyi hissettiren teknoloji.",
@@ -243,7 +243,7 @@ export const tr = {
         text: "Fressi ürünleri tezgahın üstünde güzel durur; ama asıl işi günün her saatini biraz daha keyifli kılmak.",
       },
       quote: { text: "Fressi, gündelik yaşamı kolaylaştıran, eve yakışan ve iyi hissettiren teknolojidir.", source: "Marka söylemi" },
-      ctaTitle: "Mutfağınıza taze bir soluk",
+      ctaTitle: "Mutfağınıza taze bir soluk.",
     },
     wexta: {
       tagline: "Her yolculuk bir hayalle başlar.",
@@ -262,7 +262,7 @@ export const tr = {
       },
       about: {
         kicker: "wexta hakkında",
-        title: "Fabrikadan çıkan valiz, yolculuğa hazır.",
+        title: "2016'dan beri Arnavutköy'de valiz üretiyoruz.",
         body: "wexta, STL Teknoloji'nin valiz markasıdır. 2016'dan beri İstanbul Arnavutköy'deki 35.000 m² tesisimizde ürettiğimiz valizler, Türkiye'nin önde gelen tekstil markalarının da tercihi. Levha ekstrüzyonundan montaja tüm aşamalar aynı çatı altında; %100 ABS gövde, çelik vidalı aksesuar.",
       },
       stats: [
@@ -323,9 +323,9 @@ export const tr = {
           "WX-41x": { name: "Çocuk serisi", text: "WX-412 / 414 / 415: kabartmalı figür, renkli teker ve kol; çocuk boyu." },
         },
       },
-      hotspotsEyebrow: "Yakından bakın",
+      hotspotsEyebrow: "Valizin anatomisi",
       hotspotsTitle: "Detayda saklı dayanıklılık.",
-      hotspotsHint: "Noktalara gelin veya dokunun",
+      hotspotsHint: "Numaralı noktalara dokunun",
       hotspots: [
         { title: "ABS gövde", text: "%100 ABS kabuk; darbede esner, formuna döner. Bagaj bandında yıllarca aynı kalır.", x: 50, y: 58 },
         { title: "Çift teker", text: "Dört köşede 360° dönen çift teker; ağırlık merkezi düşük, tek elle sessizce süzülür.", x: 38, y: 93 },
@@ -351,7 +351,7 @@ export const tr = {
         text: "İyi bir valiz kendini unutturur: hafiftir, sessizce döner, bagajdan sağlam çıkar. wexta tam bunu hedefler.",
       },
       quote: { text: "Her yolculuk bir hayalle başlar.", source: "wexta" },
-      ctaTitle: "Yolculuğa hazır mısın?",
+      ctaTitle: "Kataloğu indir, teklif iste.",
     },
     bnk: {
       tagline: "Kore ışıltısı, günlük ritüel.",
@@ -360,7 +360,7 @@ export const tr = {
       about: {
         kicker: "BNK hakkında",
         title: "Kore cilt bakımı, sade bir rutinde.",
-        body: "BNK — Beauty Net Korea — Kore kozmetiğinin özenli formül yaklaşımını Türkiye'ye taşır. Seçkide üç Kore markası var: TENZERO, FOODAHOLIC ve DR. MELOSO. Kalabalık raflar yerine az sayıda, işlevi net ürün: temizle, dengele, besle, koru. Her ürün Kore'de üretilir, beautynetkorea.com.tr üzerinden Türkiye'ye ulaşır; rutin dört adımda, sabah ve akşam iki dakikada tamamlanır.",
+        body: "BNK — Beauty Net Korea — Kore kozmetiğinin özenli formül yaklaşımını Türkiye'ye taşır. Seçkide üç Kore markası var: TENZERO, FOODAHOLIC ve DR. MELOSO. Her ürün Kore'de üretilir, beautynetkorea.com.tr üzerinden Türkiye'ye ulaşır; rutin dört adımda, sabah ve akşam iki dakikada tamamlanır.",
       },
       stats: [
         { n: "70+", l: "Ürün" },
@@ -442,7 +442,7 @@ export const tr = {
         text: "K-beauty'nin sırrı mucize değil, süreklilik. BNK rutini bu sürekliliği kolaylaştırmak için sade tutar.",
       },
       quote: { text: "Kore ışıltısı, günlük ritüel.", source: "BNK" },
-      ctaTitle: "Rutinini oluştur",
+      ctaTitle: "Dört adım, iki dakika: rutinini kur.",
     },
   },
 

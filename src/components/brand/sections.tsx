@@ -93,7 +93,7 @@ export function BrandHeroFull({
         className="relative mx-auto w-full max-w-[1400px] px-5 py-8 md:px-8 md:pb-10 md:pt-0"
         style={{ textShadow: "0 2px 24px rgba(5,6,15,0.9)" }}
       >
-        <h1 className={`max-w-xl ${ctx.font} text-xl font-black leading-[1.15] tracking-tightest text-white md:text-3xl`}>
+        <h1 className={`max-w-2xl ${ctx.font} text-2xl font-black leading-[1.05] tracking-tightest text-white md:text-5xl`}>
           {tagline}
         </h1>
       </div>
@@ -168,7 +168,8 @@ export function BrandIntro({
   body,
   stats,
   image,
-  mark,
+  photo,
+  photoFocus,
 }: {
   ctx: BrandCtx;
   kicker: string;
@@ -178,11 +179,10 @@ export function BrandIntro({
   stats?: { n: string; l: string }[];
   /** Verilirse metnin yanında ürün görseli gösterilir (arkasında marka renginde hafif ışık) */
   image?: string;
-  /**
-   * Verilirse metnin yanında marka sembolü ışık halesiyle gösterilir —
-   * Oxyra sayfasındaki "marka hakkında" düzeninin diğer markalardaki karşılığı.
-   */
-  mark?: string;
+  /** Verilirse metnin yanında tam kadraj marka fotoğrafı durur */
+  photo?: string;
+  /** Fotoğrafın odak noktası (object-position) */
+  photoFocus?: string;
 }) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
@@ -200,20 +200,17 @@ export function BrandIntro({
 
   return (
     <section className="mx-auto max-w-[1400px] px-5 pt-24 md:px-8">
-      {mark ? (
-        <div className="grid items-center gap-10 md:grid-cols-[0.75fr_1.25fr] md:gap-16">
-          <div className="relative grid place-items-center py-6">
-            <span
+      {photo ? (
+        <div className="grid items-center gap-10 md:grid-cols-[0.85fr_1.15fr] md:gap-16">
+          <div className="aspect-[4/5] overflow-hidden rounded-3xl">
+            <img
+              src={photo}
+              alt=""
               aria-hidden
-              className="pointer-events-none absolute inset-0 blur-3xl"
-              style={{ background: `radial-gradient(circle at 50% 50%, ${brand.color}55, transparent 68%)` }}
+              loading="lazy"
+              className="size-full object-cover"
+              style={{ objectPosition: photoFocus }}
             />
-            <span
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
-              style={{ background: `radial-gradient(circle, ${brand.color}44, transparent 70%)` }}
-            />
-            <img src={mark} alt="" aria-hidden className="relative w-full max-w-[240px] object-contain" />
           </div>
           {heading}
         </div>
@@ -259,16 +256,18 @@ export function BrandIntro({
   );
 }
 
-/** Marka logosu (sembol) + marka hakkında metni — STL "Biz Kimiz" düzeninin marka karşılığı */
+/** Marka fotoğrafı + marka hakkında metni — STL "Biz Kimiz" düzeninin marka karşılığı */
 export function BrandAbout({
   ctx,
-  mark,
+  photo,
+  photoFocus,
   eyebrow,
   title,
   body,
 }: {
   ctx: BrandCtx;
-  mark: string;
+  photo: string;
+  photoFocus?: string;
   eyebrow: string;
   title: string;
   body: string[];
@@ -277,19 +276,16 @@ export function BrandAbout({
   const { brand } = ctx;
   return (
     <section className="mx-auto max-w-[1400px] px-5 pt-24 md:px-8">
-      <div className="grid items-center gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
-        <div className="relative grid place-items-center py-8">
-          <span
+      <div className="grid items-center gap-10 md:grid-cols-[0.85fr_1.15fr] md:gap-16">
+        <div className="aspect-[4/5] overflow-hidden rounded-3xl">
+          <img
+            src={photo}
+            alt=""
             aria-hidden
-            className="pointer-events-none absolute inset-0 blur-3xl"
-            style={{ background: `radial-gradient(circle at 50% 50%, ${brand.color}66, transparent 68%)` }}
+            loading="lazy"
+            className="size-full object-cover"
+            style={{ objectPosition: photoFocus }}
           />
-          <span
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
-            style={{ background: `radial-gradient(circle, ${brand.color}55, transparent 70%)` }}
-          />
-          <img src={mark} alt="" aria-hidden className="relative w-full max-w-[260px] object-contain" />
         </div>
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: brand.color }}>
@@ -763,20 +759,20 @@ export function BrandCTA({
   note,
   pattern,
   image,
-  quoted,
-  quoteSource,
+  imageFocus,
+  secondary,
 }: {
   ctx: BrandCtx;
   title: string;
   channel: string;
   note?: string;
   pattern?: string;
-  /** Marka gradyanı gibi tam kapsayan arka plan görseli — metin ortalanır, beyaza döner */
+  /** Tam kapsayan arka plan görseli — metin ortalanır, beyaza döner */
   image?: string;
-  /** Başlığı marka söylemi alıntısı gibi dizer: tırnak içinde, versal değil */
-  quoted?: boolean;
-  /** Alıntının altındaki kaynak satırı — verilmezse satır çıkmaz */
-  quoteSource?: string;
+  /** Arka plan görselinin odak noktası (object-position) */
+  imageFocus?: string;
+  /** İkinci, çerçeveli buton — ör. katalog PDF'i */
+  secondary?: { label: string; href: string };
 }) {
   const { t, s: sec } = useI18n();
   const s = toneStyles[ctx.tone];
@@ -788,8 +784,15 @@ export function BrandCTA({
     >
       {image && (
         <>
-          <img src={image} alt="" aria-hidden loading="lazy" className="absolute inset-0 size-full object-cover" />
-          <span aria-hidden className="absolute inset-0 bg-black/10" />
+          <img
+            src={image}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            className="absolute inset-0 size-full object-cover"
+            style={{ objectPosition: imageFocus }}
+          />
+          <span aria-hidden className="absolute inset-0 bg-black/40" />
         </>
       )}
       {pattern && <PatternLayer src={pattern} opacity={0.2} fade="top" />}
@@ -798,20 +801,13 @@ export function BrandCTA({
           image ? "items-center text-center" : "items-start md:flex-row md:items-center md:justify-between"
         }`}
       >
-        <div className={quoted ? "max-w-3xl" : "max-w-2xl"}>
+        <div className="max-w-2xl">
           <h2
-            className={`${ctx.font} font-bold tracking-tightest ${
-              quoted
-                ? "text-2xl leading-[1.25] md:text-4xl"
-                : "text-4xl font-black uppercase leading-[0.95] md:text-6xl"
-            }`}
+            className={`${ctx.font} text-3xl font-bold leading-[1.08] tracking-tightest md:text-5xl`}
             style={{ textShadow: image ? "0 2px 26px rgba(0,0,0,0.35)" : undefined }}
           >
-            {quoted ? `“${title}”` : title}
+            {title}
           </h2>
-          {quoteSource && (
-            <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.24em] opacity-80">{quoteSource}</p>
-          )}
         </div>
         <div className={`flex flex-col gap-3 ${image ? "items-center" : ""}`}>
           {brand.channelHref ? (
@@ -819,7 +815,7 @@ export function BrandCTA({
               href={brand.channelHref}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full px-8 py-4 font-semibold transition-transform hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 rounded-full px-8 py-4 font-semibold"
               style={{ background: brand.color, color: brand.onColor }}
             >
               {channel} <Arrow />
@@ -827,11 +823,22 @@ export function BrandCTA({
           ) : (
             <Link
               to={sec("contact")}
-              className="inline-flex items-center gap-2 rounded-full px-8 py-4 font-semibold transition-transform hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 rounded-full px-8 py-4 font-semibold"
               style={{ background: brand.color, color: brand.onColor }}
             >
               {t.nav.contact} <Arrow />
             </Link>
+          )}
+          {secondary && (
+            <a
+              href={secondary.href}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border px-8 py-4 font-semibold"
+              style={{ borderColor: image ? "rgba(255,255,255,0.7)" : s.cardBorder, color: "inherit" }}
+            >
+              {secondary.label} <Arrow />
+            </a>
           )}
           {note && <p className="max-w-[26ch] text-sm" style={{ color: image ? "rgba(255,255,255,0.85)" : s.muted }}>{note}</p>}
           <Link
@@ -1546,6 +1553,8 @@ export function ReviewSlider({
   prevLabel: string;
   nextLabel: string;
 }) {
+  const st = toneStyles[ctx.tone];
+  const { brand } = ctx;
   const rail = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
   const [pages, setPages] = useState(1);
@@ -1604,22 +1613,15 @@ export function ReviewSlider({
           {reviews.map((r, i) => (
             <article
               key={`${r.author}-${i}`}
-              className="relative flex w-[86%] shrink-0 snap-start flex-col rounded-xl border bg-white p-6 sm:w-[48.5%] lg:w-[32%]"
-              style={{ borderColor: "#e5e7eb", color: "#17181a" }}
+              className="relative flex w-[86%] shrink-0 snap-start flex-col rounded-xl border p-6 sm:w-[48.5%] lg:w-[32%]"
+              style={{ background: st.card, borderColor: st.cardBorder, color: st.fg }}
             >
-              <span
-                aria-hidden
-                className="absolute right-5 top-2 select-none font-serif text-[64px] leading-none"
-                style={{ color: "#d1d5db" }}
-              >
-                “
-              </span>
               <Stars value={r.rating} color="#f5a524" size={15} />
               {r.title && <h3 className="mt-3 text-[15px] font-bold">{r.title}</h3>}
               <p
                 className="mt-1.5 text-[14px] leading-[1.6]"
                 style={{
-                  color: "#374151",
+                  color: st.sub,
                   display: "-webkit-box",
                   WebkitLineClamp: 5,
                   WebkitBoxOrient: "vertical",
@@ -1633,7 +1635,7 @@ export function ReviewSlider({
                 <span
                   aria-hidden
                   className="grid size-8 shrink-0 place-items-center rounded-full text-[11.5px] font-semibold"
-                  style={{ background: "#f3f4f6", color: "#374151" }}
+                  style={{ background: `${brand.color}1a`, color: brand.color }}
                 >
                   {initials(r.author)}
                 </span>
@@ -1642,7 +1644,7 @@ export function ReviewSlider({
                   {r.verified && (
                     <span
                       className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11.5px] font-medium"
-                      style={{ background: "#f0fdf4", borderColor: "#86efac", color: "#15803d" }}
+                      style={{ background: `${brand.color}14`, borderColor: `${brand.color}66`, color: brand.color }}
                     >
                       <Icon name="check" size={11} strokeWidth={2.4} />
                       {verifiedLabel}
@@ -1650,7 +1652,7 @@ export function ReviewSlider({
                   )}
                 </span>
               </footer>
-              <p className="mt-2 truncate pl-11 text-[12px]" style={{ color: "#9ca3af" }} title={r.product}>
+              <p className="mt-2 truncate pl-11 text-[12px]" style={{ color: st.muted }} title={r.product}>
                 {r.product}
               </p>
             </article>
@@ -1962,11 +1964,8 @@ export function RoutineFace({
             key={st.label}
             onMouseEnter={() => setActive(i)}
             onMouseLeave={() => setActive(null)}
-            className="rounded-2xl border p-5 transition-transform duration-300 hover:-translate-y-1"
-            style={{
-              background: s.card,
-              borderColor: active === i ? ctx.brand.color : s.cardBorder,
-            }}
+            className="border-t-2 pt-4 transition-colors duration-300"
+            style={{ borderColor: active === i ? ctx.brand.color : s.cardBorder }}
           >
             <span className={`${ctx.font} text-2xl font-extrabold`} style={{ color: ctx.brand.color }}>{st.n}</span>
             <h3 className="mt-2 font-semibold">{st.label}</h3>

@@ -136,7 +136,7 @@ export const en: SiteContent = {
         ],
       },
       hotspotsEyebrow: "A closer look",
-      hotspotsTitle: "Built for long sessions.",
+      hotspotsTitle: "Three points that matter.",
       hotspotsHint: "Hover or tap the points",
       hotspots: [
         {
@@ -183,7 +183,7 @@ export const en: SiteContent = {
         text: "A play is decided in milliseconds. The Oxyra mouse tracks without tiring your hand — light body, precise sensor, balanced weight.",
       },
       quote: { text: "Award-winning design that rewrites the rules of the game.", source: "Oxyra" },
-      ctaTitle: "Complete your setup",
+      ctaTitle: "Complete the setup with Mooncha.",
     },
     fressi: {
       tagline: "Technology that feels good at home.",
@@ -243,7 +243,7 @@ export const en: SiteContent = {
         text: "Fressi products look good on the counter; but their real job is making every hour of the day a little more enjoyable.",
       },
       quote: { text: "Fressi is technology that makes daily life easier, suits the home, and feels good.", source: "Brand statement" },
-      ctaTitle: "A fresh breath for your kitchen",
+      ctaTitle: "A fresh breath for your kitchen.",
     },
     wexta: {
       tagline: "Every journey starts with a dream.",
@@ -262,7 +262,7 @@ export const en: SiteContent = {
       },
       about: {
         kicker: "About wexta",
-        title: "Straight from the factory, ready for the journey.",
+        title: "Making luggage in Arnavutköy since 2016.",
         body: "wexta is STL Teknoloji's luggage brand. The luggage we have produced since 2016 at our 35,000 m² facility in Arnavutköy, Istanbul is also the choice of Türkiye's leading textile brands. Every stage from sheet extrusion to assembly happens under one roof: 100% ABS shells, steel-screwed accessories.",
       },
       stats: [
@@ -323,9 +323,9 @@ export const en: SiteContent = {
           "WX-41x": { name: "Kids' series", text: "WX-412 / 414 / 415: embossed character, coloured wheels and handle; kids' size." },
         },
       },
-      hotspotsEyebrow: "A closer look",
+      hotspotsEyebrow: "Anatomy of the case",
       hotspotsTitle: "Durability is in the details.",
-      hotspotsHint: "Hover or tap the dots",
+      hotspotsHint: "Tap the numbered points",
       hotspots: [
         { title: "ABS shell", text: "100% ABS shell: it flexes on impact and returns to shape. Years on the belt, same suitcase.", x: 50, y: 58 },
         { title: "Double wheels", text: "360° spinning double wheels on all four corners; low centre of gravity, glides silently with one hand.", x: 38, y: 93 },
@@ -351,7 +351,7 @@ export const en: SiteContent = {
         text: "A good suitcase makes you forget it exists: it's light, rolls silently, and comes out of baggage claim intact. That's exactly what wexta aims for.",
       },
       quote: { text: "Every journey starts with a dream.", source: "wexta" },
-      ctaTitle: "Ready for the journey?",
+      ctaTitle: "Download the catalogue, request a quote.",
     },
     bnk: {
       tagline: "Korean glow, daily ritual.",
@@ -360,7 +360,7 @@ export const en: SiteContent = {
       about: {
         kicker: "About BNK",
         title: "Korean skincare, in a simple routine.",
-        body: "BNK — Beauty Net Korea — brings the careful formulation approach of Korean cosmetics to Türkiye. The range covers three Korean brands: TENZERO, FOODAHOLIC and DR. MELOSO. Instead of crowded shelves, a small set of products with a clear purpose: cleanse, balance, feed, protect. Every product is made in Korea and reaches Türkiye through beautynetkorea.com.tr; the routine takes four steps and two minutes, morning and evening.",
+        body: "BNK — Beauty Net Korea — brings the careful formulation approach of Korean cosmetics to Türkiye. The range covers three Korean brands: TENZERO, FOODAHOLIC and DR. MELOSO. Every product is made in Korea and reaches Türkiye through beautynetkorea.com.tr; the routine takes four steps and two minutes, morning and evening.",
       },
       stats: [
         { n: "70+", l: "Products" },
@@ -442,7 +442,7 @@ export const en: SiteContent = {
         text: "The secret of K-beauty isn't a miracle, it's consistency. BNK keeps the routine simple to make that consistency easy.",
       },
       quote: { text: "Korean glow, daily ritual.", source: "BNK" },
-      ctaTitle: "Build your routine",
+      ctaTitle: "Four steps, two minutes: build your routine.",
     },
   },
 

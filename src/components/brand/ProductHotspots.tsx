@@ -47,6 +47,7 @@ export function ProductHotspots({
         description={hint}
         onDark={ctx.tone === "dark"}
         eyebrowColor={brand.color}
+        descriptionColor={s.sub}
         titleFont={ctx.font}
         className="mb-12"
       />
@@ -56,8 +57,8 @@ export function ProductHotspots({
         <div className="relative mx-auto w-full max-w-[680px] overflow-hidden rounded-2xl">
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-0 blur-3xl"
-            style={{ background: `radial-gradient(circle at 50% 55%, ${brand.color}40, transparent 65%)` }}
+            className="pointer-events-none absolute inset-x-[12%] bottom-[4%] h-[8%] rounded-[50%] blur-2xl"
+            style={{ background: `${brand.color}2e` }}
           />
           <img src={image} alt="" aria-hidden className="relative w-full object-contain" />
 
@@ -102,48 +103,43 @@ export function ProductHotspots({
           })}
         </div>
 
-        {/* Özellik kartları */}
-        <ul className="space-y-3">
+        {/* Özellik listesi — çerçeveli kart yerine ince çizgi, aktif satırda marka rengi */}
+        <ol className="border-t" style={{ borderColor: s.cardBorder }}>
           {hotspots.map((h, i) => {
             const on = active === i;
             return (
-              <li key={h.title}>
+              <li
+                key={h.title}
+                className="border-b border-l-2 transition-colors duration-300"
+                style={{ borderBottomColor: s.cardBorder, borderLeftColor: on ? brand.color : "transparent" }}
+              >
                 <button
                   type="button"
                   onMouseEnter={() => setActive(i)}
                   onFocus={() => setActive(i)}
                   onClick={() => setActive(i)}
-                  className="w-full rounded-2xl border p-5 text-left outline-none transition-all duration-300 focus-visible:ring-2 md:p-6"
-                  style={{
-                    background: on ? "rgba(53,150,222,0.08)" : s.card,
-                    borderColor: on ? brand.color : s.cardBorder,
-                    transform: on ? "translateX(6px)" : "none",
-                  }}
+                  className="flex w-full gap-5 py-5 pl-5 text-left outline-none focus-visible:ring-2 md:py-6"
                 >
-                  <span className="flex items-center gap-3">
-                    <span
-                      className="grid size-7 shrink-0 place-items-center rounded-full text-xs font-extrabold transition-colors"
-                      style={{
-                        background: on ? brand.color : "transparent",
-                        border: `1.5px solid ${on ? brand.color : s.cardBorder}`,
-                        color: on ? brand.onColor : s.muted,
-                      }}
-                    >
-                      {i + 1}
-                    </span>
-                    <span className={`${ctx.font} text-lg font-bold tracking-tightest`}>{h.title}</span>
-                  </span>
                   <span
-                    className="mt-3 block leading-relaxed transition-opacity duration-300"
-                    style={{ color: s.sub, opacity: on ? 1 : 0.6 }}
+                    className="w-6 shrink-0 pt-1 text-xs font-bold tabular-nums"
+                    style={{ color: on ? brand.color : s.muted }}
                   >
-                    {h.text}
+                    0{i + 1}
+                  </span>
+                  <span>
+                    <span className={`${ctx.font} block text-lg font-bold tracking-tightest`}>{h.title}</span>
+                    <span
+                      className="mt-1.5 block leading-relaxed transition-opacity duration-300"
+                      style={{ color: s.sub, opacity: on ? 1 : 0.55 }}
+                    >
+                      {h.text}
+                    </span>
                   </span>
                 </button>
               </li>
             );
           })}
-        </ul>
+        </ol>
       </div>
     </section>
   );

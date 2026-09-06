@@ -221,37 +221,37 @@ export const oxyraProducts: Product[] = [
 export const fressiProducts: Product[] = [
   {
     name: "FR-TK302 Türk Kahve Makinesi",
-    category: "Coffee",
+    category: "Kahve",
     image: "/images/fressi/turk-kahve-tk302.webp",
     href: "https://fressihome.com/collections/turk-kahve-makinesi",
   },
   {
     name: "EM-01 Ristretto Espresso",
-    category: "Coffee",
+    category: "Kahve",
     image: "/images/fressi/espresso-em01.webp",
     href: "https://fressihome.com/collections/kahve-makinesi",
   },
   {
     name: "FR-KT07 Retro Mavera Kettle",
-    category: "Kitchen",
+    category: "Mutfak",
     image: "/images/fressi/kettle-kt07.webp",
     href: "https://fressihome.com/collections/kettle",
   },
   {
     name: "FR-TM26 Duobello Tost Makinesi",
-    category: "Kitchen",
+    category: "Mutfak",
     image: "/images/fressi/tost-tm26.webp",
     href: "https://fressihome.com/collections/waffle-tost-makinesi",
   },
   {
     name: "FR-P101 Zenitte Pikap",
-    category: "Collection",
+    category: "Koleksiyon",
     image: "/images/fressi/pikap-p101.webp",
     href: "https://fressihome.com/collections/pikap",
   },
   {
     name: "FR-CD183 Riona CD Çalar",
-    category: "Collection",
+    category: "Koleksiyon",
     image: "/images/fressi/cd-calar-cd183.webp",
     href: "https://fressihome.com/collections/muzik-aksesuarlari",
   },

@@ -9,8 +9,6 @@ import {
   BrandShell,
   ProductRange,
   ProductSpotlight,
-  PullQuote,
-  SpecBand,
   type BrandCtx,
 } from "../components/brand/sections";
 
@@ -27,17 +25,17 @@ export default function Oxyra() {
       <BrandHeroFull ctx={ctx} tagline={c.tagline} background="/images/oxyra/hero-setup.jpg" />
       <BrandAbout
         ctx={ctx}
-        mark="/logos/oxyra-mark-light.svg"
+        photo="/images/oxyra/mooncha/1.jpg"
+        photoFocus="50% 35%"
         eyebrow={c.brandAbout.eyebrow}
         title={c.brandAbout.title}
         body={c.brandAbout.body}
       />
-      <SpecBand ctx={ctx} specs={c.specBand} icons={["frame", "person-standing", "layers", "rotate-ccw"]} />
       <ProductHotspots
         ctx={ctx}
         eyebrow={c.hotspotsEyebrow}
         title={c.hotspotsTitle}
-        // hint={c.hotspotsHint}
+        hint={c.hotspotsHint}
         image="/images/oxyra/koltuk-oxyra.jpg"
         hotspots={c.hotspots}
       />
@@ -60,8 +58,13 @@ export default function Oxyra() {
         items={c.range}
         href={ctx.brand.channelHref}
       />
-      <PullQuote ctx={ctx} text={c.quote.text} source={c.quote.source} />
-      <BrandCTA ctx={ctx} title={c.ctaTitle} channel={c.channel} />
+      <BrandCTA
+        ctx={ctx}
+        title={c.ctaTitle}
+        channel={c.channel}
+        image="/images/oxyra/koltuk-oxyra.jpg"
+        imageFocus="50% 42%"
+      />
     </BrandShell>
   );
 }

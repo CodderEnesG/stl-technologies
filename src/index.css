@@ -280,7 +280,7 @@ body {
   }
 }
 .hotspot-ping {
-  animation: hotspot-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  animation: hotspot-ping 1.8s cubic-bezier(0, 0, 0.2, 1) 3;
 }
 
 /* Hero Showcase sekme ilerleme çizgisi */

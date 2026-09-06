@@ -9,7 +9,6 @@ import {
   BrandIntro,
   BrandShell,
   ProductRail,
-  PullQuote,
   RoutineFace,
   type BrandCtx,
 } from "../components/brand/sections";
@@ -40,7 +39,8 @@ export default function BNK() {
       <BrandCategoryBar ctx={ctx} categories={bnkCategories} allLabel={c.allProducts} links={c.barLinks} />
       <BrandIntro
         ctx={ctx}
-        mark="/logos/bnk-dark.svg"
+        photo="/images/bnk/model-routine.webp"
+        photoFocus="50% 20%"
         kicker={c.about.kicker}
         title={c.about.title}
         body={c.about.body}
@@ -114,8 +114,13 @@ export default function BNK() {
           { ...c.blog.posts[2], image: "/images/bnk/blog-nem.webp" },
         ]}
       />
-      <PullQuote ctx={ctx} text={c.quote.text} source={c.quote.source} />
-      <BrandCTA ctx={ctx} title={c.ctaTitle} channel={c.channel} />
+      <BrandCTA
+        ctx={ctx}
+        title={c.ctaTitle}
+        channel={c.channel}
+        image="/images/bnk/hero-wide.webp"
+        imageFocus="50% 80%"
+      />
     </BrandShell>
   );
 }

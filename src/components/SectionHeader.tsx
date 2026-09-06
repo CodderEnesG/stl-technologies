@@ -7,6 +7,7 @@ export function SectionHeader({
   description,
   onDark = false,
   eyebrowColor = "var(--accent)",
+  descriptionColor,
   align = "left",
   className = "",
   titleFont = "font-display",
@@ -16,6 +17,8 @@ export function SectionHeader({
   description?: string;
   onDark?: boolean;
   eyebrowColor?: string;
+  /** Açıklama metni rengi — marka sayfalarında o markanın gri tonu (s.sub) */
+  descriptionColor?: string;
   align?: "left" | "center";
   className?: string;
   titleFont?: string;
@@ -37,7 +40,7 @@ export function SectionHeader({
       {description && (
         <p
           className={`mt-4 max-w-2xl text-base leading-relaxed md:text-lg ${center ? "mx-auto" : ""}`}
-          style={{ color: onDark ? "rgba(255,255,255,0.65)" : "var(--muted)" }}
+          style={{ color: descriptionColor ?? (onDark ? "rgba(255,255,255,0.65)" : "var(--muted)") }}
         >
           {description}
         </p>

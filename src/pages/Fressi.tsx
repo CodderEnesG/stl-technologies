@@ -124,10 +124,10 @@ export default function Fressi() {
       />
       <BrandCTA
         ctx={ctx}
-        title={c.quote.text}
-        quoted
+        title={c.ctaTitle}
         channel={c.channel}
-        image="/images/fressi/gradient-koyu.png"
+        image="/images/fressi/life-cay-keyfi.webp"
+        imageFocus="50% 40%"
       />
     </BrandShell>
   );

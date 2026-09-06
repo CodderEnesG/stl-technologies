@@ -8,8 +8,6 @@ import {
   BrandShell,
   CatalogRibbon,
   Editorial,
-  SpecBand,
-  PullQuote,
   type BrandCtx,
 } from "../components/brand/sections";
 import { WextaHero } from "../components/brand/wextaHero";
@@ -58,11 +56,11 @@ export default function Wexta() {
       <CatalogRibbon left={ribbon.left} right={ribbon.right} logo="/logos/wexta-light.svg" />
       <BrandIntro
         ctx={ctx}
-        mark="/logos/wexta.svg"
+        photo={stlImages.store}
+        photoFocus="62% 50%"
         kicker={c.about.kicker}
         title={c.about.title}
         body={c.about.body}
-        stats={c.stats}
       />
       <SizeGuide
         ctx={ctx}
@@ -75,7 +73,6 @@ export default function Wexta() {
         image={wextaImages.sizeCutout}
       />
       <SeriesGuide ctx={ctx} copy={c.series} series={wextaSeries} catalogHref={wextaCatalogPdf} />
-      <SpecBand ctx={ctx} specs={c.specBand} icons={["layers", "ruler", "wrench", "factory"]} />
       <ProductHotspots
         ctx={ctx}
         eyebrow={c.hotspotsEyebrow}
@@ -89,8 +86,14 @@ export default function Wexta() {
         <Editorial ctx={ctx} image={stlImages.factory} title={c.parts.title} text={c.parts.text} ratio="aspect-[4/3]" />
       </div>
       <ShellTrio ctx={ctx} eyebrow={c.shells.eyebrow} title={c.shells.title} cards={shellCards} />
-      <PullQuote ctx={ctx} text={c.quote.text} source={c.quote.source} bg="#17181a" fg="#ffffff" />
-      <BrandCTA ctx={ctx} title={c.ctaTitle} channel={c.channel} />
+      <BrandCTA
+        ctx={ctx}
+        title={c.ctaTitle}
+        channel={c.channel}
+        image={stlImages.travel}
+        imageFocus="50% 60%"
+        secondary={{ label: c.series.catalogLabel, href: wextaCatalogPdf }}
+      />
     </BrandShell>
   );
 }
