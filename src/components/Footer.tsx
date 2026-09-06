@@ -116,7 +116,7 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {company.name}. {t.footer.rights}
           </p>
-          <p>Oxyra · Fressi · wexta · BNK</p>
+          <p>{brands.map((b) => b.name).join(" · ")}</p>
         </div>
       </div>
     </footer>

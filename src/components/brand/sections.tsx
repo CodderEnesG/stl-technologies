@@ -45,21 +45,8 @@ export const resolveImg = (src: string, w = 900, h = 1100) =>
 
 export function BrandShell({ ctx, children }: { ctx: BrandCtx; children: React.ReactNode }) {
   const s = toneStyles[ctx.tone];
-  const { brand } = ctx;
   return (
     <div className={`relative ${ctx.bodyFont ?? ""}`} style={{ background: s.bg, color: s.fg }}>
-      {/* Hero'dan sonraki üst bölümlerde marka mavisi ışık katmanı */}
-      {ctx.tone === "dark" && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-[2200px]"
-          style={{
-            background: `radial-gradient(900px 620px at 18% 6%, ${brand.color}26, transparent 70%),
-                         radial-gradient(760px 520px at 88% 26%, ${brand.color}1f, transparent 72%),
-                         radial-gradient(1100px 700px at 45% 52%, ${brand.color}14, transparent 75%)`,
-          }}
-        />
-      )}
       <div className="relative">{children}</div>
     </div>
   );

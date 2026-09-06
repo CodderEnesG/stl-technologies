@@ -53,6 +53,7 @@ export function Hero() {
       {variant === "3" && <HeroBento />}
       {variant === "4" && <HeroList />}
 
+      {import.meta.env.DEV && (
       <div className="fixed bottom-4 right-4 z-[90] flex items-center gap-1 rounded-full border border-border bg-white/90 p-1 shadow-lg backdrop-blur">
         {VARIANTS.map((v) => (
           <button
@@ -67,6 +68,7 @@ export function Hero() {
           </button>
         ))}
       </div>
+      )}
     </>
   );
 }

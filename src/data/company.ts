@@ -6,11 +6,11 @@ export const company = {
   facilitySqm: "35.000",
   exportCountries: 20,
   /**
-   * İhracat pazarları — ISO 3166-1 alpha-2 kodları (ör. "DE", "FR", "SA").
-   * TODO: müşteriden 20 ülkelik kesin liste bekleniyor. Boşken haritada
-   * sadece Türkiye işaretlenir ve "liste güncellenecek" notu görünür.
+   * İhracat pazarları — ISO 3166-1 alpha-2 kodları.
+   * Kaynak: wexta 2023 kataloğu. Müşteriden 20 ülkelik tam liste bekleniyor.
+   * XK (Kosova) world-atlas 110m verisinde ayrı ülke değil → haritada 9 ülke boyanır.
    */
-  exportMarkets: [] as string[],
+  exportMarkets: ["GB", "XK", "GE", "SO", "HR", "TN", "IR", "FR", "NE", "AZ"] as string[],
   phoneDisplay: "+90 212 866 85 51",
   phoneHref: "tel:+902128668551",
   email: "info@stlteknoloji.com",

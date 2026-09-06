@@ -65,11 +65,6 @@ export function ExportMap({ ctx }: { ctx: BrandCtx }) {
               );
             })}
           </svg>
-          {markets.size === 0 && (
-            <figcaption className="mt-4 text-xs" style={{ color: s.muted }}>
-              {m.pendingNote}
-            </figcaption>
-          )}
         </figure>
       </div>
     </section>

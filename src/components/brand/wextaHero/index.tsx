@@ -55,6 +55,7 @@ export function WextaHero({ ctx, channelHref }: { ctx: BrandCtx; channelHref: st
       {variant === "3" && <WextaRangeHero ctx={ctx} channelHref={channelHref} />}
       {variant === "4" && <WextaCoverHero ctx={ctx} channelHref={channelHref} image={wextaImages.coverMono} focus="50% 62%" />}
 
+      {import.meta.env.DEV && (
       <div className="fixed bottom-4 right-4 z-[90] flex items-center gap-1 rounded-full border border-[#e8eaeb] bg-white/90 p-1 shadow-lg backdrop-blur">
         {VARIANTS.map((v) => (
           <button
@@ -72,6 +73,7 @@ export function WextaHero({ ctx, channelHref }: { ctx: BrandCtx; channelHref: st
           </button>
         ))}
       </div>
+      )}
     </>
   );
 }

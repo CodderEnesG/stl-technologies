@@ -69,9 +69,8 @@ export const tr = {
       title: "Arnavutköy'de üretiyor, dünyaya gönderiyoruz.",
       body: "Kendi markalarımız ve OEM ürettiğimiz ürünler Türkiye'nin yanı sıra 20 ülkedeki satış noktalarında yerini alıyor.",
       legendHome: "Üretim merkezi",
-      legendMarket: "İhracat pazarı",
+      legendMarket: "İhracat pazarlarından bazıları",
       alt: "STL Teknoloji ihracat pazarları dünya haritası",
-      pendingNote: "Ülke listesi güncellenecektir.",
     },
     cube: {
       roleDescription: "Marka seçici küp",

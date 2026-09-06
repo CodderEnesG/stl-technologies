@@ -70,9 +70,8 @@ export const en: SiteContent = {
       title: "Made in Arnavutköy, shipped worldwide.",
       body: "Our own brands and the products we manufacture as OEM reach retail in Türkiye and in 20 countries.",
       legendHome: "Production base",
-      legendMarket: "Export market",
+      legendMarket: "Some of our export markets",
       alt: "World map of STL Teknoloji export markets",
-      pendingNote: "The country list will be updated.",
     },
     cube: {
       roleDescription: "Brand selector cube",
