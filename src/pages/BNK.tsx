@@ -39,8 +39,8 @@ export default function BNK() {
       <BrandCategoryBar ctx={ctx} categories={bnkCategories} allLabel={c.allProducts} links={c.barLinks} />
       <BrandIntro
         ctx={ctx}
-        photo="/images/bnk/model-routine.webp"
-        photoFocus="50% 20%"
+        photo="/images/bnk/hover-serum.webp"
+        photoFocus="50% 45%"
         kicker={c.about.kicker}
         title={c.about.title}
         body={c.about.body}
@@ -114,13 +114,8 @@ export default function BNK() {
           { ...c.blog.posts[2], image: "/images/bnk/blog-nem.webp" },
         ]}
       />
-      <BrandCTA
-        ctx={ctx}
-        title={c.ctaTitle}
-        channel={c.channel}
-        image="/images/bnk/hero-wide.webp"
-        imageFocus="50% 80%"
-      />
+      {/* Sayfa yüzle açılıyor; kapanış görselsiz kalsın — aynı model üçüncü kez çıkmasın */}
+      <BrandCTA ctx={ctx} title={c.ctaTitle} channel={c.channel} />
     </BrandShell>
   );
 }

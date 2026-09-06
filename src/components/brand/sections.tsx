@@ -484,6 +484,7 @@ export function ProductRange({
         description={description}
         onDark={onDark}
         eyebrowColor={brand.color}
+        descriptionColor={onDark ? undefined : s.sub}
         titleFont={ctx.font}
         className="mb-12"
       />
@@ -1877,6 +1878,7 @@ export function RoutineFace({
         title={title}
         description={description}
         eyebrowColor={ctx.brand.color}
+        descriptionColor={s.sub}
         titleFont={ctx.font}
         align="center"
         className="mb-12"
