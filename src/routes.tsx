@@ -15,6 +15,9 @@ const children = [
 ];
 
 export const router = createBrowserRouter([
+  // İçerik yönetim paneli — site kabuğunun (navbar/footer/i18n) dışında,
+  // ayrı bir chunk. Supabase kütüphanesi yalnızca bu dalda yüklenir.
+  { path: "/admin", lazy: page(() => import("./admin/AdminApp")) },
   {
     path: "/",
     Component: Root,

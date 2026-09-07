@@ -3,6 +3,8 @@ dist/
 build/
 .cache/
 .env*
+# Şablon dosya sırra sahip değil, repo'da kalsın
+!.env.example
 .vite/
 vite.config.*.timestamp-*
 *.tsbuildinfo

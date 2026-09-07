@@ -1,7 +1,14 @@
-import { createContext, useContext, useEffect, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
 import { tr, type SiteContent } from "../content/tr";
 import { en } from "../content/en";
+import { applyOverrides } from "../content/paths";
+import {
+  fetchContentOverrides,
+  readContentCache,
+  writeContentCache,
+  type ContentPayload,
+} from "../content/remote";
 
 export type Lang = "tr" | "en";
 
@@ -47,7 +54,8 @@ export function switchLangPath(pathname: string, hash = ""): string {
   return (entry ? paths[to][entry[0]] : paths[to].home) + hash;
 }
 
-const dictionaries: Record<Lang, SiteContent> = { tr, en };
+/** Koddaki metinler — her zaman geçerli yedek. */
+export const baseDictionaries: Record<Lang, SiteContent> = { tr, en };
 
 type I18n = {
   lang: Lang;
@@ -65,13 +73,38 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
   const lang = langFromPathname(pathname);
 
+  /**
+   * Admin panelinde kaydedilen metinler. Önce localStorage önbelleğinden
+   * okunur (dönen ziyaretçide metin sıçraması olmasın), sonra arka planda
+   * tazelenir. İstek başarısızsa koddaki metin geçerli kalır.
+   */
+  const [overrides, setOverrides] = useState<ContentPayload | null>(readContentCache);
+
+  useEffect(() => {
+    const ac = new AbortController();
+    fetchContentOverrides(ac.signal).then((live) => {
+      if (!live) return;
+      setOverrides(live);
+      writeContentCache(live);
+    });
+    return () => ac.abort();
+  }, []);
+
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
 
+  const dictionaries = useMemo<Record<Lang, SiteContent>>(
+    () => ({
+      tr: applyOverrides(tr, overrides?.tr),
+      en: applyOverrides(en, overrides?.en),
+    }),
+    [overrides],
+  );
+
   const value = useMemo<I18n>(
     () => ({ lang, t: dictionaries[lang], p: paths[lang], s: sectionHref(lang) }),
-    [lang],
+    [lang, dictionaries],
   );
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
