@@ -1139,9 +1139,16 @@ export function BrandHeroSlideshow({
       onMouseLeave={() => setPaused(false)}
     >
       {pattern && <PatternLayer src={pattern} opacity={0.2} fade="both" />}
-      <div className="relative mx-auto max-w-[1600px]">
+      {/*
+        Görsel tam genişlikte akar — Oxyra ve wexta hero'ları gibi. Eskiden kap
+        1600px'e sabitliydi ve daha geniş ekranlarda iki yanda zemin görünüyordu.
+        Oran mağaza banner'ının kendi oranı (2000x854); çok geniş ekranlarda
+        hero'nun ekranı aşmaması için yükseklik ayrıca sınırlanıyor, object-cover
+        taşan kısmı kırpıyor.
+      */}
+      <div className="relative">
         <div
-          className="relative aspect-[16/11] w-full overflow-hidden md:aspect-[2000/854]"
+          className="relative aspect-[16/11] w-full overflow-hidden md:aspect-[2000/854] md:max-h-[calc(100svh-var(--nav-h))]"
           onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
           onTouchEnd={(e) => {
             if (touchX.current === null) return;
