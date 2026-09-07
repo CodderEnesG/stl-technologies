@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fressiCategories, fressiCircles, fressiProducts, getBrand } from "../data/brands";
+import { fressiCategories, getBrand } from "../data/brands";
 import { fetchLiveFressiReviews, fressiReviews, type FressiReview } from "../data/fressiReviews";
 import { useI18n } from "../i18n";
 import { usePageMeta } from "../hooks/usePageMeta";
@@ -7,12 +7,11 @@ import {
   BrandCTA,
   Editorial,
   BrandCategoryBar,
-  CircleRail,
+  CategoryCircles,
   BrandGallery,
   BrandHeroSlideshow,
   EditorialIntro,
   ReviewSlider,
-  ProductVitrine,
   BrandShell,
   type BrandCtx,
 } from "../components/brand/sections";
@@ -69,6 +68,13 @@ export default function Fressi() {
         ]}
       />
       <BrandCategoryBar ctx={ctx} categories={fressiCategories} />
+      <CategoryCircles
+        ctx={ctx}
+        eyebrow={c.categoryCircles.eyebrow}
+        title={c.categoryCircles.title}
+        items={fressiCategories}
+        pattern={PATTERN}
+      />
       <EditorialIntro
         ctx={ctx}
         kicker={c.about.kicker}
@@ -79,18 +85,9 @@ export default function Fressi() {
         imageAlt="Fressi Türk kahvesi makinesiyle sofrada kahve keyfi"
         pattern={PATTERN}
       />
-      <CircleRail
-        ctx={ctx}
-        eyebrow={c.circles.eyebrow}
-        title={c.circles.title}
-        items={fressiCircles}
-        pattern={PATTERN}
-        prevLabel={c.hero.prev}
-        nextLabel={c.hero.next}
-      />
-      <ProductVitrine ctx={ctx} title={c.vitrineTitle} products={fressiProducts} />
       <Editorial
         ctx={ctx}
+        reverse
         image="/images/fressi/home-tk302-mutfak.webp"
         ratio="aspect-[3/2]"
         title={c.editorial.title}

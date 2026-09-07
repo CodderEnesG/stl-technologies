@@ -73,7 +73,10 @@ export default function Home() {
         productionAlt={a.lineAlt}
       /> */}
 
-      <Reveal>
+      {/* Marka küpü sadece masaüstünde: dar ekranda küp okunmadığı için düz 4'lü
+          ızgaraya düşüyordu, o da hero panellerinin birebir tekrarı oluyordu.
+          md: eşiği BrandCube'un kendi FLAT_QUERY'siyle (max-width: 767px) aynı. */}
+      <Reveal className="hidden md:block">
         <BrandCube
           ctx={stlCtx}
           id="markalar"

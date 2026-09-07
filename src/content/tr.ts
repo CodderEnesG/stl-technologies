@@ -228,9 +228,9 @@ export const tr = {
         eyebrow: "Evde Fressi",
         title: "Fressi eve girince",
       },
-      circles: {
-        eyebrow: "Ürün dünyası",
-        title: "Bugün ne hazırlıyoruz?",
+      categoryCircles: {
+        eyebrow: "Kategoriler",
+        title: "Kahveden koleksiyona.",
       },
       reviews: {
         eyebrow: "Müşteri yorumları",
@@ -240,7 +240,6 @@ export const tr = {
         all: "Tüm yorumları fressihome.com'da okuyun",
       },
       categoriesLabel: "Ne aramıştınız?",
-      vitrineTitle: "Öne çıkanlar",
       editorial: {
         title: "Sabahın ilk kahvesinden akşam çayına.",
         text: "Fressi ürünleri tezgahın üstünde güzel durur; ama asıl işi günün her saatini biraz daha keyifli kılmak.",

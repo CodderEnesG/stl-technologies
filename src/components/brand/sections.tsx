@@ -652,6 +652,7 @@ export function Editorial({
   text,
   blend,
   ratio,
+  reverse,
 }: {
   ctx: BrandCtx;
   image: string;
@@ -663,13 +664,18 @@ export function Editorial({
    * metin sütununun boyuna uzar — kısa metinlerde fotoğrafı kırpar.
    */
   ratio?: string;
+  /**
+   * Masaüstünde metni sola, görseli sağa alır. Mobil sıra değişmez:
+   * görsel her hâlde önce gelir, bölüme fotoğrafla girmek daha iyi okunuyor.
+   */
+  reverse?: boolean;
 }) {
   const s = toneStyles[ctx.tone];
   const { brand } = ctx;
   return (
     <section className="mx-auto grid max-w-[1400px] items-stretch gap-6 px-5 pb-24 md:grid-cols-2 md:px-8">
       <div
-        className={`relative overflow-hidden rounded-2xl ${ratio ?? "aspect-[4/3] md:aspect-auto"}`}
+        className={`relative overflow-hidden rounded-2xl ${ratio ?? "aspect-[4/3] md:aspect-auto"} ${reverse ? "md:order-2" : ""}`}
         style={{ background: blend ? "#ffffff" : "rgba(127,127,127,0.08)" }}
       >
         <img
@@ -680,7 +686,7 @@ export function Editorial({
           style={{ objectFit: blend ? "contain" : "cover" }}
         />
       </div>
-      <div className="flex flex-col justify-center py-6">
+      <div className={`flex flex-col justify-center py-6 ${reverse ? "md:order-1" : ""}`}>
         <span className="mb-3 h-px w-12" style={{ background: brand.color }} />
         <h2 className={`${ctx.font} text-3xl font-bold leading-[1.1] tracking-tightest md:text-4xl`}>{title}</h2>
         <p className="mt-4 max-w-md text-lg leading-relaxed" style={{ color: s.sub }}>{text}</p>
@@ -1534,6 +1540,77 @@ export function CircleRail({
             ))}
           </div>
         )}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Kategori daireleri — markanın kendi kategori kilitleriyle (fressi Coffee /
+ * Kitchen / Home / Collection) dört daire.
+ *
+ * Daire dili `CircleRail`'den geliyor ama bu bir ürün rayı değil: sabit dört
+ * öğe, kaydırma yok, ürün adı yok. Satış hissi vermemesi için etiket yerine
+ * kategori logosu duruyor — vitrin sitesi, mağaza değil.
+ *
+ * Logolar sabit *genişlikte* dizilir, sabit yükseklikte değil: kilitlerin
+ * el yazısı satırı farklı uzunlukta (Coffee'nin inişi diğerlerinden derin),
+ * yüksekliği eşitlemek "fressi" kelimesini kategoriden kategoriye küçültürdü.
+ */
+export function CategoryCircles({
+  ctx,
+  eyebrow,
+  title,
+  items,
+  pattern,
+}: {
+  ctx: BrandCtx;
+  eyebrow: string;
+  title: string;
+  items: { key: string; label: string; color: string; circleImage: string; logo: string; href: string }[];
+  pattern?: string;
+}) {
+  return (
+    <section className="relative overflow-hidden py-24">
+      {pattern && <PatternLayer src={pattern} opacity={0.13} fade="both" />}
+      <div className="relative mx-auto max-w-[1400px] px-5 md:px-8">
+        <SectionHeader eyebrow={eyebrow} title={title} eyebrowColor={ctx.brand.color} titleFont={ctx.font} className="mb-10" />
+
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-8">
+          {items.map((it) => (
+            <a
+              key={it.key}
+              href={it.href}
+              target="_blank"
+              rel="noreferrer"
+              className="group flex flex-col items-center text-center"
+            >
+              <div className="relative w-full overflow-hidden rounded-full">
+                <div className="aspect-square">
+                  <img
+                    src={it.circleImage}
+                    alt=""
+                    aria-hidden
+                    loading="lazy"
+                    className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+                {/* Hover halkası kategori renginde — bar ve daire aynı renk sistemini paylaşır */}
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full opacity-0 ring-2 ring-inset transition-opacity duration-300 group-hover:opacity-100"
+                  style={{ color: it.color }}
+                />
+              </div>
+              <img
+                src={it.logo}
+                alt={`fressi ${it.key}`}
+                loading="lazy"
+                className="mt-5 w-[104px] max-w-full md:w-[132px]"
+              />
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );
