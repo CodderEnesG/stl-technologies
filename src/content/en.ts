@@ -228,9 +228,9 @@ export const en: SiteContent = {
         eyebrow: "Fressi at home",
         title: "When Fressi moves in",
       },
-      circles: {
-        eyebrow: "Product world",
-        title: "What are we making today?",
+      categoryCircles: {
+        eyebrow: "Categories",
+        title: "From coffee to the collection.",
       },
       reviews: {
         eyebrow: "Customer reviews",
@@ -240,7 +240,6 @@ export const en: SiteContent = {
         all: "Read all reviews on fressihome.com",
       },
       categoriesLabel: "What are you looking for?",
-      vitrineTitle: "Highlights",
       editorial: {
         title: "From the first coffee of the morning to the evening tea.",
         text: "Fressi products look good on the counter; but their real job is making every hour of the day a little more enjoyable.",

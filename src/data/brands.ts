@@ -225,44 +225,6 @@ export const oxyraProducts: Product[] = [
   },
 ];
 
-export const fressiProducts: Product[] = [
-  {
-    name: "FR-TK302 Türk Kahve Makinesi",
-    category: "Coffee",
-    image: "/images/fressi/turk-kahve-tk302.webp",
-    href: "https://fressihome.com/collections/turk-kahve-makinesi",
-  },
-  {
-    name: "EM-01 Ristretto Espresso",
-    category: "Coffee",
-    image: "/images/fressi/espresso-em01.webp",
-    href: "https://fressihome.com/collections/kahve-makinesi",
-  },
-  {
-    name: "FR-KT07 Retro Mavera Kettle",
-    category: "Kitchen",
-    image: "/images/fressi/kettle-kt07.webp",
-    href: "https://fressihome.com/collections/kettle",
-  },
-  {
-    name: "FR-TM26 Duobello Tost Makinesi",
-    category: "Kitchen",
-    image: "/images/fressi/tost-tm26.webp",
-    href: "https://fressihome.com/collections/waffle-tost-makinesi",
-  },
-  {
-    name: "FR-P101 Zenitte Pikap",
-    category: "Collection",
-    image: "/images/fressi/pikap-p101.webp",
-    href: "https://fressihome.com/collections/pikap",
-  },
-  {
-    name: "FR-CD183 Riona CD Çalar",
-    category: "Collection",
-    image: "/images/fressi/cd-calar-cd183.webp",
-    href: "https://fressihome.com/collections/muzik-aksesuarlari",
-  },
-];
 
 export const wextaProducts: Product[] = [
   {
@@ -542,25 +504,18 @@ export const bnkCategories = [
   },
 ];
 
-// Fressi kategori renk sistemi (marka kılavuzu)
+/**
+ * Fressi kategori sistemi (marka kılavuzu). `logo` alanları markanın kendi
+ * kategori kilitlerinden geliyor: general_assets/.../Fressi Logolar/Kategori logo.ai
+ * → pdftocairo ile SVG, viewBox içerik kutusuna kırpıldı.
+ *
+ * `image` kategori barının hover paneli için (ürün kesiti), `circleImage`
+ * CategoryCircles bölümündeki daire için (yaşam kadrajı) kullanılıyor.
+ */
 export const fressiCategories = [
-  { key: "Coffee", label: "Kahve", color: "#594439", icon: "coffee" as const, image: "/images/fressi/espresso-em01.webp", href: "https://fressihome.com/collections/kahve-makinesi" },
-  { key: "Kitchen", label: "Mutfak", color: "#818e71", icon: "utensils" as const, image: "/images/fressi/kettle-kt07.webp", href: "https://fressihome.com/collections/kettle" },
-  { key: "Home", label: "Ev", color: "#d3c4a9", icon: "house" as const, image: "/images/fressi/cd-calar-cd183.webp", href: "https://fressihome.com/collections/temizlik-ve-ferahlik" },
-  { key: "Collection", label: "Koleksiyon", color: "#467fa5", icon: "layout-grid" as const, image: "/images/fressi/pikap-p101.webp", href: "https://fressihome.com/collections/tum-urunler" },
+  { key: "Coffee", label: "Kahve", color: "#594439", icon: "coffee" as const, image: "/images/fressi/espresso-em01.webp", circleImage: "/images/fressi/circle-coffee.webp", logo: "/logos/fressi-cat-coffee.svg", href: "https://fressihome.com/collections/kahve-makinesi" },
+  { key: "Kitchen", label: "Mutfak", color: "#818e71", icon: "utensils" as const, image: "/images/fressi/kettle-kt07.webp", circleImage: "/images/fressi/home-tm26-tost.webp", logo: "/logos/fressi-cat-kitchen.svg", href: "https://fressihome.com/collections/kettle" },
+  { key: "Home", label: "Ev", color: "#d3c4a9", icon: "house" as const, image: "/images/fressi/cd-calar-cd183.webp", circleImage: "/images/fressi/home-p1990-koltuk.webp", logo: "/logos/fressi-cat-home.svg", href: "https://fressihome.com/collections/temizlik-ve-ferahlik" },
+  { key: "Collection", label: "Koleksiyon", color: "#467fa5", icon: "layout-grid" as const, image: "/images/fressi/pikap-p101.webp", circleImage: "/images/fressi/home-p101-salon.webp", logo: "/logos/fressi-cat-collection.svg", href: "https://fressihome.com/collections/tum-urunler" },
 ];
 
-/**
- * fressihome.com anasayfasındaki daire ürün rayının birebir karşılığı —
- * görseller ve koleksiyon linkleri mağazadan alındı.
- */
-export const fressiCircles = [
-  { label: "Airfryer Fırın", image: "/images/fressi/circle-airfryer.webp", href: "https://fressihome.com/collections/airfryer-firin" },
-  { label: "Çay Makinesi", image: "/images/fressi/circle-cay-makinesi.webp", href: "https://fressihome.com/collections/cay-makinesi" },
-  { label: "Smoothie Blender", image: "/images/fressi/circle-smoothie-blender.webp", href: "https://fressihome.com/collections/smoothie-blender" },
-  { label: "Espresso Makinesi", image: "/images/fressi/circle-espresso.webp", href: "https://fressihome.com/collections/kahve-makinesi" },
-  { label: "Akıllı Thermo Tencere", image: "/images/fressi/circle-thermo-tencere.webp", href: "https://fressihome.com/collections/akilli-thermo-tencere" },
-  { label: "Kettle", image: "/images/fressi/circle-kettle.webp", href: "https://fressihome.com/collections/kettle" },
-  { label: "Katı Meyve Sıkacağı", image: "/images/fressi/circle-meyve-sikacagi.webp", href: "https://fressihome.com/collections/kati-meyve-sikacagi" },
-  { label: "Karıştırıcılar", image: "/images/fressi/circle-karistirici.webp", href: "https://fressihome.com/collections/karistiricilar" },
-];
