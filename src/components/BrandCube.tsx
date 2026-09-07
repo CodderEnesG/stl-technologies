@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import { brands } from "../data/brands";
 import { useI18n } from "../i18n";
 import { Arrow } from "./Arrow";
-import { Icon } from "./Icon";
 import { LogoSlot } from "./LogoSlot";
 import { SectionHeader } from "./SectionHeader";
 import { BrandGrid } from "./sections";
@@ -30,13 +29,6 @@ const FACE_RATIO = 0.54; // yüz genişliği / sahne genişliği
 const FACE_ASPECT = 0.66; // yükseklik / genişlik
 const RADIUS_RATIO = 0.72; // halka yarıçapı / yüz genişliği
 
-/**
- * Fare hareketi -> dönüş. Mutlak konum eşlemesi değil: imleç durunca küp de durur,
- * böylece öndeki kartın üstüne gelmek onu kaydırmaz ve karta tıklanabilir.
- * Sahne genişliğini bir uçtan bir uca taramak ~3 marka ilerletir.
- */
-const SCRUB = 0.3; // derece / piksel
-
 /** Kare başına hedefe yaklaşma oranı (60fps referanslı, dt ile düzeltilir) */
 const FOLLOW = 0.15;
 
@@ -44,9 +36,12 @@ const mod = (n: number, m: number) => ((n % m) + m) % m;
 const rad = (d: number) => (d * Math.PI) / 180;
 
 /**
- * Markalar küpü — dört marka bir halka üzerinde; fare bölümün üzerinde
- * soldan sağa geçtikçe biri diğerine döner. Ön yüz tam ölçekte, yandakiler
+ * Markalar küpü — dört marka bir halka üzerinde. Ön yüz tam ölçekte, yandakiler
  * açılı ve hafif karartılmış.
+ *
+ * Gezinme tıklamayla: alttaki ok butonları ve marka rayı, yandaki kartın
+ * kendisi, ok tuşları. (Önceden fare bölümün üzerinde gezindikçe dönüyordu;
+ * ne yapılacağı görünmediği için buton tabanlı kontrole çevrildi.)
  *
  * prefers-reduced-motion açıkken küp yerine düz 4'lü ızgara render edilir.
  */
@@ -94,7 +89,6 @@ function Cube({
   const indexRef = useRef(0);
   const rafRef = useRef(0);
   const lastTsRef = useRef(0);
-  const lastXRef = useRef<number | null>(null);
   const touched = useRef(false);
   const dragRef = useRef<{ x: number; base: number } | null>(null);
 
@@ -200,46 +194,11 @@ function Cube({
     return () => clearInterval(timer);
   }, [settle]);
 
+  /** Yalnızca dokunmatik sürükleme — fareyle gezinmek küpü döndürmez. */
   const onPointerMove = (e: React.PointerEvent) => {
-    const el = stageRef.current;
-    if (!el) return;
-
-    // Dokunmatik: sürükleme
-    if (dragRef.current) {
-      const { x, base } = dragRef.current;
-      glideTo(base + (e.clientX - x) * 0.28);
-      return;
-    }
-    if (e.pointerType === "touch") return;
-
-    touched.current = true;
-    if (lastXRef.current === null) {
-      lastXRef.current = e.clientX;
-      return;
-    }
-    const dx = e.clientX - lastXRef.current;
-    lastXRef.current = e.clientX;
-    if (!dx) return;
-
-    glideTo(targetRef.current + dx * SCRUB);
-    const i = Math.round(-targetRef.current / STEP);
-    if (i !== indexRef.current) {
-      indexRef.current = i;
-      setIndex(mod(i, N));
-    }
-  };
-
-  const onPointerEnter = (e: React.PointerEvent) => {
-    if (e.pointerType === "touch") return;
-    lastXRef.current = e.clientX;
-  };
-
-  const onPointerLeave = () => {
-    lastXRef.current = null;
-    if (dragRef.current) return;
-    // Bırakınca en yakın yüze otur
-    settle(Math.round(-targetRef.current / STEP));
-    touched.current = false;
+    if (!dragRef.current) return;
+    const { x, base } = dragRef.current;
+    glideTo(base + (e.clientX - x) * 0.28);
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -263,6 +222,12 @@ function Cube({
     settle(indexRef.current + (e.key === "ArrowRight" ? 1 : -1));
   };
 
+  /** Ok butonları ve klavye — bir marka ileri/geri */
+  const step = (d: number) => {
+    touched.current = true;
+    settle(indexRef.current + d);
+  };
+
   const activate = (i: number) => {
     // Öndeki yüz hedefin kendisinden okunur; React state'i bir kare geriden gelebiliyor.
     const front = mod(Math.round(-targetRef.current / STEP), N);
@@ -284,9 +249,7 @@ function Cube({
         ref={stageRef}
         className="relative mx-auto w-full touch-pan-y select-none outline-none"
         style={{ maxWidth: STAGE_MAX, perspective: `${Math.round(stage * 1.1)}px` }}
-        onPointerEnter={onPointerEnter}
         onPointerMove={onPointerMove}
-        onPointerLeave={onPointerLeave}
         onPointerDown={onPointerDown}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
@@ -375,8 +338,11 @@ function Cube({
           />
         </div>
 
-        {/* İndeks rayı */}
-        <div className="mt-20 flex items-center gap-3">
+        {/* Kontrol satırı: ok butonları + marka rayı */}
+        <div className="mt-20 flex items-center gap-4 md:gap-6">
+          <ArrowButton dir="left" label={t.home.cube.prev} onClick={() => step(-1)} border={s.cardBorder} />
+
+          <div className="flex flex-1 items-center gap-3">
           {brands.map((b, i) => (
             <button
               key={b.slug}
@@ -387,7 +353,7 @@ function Cube({
                 touched.current = true;
                 settle(i);
               }}
-              className="flex-1 py-2"
+              className="flex-1 cursor-pointer py-2"
             >
               <span
                 className="block h-[3px] w-full rounded-full transition-all duration-500"
@@ -404,16 +370,51 @@ function Cube({
               </span>
             </button>
           ))}
+          </div>
+
+          <ArrowButton dir="right" label={t.home.cube.next} onClick={() => step(1)} border={s.cardBorder} />
         </div>
 
-        <p
-          className="mt-6 flex items-center justify-center gap-2 text-center text-xs"
-          style={{ color: s.muted }}
-        >
-          <Icon name="mouse-pointer-2" size={14} strokeWidth={ctx.iconWeight ?? 1.75} />
+        <p className="mt-6 text-center text-xs" style={{ color: s.muted }}>
           {t.home.cube.hint}
         </p>
       </div>
     </section>
+  );
+}
+
+/**
+ * Küpü bir marka ileri/geri döndüren yuvarlak ok butonu. Hero slaytındaki
+ * denetimlerle aynı dil: ince konturlu daire, üstüne gelince marka rengi.
+ */
+function ArrowButton({
+  dir,
+  label,
+  onClick,
+  border,
+}: {
+  dir: "left" | "right";
+  label: string;
+  onClick: () => void;
+  border: string;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      className="grid size-11 shrink-0 cursor-pointer place-items-center rounded-full border bg-white transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-14px_rgba(0,0,0,0.5)]"
+      style={{ borderColor: border }}
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d={dir === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}
+          stroke="currentColor"
+          strokeWidth="1.9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
   );
 }

@@ -75,7 +75,9 @@ export const tr = {
     },
     cube: {
       roleDescription: "Marka seçici küp",
-      hint: "Fareyi soldan sağa gezdirin veya ok tuşlarını kullanın.",
+      hint: "Markaya tıklayın veya oklarla gezinin.",
+      prev: "Önceki marka",
+      next: "Sonraki marka",
     },
     partnersKicker: "Referanslar",
     partnersTitle: "Birlikte çalıştığımız markalar.",

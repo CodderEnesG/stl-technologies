@@ -76,7 +76,9 @@ export const en: SiteContent = {
     },
     cube: {
       roleDescription: "Brand selector cube",
-      hint: "Move the pointer across, or use the arrow keys.",
+      hint: "Click a brand, or step through with the arrows.",
+      prev: "Previous brand",
+      next: "Next brand",
     },
     partnersKicker: "References",
     partnersTitle: "Brands we work with.",
