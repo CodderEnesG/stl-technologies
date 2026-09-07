@@ -29,8 +29,13 @@ export type BrandVisual = {
   heroBlend?: boolean;
   /** Hero fotoğrafının odak noktası (CSS object-position). Kadraj panelde buraya göre kurulur. */
   heroFocus?: string;
-  /** Hero panelindeki marka adının rengi. Verilmezse panelText kullanılır. */
-  heroNameColor?: string;
+  /**
+   * Kapalı hero panelinde dik duran logonun uzun kenarı (px).
+   * Kelime işaretlerinin oranı çok farklı (BNK 13.5, Fressi 3.0); ortak bir
+   * kalınlık ya da ortak bir uzunluk vermek birini devleştiriyor, ötekini
+   * eziyor. Bu yüzden her marka için gözle ayarlandı. Verilmezse 110.
+   */
+  heroRailLen?: number;
   channelHref: string;
   /** Ana lockup — açık zeminler (hero, marka sayfası) */
   logoDark: string;
@@ -73,7 +78,7 @@ export const brands: BrandVisual[] = [
     // Landing paneli: siyah-beyaz sahnede mavi valiz (katalog kapağı) — kullanıcı tercihi 2026-09-05
     hero: "/images/stl/wexta-cover.jpg",
     heroFocus: "50% 45%",
-    heroNameColor: "rgb(41, 174, 198)",
+    heroRailLen: 118,
     channelHref: "https://www.stlteknoloji.com/tr/urunler/valiz",
     logoDark: "/logos/wexta.svg",
     logoLight: "/logos/wexta-light.svg",
@@ -93,6 +98,7 @@ export const brands: BrandVisual[] = [
     hero: "/images/fressi/kettle-kt07-hero.jpg",
     heroFocus: "52% 58%",
     channelHref: "https://fressihome.com",
+    heroRailLen: 92,
     logoDark: "/logos/fressi-dark.svg",
     logoLight: "/logos/fressi-light.svg",
     navTopBg: "#f9f7f4",
@@ -108,7 +114,7 @@ export const brands: BrandVisual[] = [
     onColor: "#ffffff",
     panelBg: "linear-gradient(160deg, #ffffff 0%, #ffe7ef 55%, #ffd0de 135%)",
     panelText: "#231f20",
-    heroNameColor: "#ed1651",
+    heroRailLen: 132,
     hero: "/images/bnk/hero-panel.webp",
     heroFocus: "50% 30%",
     channelHref: "https://beautynetkorea.com.tr",
@@ -131,6 +137,7 @@ export const brands: BrandVisual[] = [
     hero: "/images/oxyra/koltuk-oxyra.jpg",
     heroFocus: "50% 50%",
     channelHref: "https://www.stlteknoloji.com/tr/urunler/oyuncu-koltugu",
+    heroRailLen: 128,
     logoDark: "/logos/oxyra-dark.svg",
     logoLight: "/logos/oxyra-light.svg",
     logoDarkWide: "/logos/oxyra-dark-h.svg",

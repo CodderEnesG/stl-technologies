@@ -120,16 +120,32 @@ export function HeroAccordion() {
               />
             )}
 
-            {/* Kapalı hâl: dikey marka adı */}
+            {/*
+              Kapalı hâl: dik duran marka logosu.
+              Önceden marka adı düz metindi ve dördü de Oxyra'nın geniş fontuyla
+              yazılıyordu; "FRESSİ" büyük harfle o fontta markaya benzemiyordu.
+              Artık her marka kendi kelime işaretiyle duruyor, panel açılınca
+              görünen logoyla da aynı.
+
+              Döndürme: transform sağdan sola işler. Önce translateY(-50%) logoyu
+              kendi yüksekliğinin yarısı kadar yukarı alır, sonra rotate(90deg)
+              sol üst köşe etrafında çevirir. Sonuç panel ortasında yatayda
+              ortalanmış olur — logonun kalınlığını CSS'te bilmeye gerek kalmaz.
+            */}
             <span
-              className="absolute left-1/2 top-10 hidden -translate-x-1/2 whitespace-nowrap font-expanded text-2xl font-extrabold uppercase tracking-tightest transition-opacity duration-300 md:block"
+              aria-hidden
+              className="absolute left-1/2 top-9 hidden origin-top-left transition-opacity duration-300 md:block"
               style={{
                 opacity: active === i ? 0 : 1,
-                writingMode: "vertical-rl",
-                color: b.heroNameColor ?? b.panelText,
+                transform: "rotate(90deg) translateY(-50%)",
               }}
             >
-              {b.name}
+              <img
+                src={b.panelText === "#ffffff" ? (b.logoLightWide ?? b.logoLight) : (b.logoDarkWide ?? b.logoDark)}
+                alt=""
+                className="block h-auto"
+                style={{ width: b.heroRailLen ?? 110, maxWidth: "none" }}
+              />
             </span>
 
             {/* Açık hâl */}
@@ -162,17 +178,16 @@ export function HeroAccordion() {
               </span>
             </div>
 
-            {/* Mobil kapalı hâl: yatay ad */}
+            {/* Mobil kapalı hâl: yatay logo (masaüstündeki dik rayın karşılığı) */}
             <div
               className="absolute inset-x-0 bottom-0 p-5 md:hidden"
               style={{ opacity: active === i ? 0 : 1 }}
             >
-              <h2
-                className="font-expanded text-3xl font-black uppercase leading-none tracking-tightest"
-                style={{ color: b.heroNameColor ?? b.panelText }}
-              >
-                {b.name}
-              </h2>
+              <img
+                src={b.panelText === "#ffffff" ? (b.logoLightWide ?? b.logoLight) : (b.logoDarkWide ?? b.logoDark)}
+                alt={b.name}
+                className="h-9 w-auto max-w-[62%] object-contain object-left"
+              />
             </div>
           </Link>
         );
