@@ -1,11 +1,20 @@
 /**
  * Derleme sonrası: her rota için ayrı bir statik HTML üretir.
  *
- * Site bir SPA; başlık ve açıklama tarayıcıda JavaScript ile yazılıyor.
- * WhatsApp, LinkedIn ve X gibi paylaşım robotları JavaScript çalıştırmaz, bu
- * yüzden hangi sayfa paylaşılırsa paylaşılsın aynı jenerik kart çıkıyordu.
- * Burada her rotanın HTML'i başlık, açıklama, canonical, hreflang, Open Graph
- * ve yapısal veriyle birlikte önceden yazılıyor.
+ * Site bir SPA: hem metin hem de başlık/açıklama tarayıcıda JavaScript ile
+ * üretiliyordu. JavaScript çalıştırmayan istemciler için sayfa tamamen boştu.
+ * Bu iki ayrı soruna yol açıyordu:
+ *
+ * 1. Paylaşım robotları (WhatsApp, LinkedIn, X) JavaScript çalıştırmaz; hangi
+ *    sayfa paylaşılırsa paylaşılsın aynı jenerik kart çıkıyordu.
+ * 2. Cevap üreten AI tarayıcıları (GPTBot, OAI-SearchBot, ClaudeBot,
+ *    PerplexityBot) da JavaScript çalıştırmaz; sitede meta açıklaması dışında
+ *    alıntılanabilir tek bir cümle göremiyorlardı.
+ *
+ * Betik iki aşamalı çalışır: önce her rotanın head'ini yazar (başlık, açıklama,
+ * canonical, hreflang, Open Graph, yapısal veri), sonra sayfaları gerçek bir
+ * tarayıcıda açıp yerleşmiş DOM'un tamamını aynı dosyaya geri yazar. React
+ * istemcide devralmaya devam eder, görünen davranış değişmez.
  *
  * Ayrıca sitemap.xml, robots.txt ve gerçek 404 döndüren 404.html üretilir.
  * Her rota kendi dosyasına yazıldığı için vercel.json'daki "her yolu
@@ -14,8 +23,9 @@
  *
  * Çalıştırma: node --experimental-strip-types scripts/prerender.mjs
  */
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { createServer } from "node:http";
+import { createReadStream, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { dirname, extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { tr } from "../src/content/tr.ts";
@@ -50,7 +60,7 @@ function copyFor(page, lang) {
   const t = dict[lang];
   if (page.legal) {
     const doc = legalDocs[page.legal][lang];
-    return { title: `${doc.title} — ${company.name}`, description: doc.title };
+    return { title: `${doc.title} — ${company.name}`, description: doc.description };
   }
   const m = t.meta[page.meta];
   return { title: m.title, description: m.desc };
@@ -58,51 +68,81 @@ function copyFor(page, lang) {
 
 const BRANDS = [
   { name: "wexta", path: "/wexta" },
-  { name: "Fressi", path: "/fressi" },
-  { name: "BNK", path: "/bnk" },
+  { name: "Fressi", path: "/fressi", sameAs: "https://fressihome.com" },
+  { name: "BNK", path: "/bnk", sameAs: "https://beautynetkorea.com.tr" },
   { name: "Oxyra", path: "/oxyra" },
 ];
 
 function organizationLd(lang) {
   const { description } = copyFor(PAGES[0], lang);
+  const home = abs(lang === "tr" ? "/" : "/en");
+
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: company.name,
-    legalName: company.legalName,
-    url: abs(lang === "tr" ? "/" : "/en"),
-    logo: `${ORIGIN}/logos/stl.svg`,
-    image: `${ORIGIN}/og/og-home.jpg`,
-    foundingDate: String(company.founded),
-    description,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: `${company.addressLines[0]}, ${company.addressLines[1]}`,
-      addressLocality: "Arnavutköy",
-      addressRegion: "İstanbul",
-      postalCode: "34555",
-      addressCountry: "TR",
-    },
-    contactPoint: [
+    "@graph": [
       {
-        "@type": "ContactPoint",
-        telephone: company.phoneHref.replace("tel:", ""),
-        email: company.email,
-        contactType: "sales",
-        availableLanguage: ["tr", "en"],
+        // Corporation, Organization'ın geçerli bir alt tipi: STL kayıtlı bir limited şirket
+        "@type": ["Organization", "Corporation"],
+        "@id": `${home}#organization`,
+        name: company.name,
+        legalName: company.legalName,
+        url: home,
+        // Google'ın logo zengin sonucu SVG'de tutarsız davranıyor, kare raster veriliyor
+        logo: `${ORIGIN}/logos/stl-logo-512.png`,
+        image: `${ORIGIN}/og/og-home.jpg`,
+        foundingDate: String(company.founded),
+        description,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: `${company.addressLines[0]}, ${company.addressLines[1]}`,
+          addressLocality: "Arnavutköy",
+          addressRegion: "İstanbul",
+          postalCode: "34555",
+          addressCountry: "TR",
+        },
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: company.phoneHref.replace("tel:", ""),
+            email: company.email,
+            contactType: "sales",
+            availableLanguage: ["tr", "en"],
+          },
+        ],
+        sameAs: [company.instagram],
+        brand: BRANDS.map((b) => ({
+          "@type": "Brand",
+          name: b.name,
+          url: abs(b.path),
+          ...(b.sameAs ? { sameAs: [b.sameAs] } : {}),
+        })),
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${home}#website`,
+        name: company.name,
+        url: home,
+        inLanguage: lang,
+        publisher: { "@id": `${home}#organization` },
       },
     ],
-    sameAs: [company.instagram],
-    brand: BRANDS.map((b) => ({ "@type": "Brand", name: b.name, url: abs(b.path) })),
   };
 }
 
 function pageLd(page, lang, url, title, description) {
   if (page.id === "home") return [organizationLd(lang)];
-  if (page.legal) return [];
+
+  const home = abs(lang === "tr" ? "/" : "/en");
+  const isPartOf = { "@id": `${home}#website` };
+  const publisher = { "@id": `${home}#organization` };
+
+  if (page.legal) {
+    return [
+      { "@context": "https://schema.org", "@type": "WebPage", name: title, description, url, inLanguage: lang, isPartOf, publisher },
+    ];
+  }
 
   const brand = BRANDS.find((b) => b.path === page.tr);
-  const home = abs(lang === "tr" ? "/" : "/en");
   return [
     {
       "@context": "https://schema.org",
@@ -111,13 +151,17 @@ function pageLd(page, lang, url, title, description) {
       description,
       url,
       inLanguage: lang,
-      isPartOf: { "@type": "WebSite", name: company.name, url: home },
+      isPartOf,
+      publisher,
+      // Brand, Organization'ın alt tipi değil: parentOrganization burada geçersiz.
+      // Marka-şirket ilişkisi ana sayfadaki Organization.brand üzerinden kuruluyor.
       ...(brand
         ? {
             about: {
               "@type": "Brand",
               name: brand.name,
-              parentOrganization: { "@type": "Organization", name: company.name, url: home },
+              url: abs(brand.path),
+              ...(brand.sameAs ? { sameAs: [brand.sameAs] } : {}),
             },
           }
         : {}),
@@ -139,7 +183,7 @@ function renderPage(template, { lang, title, description, url, alternates, og, l
     `<title>${esc(title)}</title>`,
     `<meta name="description" content="${esc(description)}">`,
     noindex ? `<meta name="robots" content="noindex, nofollow">` : "",
-    `<link rel="canonical" href="${esc(url)}">`,
+    noindex ? "" : `<link rel="canonical" href="${esc(url)}">`,
     ...alternates.map(
       (a) => `<link rel="alternate" hreflang="${a.hreflang}" href="${esc(a.href)}">`,
     ),
@@ -156,7 +200,7 @@ function renderPage(template, { lang, title, description, url, alternates, og, l
     `<meta name="twitter:title" content="${esc(title)}">`,
     `<meta name="twitter:description" content="${esc(description)}">`,
     `<meta name="twitter:image" content="${esc(ORIGIN + og)}">`,
-    ...ld.map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`),
+    ...ld.map((o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`),
   ]
     .filter(Boolean)
     .join("\n    ");
@@ -268,8 +312,128 @@ writeFileSync(
 Allow: /
 Disallow: /admin
 
+# Cevap üreten AI tarayıcıları açıkça izinli. Joker kural zaten izin veriyor;
+# ileride "*" grubu daraltılırsa bunlar sessizce dışarıda kalmasın diye ayrıca yazıldı.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
 Sitemap: ${ORIGIN}/sitemap.xml
 `,
 );
 
-console.log(`prerender: ${written.length} sayfa, sitemap.xml (${sitemap.length} adres), robots.txt, 404.html`);
+
+/* ------------------------------------------------- gövde anlık görüntüsü */
+
+const MIME = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".webp": "image/webp",
+  ".woff2": "font/woff2",
+  ".pdf": "application/pdf",
+  ".xml": "application/xml",
+  ".txt": "text/plain; charset=utf-8",
+};
+
+/**
+ * dist'i olduğu gibi sunan küçük sunucu. `vite preview` kullanılamaz: o, bilinmeyen
+ * her yolu index.html'e düşürdüğü için /wexta isteğine ana sayfayı veriyor ve
+ * rotaya özel head'i hiç görmüyoruz.
+ */
+function serveDist() {
+  const server = createServer((req, res) => {
+    const path = decodeURIComponent((req.url ?? "/").split("?")[0]);
+    let file = join(DIST, normalize(path));
+    if (!file.startsWith(DIST)) {
+      res.writeHead(403).end();
+      return;
+    }
+    if (existsSync(file) && statSync(file).isDirectory()) file = join(file, "index.html");
+    if (!existsSync(file)) {
+      res.writeHead(404, { "Content-Type": "text/html" });
+      res.end(readFileSync(join(DIST, "404.html")));
+      return;
+    }
+    res.writeHead(200, { "Content-Type": MIME[extname(file)] ?? "application/octet-stream" });
+    createReadStream(file).pipe(res);
+  });
+  return new Promise((resolve) => {
+    server.listen(0, "127.0.0.1", () => resolve({ server, port: server.address().port }));
+  });
+}
+
+async function snapshotBodies(routes) {
+  let chromium;
+  try {
+    ({ chromium } = await import("playwright"));
+  } catch {
+    console.warn("prerender: playwright yok, gövde anlık görüntüsü atlandı (head'ler yazıldı)");
+    return 0;
+  }
+
+  const { server, port } = await serveDist();
+  const browser = await chromium.launch();
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
+
+  // İçerik anlık görüntüsü her zaman koddaki metinlerden üretilsin: admin
+  // panelindeki metinler tarayıcıda zaten üzerine biniyor, derleme çıktısının
+  // hangi ana ait olduğu belirsiz kalmasın.
+  await page.route("**/rest/v1/site_content*", (r) => r.abort());
+
+  let done = 0;
+  for (const routePath of routes) {
+    await page.goto(`http://127.0.0.1:${port}${routePath}`, { waitUntil: "networkidle" });
+    await page.waitForSelector("#root > *", { timeout: 15000 });
+
+    await page.evaluate(async () => {
+      // Kaydırmayla açılan bölümler (Reveal) varsayılan olarak saydamsız; anlık
+      // görüntüde gizli metin gibi görünmemeleri için hepsi görünür yapılıyor.
+      document.querySelectorAll("[data-reveal]").forEach((el) => el.classList.add("is-in"));
+
+      // İhracat haritasının ülke yolları tek başına ~96 KB; dekoratif geometri,
+      // arama motoruna hiçbir şey anlatmıyor. Anlık görüntüden çıkarılıyor,
+      // React istemcide haritayı zaten yeniden çiziyor.
+      document.querySelectorAll("path[d]").forEach((el) => {
+        if ((el.getAttribute("d") ?? "").length > 400) el.removeAttribute("d");
+      });
+      window.scrollTo(0, document.body.scrollHeight);
+      await new Promise((r) => setTimeout(r, 250));
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(250);
+
+    const html = await page.evaluate(() => document.documentElement.outerHTML);
+    write(routePath, `<!doctype html>\n${html}\n`);
+    done++;
+  }
+
+  await browser.close();
+  await new Promise((r) => server.close(r));
+  return done;
+}
+
+const snapshotted = await snapshotBodies([...PAGES.flatMap((p) => [p.tr, p.en])]);
+
+console.log(`prerender: ${written.length} sayfa (${snapshotted} tanesi gövdesiyle), sitemap.xml (${sitemap.length} adres), robots.txt, 404.html`);

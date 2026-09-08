@@ -1203,11 +1203,18 @@ export function BrandHeroSlideshow({
                   {logo && idx === 0 && sl.title && (
                     <img src={ctx.brand.logoDark} alt="" aria-hidden className="mb-6 h-9 w-auto object-contain object-left" />
                   )}
-                  {sl.title && (
-                    <h1 className={`${ctx.font} text-3xl font-bold leading-[1.1] tracking-tightest lg:text-[2.9rem]`}>
-                      {sl.title}
-                    </h1>
-                  )}
+                  {/* Sayfada tek bir h1 olmalı: slaytların hepsi aynı anda DOM'da
+                      duruyor (opaklıkla geçiş), bu yüzden sadece ilki başlık. */}
+                  {sl.title &&
+                    (idx === 0 ? (
+                      <h1 className={`${ctx.font} text-3xl font-bold leading-[1.1] tracking-tightest lg:text-[2.9rem]`}>
+                        {sl.title}
+                      </h1>
+                    ) : (
+                      <p className={`${ctx.font} text-3xl font-bold leading-[1.1] tracking-tightest lg:text-[2.9rem]`}>
+                        {sl.title}
+                      </p>
+                    ))}
                   {sl.sub && <p className="mt-3 text-base opacity-85 lg:text-lg">{sl.sub}</p>}
                   <a
                     href={sl.href}
@@ -1266,8 +1273,9 @@ export function BrandHeroSlideshow({
 
         {/* Mobil metin bloğu */}
         <div className="px-5 pb-10 pt-7 text-center md:hidden">
+          {/* Masaüstü katmanı zaten h1'i taşıyor; bu blok onun mobil kopyası */}
           {active.title && (
-            <h1 className={`${ctx.font} text-2xl font-bold leading-tight tracking-tightest`}>{active.title}</h1>
+            <p className={`${ctx.font} text-2xl font-bold leading-tight tracking-tightest`}>{active.title}</p>
           )}
           {active.sub && <p className="mt-2 text-sm" style={{ color: s.sub }}>{active.sub}</p>}
           <a
