@@ -12,7 +12,7 @@ import {
 
 export type Lang = "tr" | "en";
 
-export type RouteKey = "home" | "oxyra" | "fressi" | "wexta" | "bnk";
+export type RouteKey = "home" | "oxyra" | "fressi" | "wexta" | "bnk" | "kvkk" | "privacy";
 
 /**
  * Hakkımızda / markalar / iletişim ayrı sayfa değil, çatı sayfanın bölümleri.
@@ -32,6 +32,8 @@ export const paths: Record<Lang, Record<RouteKey, string>> = {
     fressi: "/fressi",
     wexta: "/wexta",
     bnk: "/bnk",
+    kvkk: "/kvkk",
+    privacy: "/gizlilik",
   },
   en: {
     home: "/en",
@@ -39,6 +41,8 @@ export const paths: Record<Lang, Record<RouteKey, string>> = {
     fressi: "/en/fressi",
     wexta: "/en/wexta",
     bnk: "/en/bnk",
+    kvkk: "/en/gdpr",
+    privacy: "/en/privacy",
   },
 };
 

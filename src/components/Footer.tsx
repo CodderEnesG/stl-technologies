@@ -63,14 +63,14 @@ export function Footer() {
             <li><Link to={sec("about")} className="opacity-80 transition-opacity hover:opacity-100">{t.nav.about}</Link></li>
             <li><Link to={sec("contact")} className="opacity-80 transition-opacity hover:opacity-100">{t.nav.contact}</Link></li>
             <li>
-              <a href={company.kvkkUrl} target="_blank" rel="noreferrer" className="opacity-80 transition-opacity hover:opacity-100">
+              <Link to={p.kvkk} className="opacity-80 transition-opacity hover:opacity-100">
                 {t.footer.kvkk}
-              </a>
+              </Link>
             </li>
             <li>
-              <a href={company.privacyUrl} target="_blank" rel="noreferrer" className="opacity-80 transition-opacity hover:opacity-100">
+              <Link to={p.privacy} className="opacity-80 transition-opacity hover:opacity-100">
                 {t.footer.privacy}
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

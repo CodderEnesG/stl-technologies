@@ -22,8 +22,6 @@ export const company = {
   hours: "08:15 – 17:45",
   weekend: "Hafta sonu kapalı",
   website: "https://www.stlteknoloji.com",
-  kvkkUrl: "https://www.stlteknoloji.com/tr/sayfa/kvkk-ve-aydinlatma-metni",
-  privacyUrl: "https://www.stlteknoloji.com/tr/sayfa/gizlilik-ve-cerez-politikasi",
   instagram: "https://www.instagram.com/stlteknoloji",
   mapsQuery: "Teskoop Özel Endüstri Bölgesi, Fersah Cad. No:134, Deliklikaya, Arnavutköy, İstanbul",
 };

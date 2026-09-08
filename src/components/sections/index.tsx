@@ -382,7 +382,7 @@ function MarqueeRow({
  * aynı sayfada. Form şimdilik mailto açar (Web3Forms endpoint'i eklenebilir).
  */
 export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
-  const { t } = useI18n();
+  const { t, p } = useI18n();
   const c = t.contact;
   const s = toneStyles[ctx.tone];
 
@@ -540,9 +540,9 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
             />
             <span>
               {c.kvkkText}{" "}
-              <a href={company.kvkkUrl} target="_blank" rel="noreferrer" className="underline underline-offset-2">
+              <Link to={p.kvkk} className="underline underline-offset-2">
                 {c.kvkkLink}
-              </a>
+              </Link>
             </span>
           </label>
 
