@@ -3,6 +3,33 @@ import { supabase } from "./supabase";
 import { StlLogo } from "../components/Logo";
 
 /**
+ * Sunucudan gelen hatayı ne yapılacağını söyleyen bir cümleye çevirir.
+ * Tanınmayan durumda özgün mesaj da gösterilir; "daha sonra tekrar deneyin"
+ * demek kullanıcıyı sebepten habersiz bırakıyordu.
+ */
+function loginErrorText(err: { code?: string; message: string }): string {
+  const code = err.code ?? "";
+  const msg = err.message.toLowerCase();
+
+  if (code === "email_not_confirmed" || msg.includes("not confirmed")) {
+    return "Bu e-posta henüz onaylanmadı. Gelen kutunuzdaki Supabase onay bağlantısına tıklayın, sonra tekrar deneyin.";
+  }
+  if (code === "invalid_credentials" || msg.includes("invalid login")) {
+    return "E-posta veya şifre hatalı.";
+  }
+  if (code === "over_request_rate_limit" || msg.includes("rate limit")) {
+    return "Çok fazla deneme yapıldı. Bir dakika bekleyip tekrar deneyin.";
+  }
+  if (code === "user_banned") {
+    return "Bu hesap askıya alınmış.";
+  }
+  if (msg.includes("failed to fetch") || msg.includes("network")) {
+    return "Sunucuya ulaşılamadı. İnternet bağlantınızı kontrol edin.";
+  }
+  return `Giriş yapılamadı: ${err.message}`;
+}
+
+/**
  * Panel girişi. Kayıt olma yok — kullanıcılar Supabase panelinden tanımlanır.
  */
 export function LoginForm() {
@@ -18,11 +45,7 @@ export function LoginForm() {
     setError(null);
     const { error: err } = await supabase.auth.signInWithPassword({ email, password });
     if (err) {
-      setError(
-        err.message.toLowerCase().includes("invalid")
-          ? "E-posta veya şifre hatalı."
-          : "Giriş yapılamadı. Daha sonra tekrar deneyin.",
-      );
+      setError(loginErrorText(err));
       setBusy(false);
     }
     // Başarılıysa oturum dinleyicisi paneli açar; busy'yi bırakmaya gerek yok.
