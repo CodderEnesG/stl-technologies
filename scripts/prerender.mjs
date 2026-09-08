@@ -205,8 +205,29 @@ function renderPage(template, { lang, title, description, url, alternates, og, l
     .filter(Boolean)
     .join("\n    ");
 
+  // JavaScript çalışmadığında (ya da anlık görüntü alınamadığında) sayfanın
+  // tamamen boş kalmaması için asgari metin. Anlık görüntü başarılıysa bu blok
+  // da içinde kalır; tarayıcıda görünmez, robot için okunur kalır.
+  const nav = [
+    ["/", "STL Teknoloji"],
+    ["/wexta", "wexta"],
+    ["/fressi", "Fressi"],
+    ["/bnk", "BNK — Beauty Net Korea"],
+    ["/oxyra", "Oxyra"],
+  ]
+    .map(([href, label]) => `<li><a href="${href}">${esc(label)}</a></li>`)
+    .join("");
+
+  const noscript = `<noscript><div>
+      <h1>${esc(title)}</h1>
+      <p>${esc(description)}</p>
+      <p>${esc(company.name)} — ${esc(company.addressLines.join(", "))} · ${esc(company.phoneDisplay)} · ${esc(company.email)}</p>
+      <nav><ul>${nav}</ul></nav>
+    </div></noscript>`;
+
   return template
     .replace(/<html lang="[^"]*"/, `<html lang="${lang}"`)
+    .replace('<div id="root"></div>', `${noscript}\n    <div id="root"></div>`)
     // Kabuktaki jenerik başlık/açıklama/og etiketleri sayfaya özgü olanlarla değişir
     .replace(/\s*<title>[\s\S]*?<\/title>/, "")
     .replace(/\s*<meta name="description"[^>]*>/g, "")
@@ -385,16 +406,25 @@ function serveDist() {
 }
 
 async function snapshotBodies(routes) {
-  let chromium;
+  // Tarayıcı yoksa derleme çökmemeli: head'ler zaten yazıldı, site çalışır.
+  // Ama gövde ön-render'ı olmadan JavaScript çalıştırmayan tarayıcılar sayfayı
+  // boş görür, o yüzden sessiz geçilmiyor.
+  let browser;
   try {
-    ({ chromium } = await import("playwright"));
-  } catch {
-    console.warn("prerender: playwright yok, gövde anlık görüntüsü atlandı (head'ler yazıldı)");
+    const { chromium } = await import("playwright");
+    browser = await chromium.launch();
+  } catch (err) {
+    console.warn(
+      `\nprerender UYARI: tarayıcı açılamadı, gövde ön-render'ı atlandı.\n` +
+        `  Sebep: ${err.message.split("\n")[0]}\n` +
+        `  Sonuç: sayfalar meta etiketleriyle geliyor ama gövde boş; JavaScript\n` +
+        `  çalıştırmayan tarayıcılar (GPTBot, ClaudeBot, PerplexityBot, paylaşım\n` +
+        `  robotları) metni göremez. Düzeltmek için: pnpm exec playwright install chromium\n`,
+    );
     return 0;
   }
 
   const { server, port } = await serveDist();
-  const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
 
   // İçerik anlık görüntüsü her zaman koddaki metinlerden üretilsin: admin
