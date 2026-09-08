@@ -79,7 +79,7 @@ export const brands: BrandVisual[] = [
     hero: "/images/stl/wexta-cover.jpg",
     heroFocus: "50% 45%",
     heroRailLen: 118,
-    channelHref: "https://www.stlteknoloji.com/tr/urunler/valiz",
+    channelHref: "", // eski sitedeki ürün listesi; alan adı bu siteye geçince kalmadı → iletişime düşer
     logoDark: "/logos/wexta.svg",
     logoLight: "/logos/wexta-light.svg",
     navTopBg: "#ffffff",
@@ -136,7 +136,7 @@ export const brands: BrandVisual[] = [
     panelText: "#ffffff",
     hero: "/images/oxyra/koltuk-oxyra.jpg",
     heroFocus: "50% 50%",
-    channelHref: "https://www.stlteknoloji.com/tr/urunler/oyuncu-koltugu",
+    channelHref: "", // eski sitedeki ürün listesi; alan adı bu siteye geçince kalmadı → iletişime düşer
     heroRailLen: 128,
     logoDark: "/logos/oxyra-dark.svg",
     logoLight: "/logos/oxyra-light.svg",
@@ -188,39 +188,37 @@ export const stlImages = {
   luggage: "/images/stl/valiz-wx300-1.jpg",
 };
 
-const stlUrun = (slug: string) => `https://www.stlteknoloji.com/tr/urun/${slug}`;
-
 export const oxyraProducts: Product[] = [
   {
     name: "Oxyra Gaming Koltuk",
     category: "Oyuncu Koltuğu",
     image: "/images/oxyra/koltuk-oxyra.jpg",
-    href: "https://www.stlteknoloji.com/tr/urunler/oyuncu-koltugu",
+    href: "",
   },
   {
     name: "Oxyra Gaming Kulaklık",
     category: "Ses",
     image: "/images/oxyra/headset-oxyra.jpg",
-    href: "https://www.stlteknoloji.com/tr/urunler/oyuncu-koltugu",
+    href: "",
   },
   {
     name: "Oxyra Gaming Mouse",
     category: "Çevre Birimi",
     image: "/images/oxyra/mouse-oxyra.jpg",
-    href: "https://www.stlteknoloji.com/tr/urunler/oyuncu-koltugu",
+    href: "",
   },
   {
     name: "Rampage KL-R44",
     category: "Oyuncu Koltuğu",
     image: "/images/oxyra/koltuk-rampage-1.jpg",
-    href: stlUrun("rampage-kl-r44-oyuncu-koltugu"),
+    href: "",
     blend: true,
   },
   {
     name: "Valja Serisi",
     category: "Oyuncu Koltuğu",
     image: "/images/oxyra/koltuk-valja-1.jpg",
-    href: stlUrun("valja-oyuncu-koltugu"),
+    href: "",
     blend: true,
   },
 ];
@@ -231,7 +229,7 @@ export const wextaProducts: Product[] = [
     name: "Valja Milano Serisi",
     category: "Valiz",
     image: "/images/stl/valiz-milano-1.jpg",
-    href: stlUrun("valja-milano-serisi-mavi-valiz"),
+    href: "",
     blend: true,
     colors: ["#3f6eb5", "#8b8f94", "#20242a"],
   },
@@ -239,7 +237,7 @@ export const wextaProducts: Product[] = [
     name: "ABS WX-1001",
     category: "Valiz",
     image: "/images/stl/valiz-wx1001-1.jpg",
-    href: stlUrun("abs-wx-1001-antrasit-valiz"),
+    href: "",
     blend: true,
     colors: ["#20242a", "#57606a", "#b6414b"],
   },
@@ -247,7 +245,7 @@ export const wextaProducts: Product[] = [
     name: "ABS WX-300 Baskılı",
     category: "Valiz",
     image: "/images/stl/valiz-wx300-1.jpg",
-    href: stlUrun("abs-wx-300-baskili-mint-yesili-valiz"),
+    href: "",
     blend: true,
     colors: ["#7fc6bc", "#57606a", "#c9b287"],
   },
@@ -276,7 +274,8 @@ export type WextaSeries = {
  * seriler katalog sırasıyla, renk sayıları kataloğun kendi ifadesi.
  * Görseller kataloğun kendi ürün kesitleri (public/images/wexta/).
  */
-export const wextaCatalogPdf = "https://www.stlteknoloji.com/stlteknoloji/dosyalar/albumler/3/68.pdf";
+/** 2023 kataloğu — eski sitede duruyordu, alan adı taşınacağı için repoya alındı */
+export const wextaCatalogPdf = "/files/wexta-katalog-2023.pdf";
 
 export const wextaSeries: WextaSeries[] = [
   {
@@ -285,7 +284,7 @@ export const wextaSeries: WextaSeries[] = [
     colorCount: 8,
     colors: ["#1c1c1e", "#c89a9a", "#b3202a", "#b89b6a", "#a9abad", "#63bfb0"],
     material: "abs",
-    href: stlUrun("valja-milano-serisi-mavi-valiz"),
+    href: "",
   },
   {
     code: "WX-1",
@@ -293,7 +292,7 @@ export const wextaSeries: WextaSeries[] = [
     colorCount: 8,
     colors: ["#3a3d42", "#4fb3e0", "#1f3f8f", "#c0272d", "#7a2fa0", "#d9c400", "#9a9da1"],
     material: "abs",
-    href: stlUrun("abs-wx-1-siyah-valiz"),
+    href: "",
   },
   {
     code: "WL-240",
@@ -316,7 +315,7 @@ export const wextaSeries: WextaSeries[] = [
     colorCount: 4,
     colors: ["#3b5aa0", "#e2694f", "#3e9c8a", "#1c1c1e"],
     material: "abs",
-    href: stlUrun("abs-wx-300-baskili-mint-yesili-valiz"),
+    href: "",
   },
   {
     code: "WX-330",
@@ -324,7 +323,7 @@ export const wextaSeries: WextaSeries[] = [
     colorCount: 4,
     colors: ["#b8865a", "#a9abad", "#1c1c1e", "#d99ab0"],
     material: "abs",
-    href: stlUrun("abs-wx-330-sari-valiz"),
+    href: "",
   },
   {
     code: "WX-1001",
@@ -332,7 +331,7 @@ export const wextaSeries: WextaSeries[] = [
     colorCount: 6,
     colors: ["#6d4fc4", "#b9a08a", "#c9948f", "#7a1f2b", "#1c1c1e", "#5fbf6a"],
     material: "abs",
-    href: stlUrun("abs-wx-1001-antrasit-valiz"),
+    href: "",
   },
   {
     code: "WX-PP10",
@@ -340,7 +339,7 @@ export const wextaSeries: WextaSeries[] = [
     colorCount: 4,
     colors: ["#1f2f7a", "#d9708a", "#c0272d", "#1c1c1e"],
     material: "pp",
-    href: stlUrun("mavi-polipropilen-valiz"),
+    href: "",
   },
   {
     code: "WX-41x",
@@ -348,7 +347,7 @@ export const wextaSeries: WextaSeries[] = [
     colorCount: 4,
     colors: ["#f28c5a", "#f2c318", "#5ab8e6", "#f2a0b8"],
     material: "abs",
-    href: stlUrun("wx-414-turuncu-cocuk-valizi"),
+    href: "",
     kids: true,
   },
 ];

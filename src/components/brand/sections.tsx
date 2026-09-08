@@ -853,13 +853,16 @@ export function BrandCTA({
             </Link>
           )}
           {note && <p className="max-w-[26ch] text-sm" style={{ color: image ? "rgba(255,255,255,0.85)" : s.muted }}>{note}</p>}
-          <Link
-            to={sec("contact")}
-            className="text-sm font-medium underline underline-offset-4"
-            style={{ color: image ? "rgba(255,255,255,0.9)" : s.muted }}
-          >
-            {t.brandPage.orContact}
-          </Link>
+          {/* Ana buton zaten iletişime gidiyorsa ikinci bağlantı tekrar olur */}
+          {brand.channelHref && (
+            <Link
+              to={sec("contact")}
+              className="text-sm font-medium underline underline-offset-4"
+              style={{ color: image ? "rgba(255,255,255,0.9)" : s.muted }}
+            >
+              {t.brandPage.orContact}
+            </Link>
+          )}
         </div>
       </div>
     </section>
