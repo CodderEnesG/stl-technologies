@@ -3,7 +3,7 @@
   "description": "İstanbul'da 35.000 m² tesiste üreten, Oxyra, Fressi, wexta ve BNK markalarını tek çatı altında toplayan teknoloji ve üretim şirketi.",
   "language": "tr",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,

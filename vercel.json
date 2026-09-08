@@ -3,11 +3,24 @@
   "framework": "vite",
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
-  "rewrites": [
-    {
-      "source": "/((?!assets/|logos/|images/|fonts/|favicon|robots\\.txt).*)",
-      "destination": "/index.html"
-    }
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/tr", "destination": "/", "permanent": true },
+    { "source": "/tr/hakkimizda", "destination": "/#hakkimizda", "permanent": true },
+    { "source": "/tr/iletisim", "destination": "/#iletisim", "permanent": true },
+    { "source": "/tr/urunler/valiz", "destination": "/wexta", "permanent": true },
+    { "source": "/tr/urunler/oyuncu-koltugu", "destination": "/oxyra", "permanent": true },
+    { "source": "/tr/urunler/cantalar", "destination": "/#markalar", "permanent": true },
+    { "source": "/tr/urunler/seyahat-aksesuarlari", "destination": "/#markalar", "permanent": true },
+    { "source": "/tr/kataloglar", "destination": "/wexta", "permanent": true },
+    { "source": "/tr/sayfa/kvkk-ve-aydinlatma-metni", "destination": "/kvkk", "permanent": true },
+    { "source": "/tr/sayfa/gizlilik-ve-cerez-politikasi", "destination": "/gizlilik", "permanent": true },
+    { "source": "/tr/urun/:slug", "destination": "/#markalar", "permanent": true },
+    { "source": "/tr/urunler/:slug", "destination": "/#markalar", "permanent": true },
+    { "source": "/tr/sayfa/:slug", "destination": "/", "permanent": true },
+    { "source": "/tr/:path*", "destination": "/", "permanent": true },
+    { "source": "/en/content/gdpr-and-clarification-text", "destination": "/en/gdpr", "permanent": true },
+    { "source": "/en/content/:slug", "destination": "/en", "permanent": true }
   ],
   "headers": [
     {
@@ -17,7 +30,7 @@
       ]
     },
     {
-      "source": "/(images|logos|fonts)/(.*)",
+      "source": "/(images|logos|fonts|og|files)/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=604800" }
       ]

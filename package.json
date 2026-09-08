@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node --experimental-strip-types --no-warnings scripts/prerender.mjs",
     "preview": "vite preview",
-    "format": "oxfmt"
+    "format": "oxfmt",
+    "prerender": "node --experimental-strip-types --no-warnings scripts/prerender.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
