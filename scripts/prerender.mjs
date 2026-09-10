@@ -405,18 +405,61 @@ function serveDist() {
   });
 }
 
+/**
+ * Kapsayıcı içinde çalışan Chromium'un ayakta kalması için gereken bayraklar.
+ * Vercel derleme kabında paylaşılan bellek (/dev/shm) 64 MB ve kum havuzunun
+ * ihtiyaç duyduğu çekirdek yetkileri yok; varsayılan ayarlarla tarayıcı açılır
+ * açılmaz düşüyor ve Playwright bunu "Target page, context or browser has been
+ * closed" diye bildiriyor. Bayraklar macOS'ta da zararsız.
+ */
+const CHROMIUM_ARGS = [
+  "--no-sandbox",
+  "--disable-setuid-sandbox",
+  "--disable-dev-shm-usage",
+  "--disable-gpu",
+];
+
+/** Sırayla iki yapılandırma dener; ikisi de tutmazsa hata metinlerini döndürür. */
+async function launchChromium() {
+  let chromium;
+  try {
+    ({ chromium } = await import("playwright"));
+  } catch (err) {
+    return { failures: [`playwright yüklenemedi: ${err.message}`] };
+  }
+
+  // Tek süreç kipi son çare: bazı kısıtlı kaplarda alt süreç açmak yasak.
+  const attempts = [
+    { label: "standart", args: CHROMIUM_ARGS },
+    { label: "tek süreç", args: [...CHROMIUM_ARGS, "--single-process"] },
+  ];
+
+  const failures = [];
+  for (const attempt of attempts) {
+    try {
+      const browser = await chromium.launch({
+        args: attempt.args,
+        chromiumSandbox: false,
+        timeout: 60_000,
+      });
+      if (failures.length) console.warn(`prerender: tarayıcı "${attempt.label}" kipinde açıldı.`);
+      return { browser };
+    } catch (err) {
+      failures.push(`${attempt.label}: ${err.message}`);
+    }
+  }
+  return { failures };
+}
+
 async function snapshotBodies(routes) {
   // Tarayıcı yoksa derleme çökmemeli: head'ler zaten yazıldı, site çalışır.
   // Ama gövde ön-render'ı olmadan JavaScript çalıştırmayan tarayıcılar sayfayı
   // boş görür, o yüzden sessiz geçilmiyor.
-  let browser;
-  try {
-    const { chromium } = await import("playwright");
-    browser = await chromium.launch();
-  } catch (err) {
+  const { browser, failures } = await launchChromium();
+  if (!browser) {
     console.warn(
       `\nprerender UYARI: tarayıcı açılamadı, gövde ön-render'ı atlandı.\n` +
-        `  Sebep: ${err.message.split("\n")[0]}\n` +
+        failures.map((f) => `  Denendi — ${f}\n`).join("") +
         `  Sonuç: sayfalar meta etiketleriyle geliyor ama gövde boş; JavaScript\n` +
         `  çalıştırmayan tarayıcılar (GPTBot, ClaudeBot, PerplexityBot, paylaşım\n` +
         `  robotları) metni göremez. Düzeltmek için: pnpm exec playwright install chromium\n`,
@@ -471,3 +514,10 @@ async function snapshotBodies(routes) {
 const snapshotted = await snapshotBodies([...PAGES.flatMap((p) => [p.tr, p.en])]);
 
 console.log(`prerender: ${written.length} sayfa (${snapshotted} tanesi gövdesiyle), sitemap.xml (${sitemap.length} adres), robots.txt, 404.html`);
+
+// Sunucuda gövdesiz çıktı sessizce yayına girmesin: PRERENDER_STRICT=1 verilirse
+// tarayıcı aşaması düştüğünde derleme başarısız sayılır.
+if (snapshotted === 0 && process.env.PRERENDER_STRICT === "1") {
+  console.error("prerender HATA: PRERENDER_STRICT=1 ve hiçbir sayfanın gövdesi üretilemedi.");
+  process.exit(1);
+}
