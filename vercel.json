@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
+  "installCommand": "(dnf install -y alsa-lib atk at-spi2-atk at-spi2-core cups-libs libdrm libX11 libXcomposite libXdamage libXext libXfixes libXrandr libxcb libxkbcommon mesa-libgbm nspr nss pango || echo 'UYARI: sistem kutuphaneleri kurulamadi, on-render dusebilir') && pnpm install",
   "buildCommand": "PLAYWRIGHT_BROWSERS_PATH=0 pnpm exec playwright install chromium && PLAYWRIGHT_BROWSERS_PATH=0 pnpm build",
   "outputDirectory": "dist",
   "trailingSlash": false,
