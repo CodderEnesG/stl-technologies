@@ -76,6 +76,10 @@ export const FIELD_LABELS: Record<string, string> = {
   rights: "Telif satırı",
   kvkk: "KVKK bağlantısı",
   privacy: "Gizlilik bağlantısı",
+  cookiePrefs: "Çerez tercihleri bağlantısı",
+  accept: "Kabul düğmesi",
+  reject: "Ret düğmesi",
+  policy: "Politika bağlantı yazısı",
   brandsHeading: "Markalar başlığı",
   corporateHeading: "Kurumsal başlığı",
   contactHeading: "İletişim başlığı",
@@ -170,6 +174,7 @@ export const GROUP_LABELS: Record<string, string> = {
   nav: "Menü",
   meta: "Arama motoru bilgisi",
   notFound: "404 sayfası",
+  cookies: "Çerez bandı",
   brandPage: "Ortak marka metinleri",
 };
 

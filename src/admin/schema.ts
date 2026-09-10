@@ -120,6 +120,12 @@ export const PAGES: PageDef[] = [
         roots: ["footer"],
       },
       {
+        id: "cookies",
+        title: "Çerez bandı",
+        note: "Siteye ilk girişte alttan çıkan onay kutusu. Ekran okuyucu etiketi panelde yok.",
+        roots: ["cookies.title", "cookies.body", "cookies.policy", "cookies.accept", "cookies.reject"],
+      },
+      {
         id: "shared",
         title: "Ortak metinler",
         note: "Marka sayfalarında ve hata sayfasında tekrar eden metinler.",
