@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 import { I18nProvider } from "../i18n";
+import { usePageViewTracking } from "../lib/analytics";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 
 export default function Root() {
   const { pathname, hash } = useLocation();
+
+  usePageViewTracking();
 
   // Hakkımızda/markalar/iletişim ayrı sayfa değil; bağlantılar çıpaya gidiyor.
   // Home lazy yüklendiği için hedef birkaç kare boyunca aranır.

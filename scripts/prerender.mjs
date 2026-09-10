@@ -432,6 +432,10 @@ async function snapshotBodies(routes) {
   // hangi ana ait olduğu belirsiz kalmasın.
   await page.route("**/rest/v1/site_content*", (r) => r.abort());
 
+  // Analitik derleme sırasında yüklenmesin: networkidle beklemesini uzatıyor ve
+  // ölçüm kimliğine derleme trafiği düşmesine yol açabiliyor.
+  await page.route("**://*.googletagmanager.com/**", (r) => r.abort());
+
   let done = 0;
   for (const routePath of routes) {
     await page.goto(`http://127.0.0.1:${port}${routePath}`, { waitUntil: "networkidle" });
