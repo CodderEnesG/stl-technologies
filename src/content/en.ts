@@ -26,6 +26,7 @@ export const en: SiteContent = {
     contactHeading: "Contact",
     kvkk: "Privacy Notice (KVKK)",
     privacy: "Privacy & Cookie Policy",
+    cookiePrefs: "Cookie preferences",
     rights: "All rights reserved.",
   },
 
@@ -491,6 +492,15 @@ export const en: SiteContent = {
     submit: "Send",
     submitNote: "Pressing Send opens your e-mail app; the message goes to info@stlteknoloji.com.",
     mapTitle: "STL Teknoloji location",
+  },
+
+  cookies: {
+    ariaLabel: "Cookie choice",
+    title: "Your cookie choice",
+    body: "Cookies needed for the site to work are always on. Analytics cookies, which show us how the site is used, run only if you allow them. You can change your choice at any time.",
+    policy: "Privacy & Cookie Policy",
+    accept: "Accept",
+    reject: "Reject",
   },
 
   notFound: {

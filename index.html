@@ -10,15 +10,22 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#e10000" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H2L0367MVL"></script>
+    <!-- Google tag (gtag.js) — betik yalnızca çerez onayından sonra yükleniyor,
+         yükleme ve page_view gönderimi src/lib/analytics.ts tarafında. Buradaki
+         kuyruk onaya kadar bekler; varsayılan izinler reddedilmiş sayılır. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500,
+      });
       gtag('js', new Date());
-      // page_view olayını rota değişiminde src/lib/analytics.ts gönderiyor.
       gtag('config', 'G-H2L0367MVL', { send_page_view: false });
     </script>
   </head>

@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router";
 import { brands } from "../data/brands";
 import { company } from "../data/company";
 import { useI18n } from "../i18n";
+import { resetConsent } from "../lib/consent";
 import { Icon } from "./Icon";
 import { StlLogo } from "./Logo";
 
@@ -71,6 +72,16 @@ export function Footer() {
               <Link to={p.privacy} className="opacity-80 transition-opacity hover:opacity-100">
                 {t.footer.privacy}
               </Link>
+            </li>
+            {/* Onayın geri alınması kabul etmek kadar kolay olmalı: bandı yeniden açar. */}
+            <li>
+              <button
+                type="button"
+                onClick={resetConsent}
+                className="opacity-80 transition-opacity hover:opacity-100"
+              >
+                {t.footer.cookiePrefs}
+              </button>
             </li>
           </ul>
         </div>

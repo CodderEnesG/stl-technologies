@@ -25,6 +25,7 @@ export const tr = {
     contactHeading: "İletişim",
     kvkk: "KVKK ve Aydınlatma Metni",
     privacy: "Gizlilik ve Çerez Politikası",
+    cookiePrefs: "Çerez tercihleri",
     rights: "Tüm hakları saklıdır.",
   },
 
@@ -491,6 +492,15 @@ export const tr = {
     submit: "Gönder",
     submitNote: "Gönder'e bastığınızda e-posta uygulamanız açılır; mesaj info@stlteknoloji.com adresine iletilir.",
     mapTitle: "STL Teknoloji konumu",
+  },
+
+  cookies: {
+    ariaLabel: "Çerez tercihi",
+    title: "Çerez tercihiniz",
+    body: "Sitenin çalışması için gereken çerezler her zaman açık. Ziyaret istatistiklerini görmek için kullandığımız analiz çerezleri yalnızca onay verirseniz çalışır. Tercihinizi istediğiniz zaman değiştirebilirsiniz.",
+    policy: "Gizlilik ve Çerez Politikası",
+    accept: "Kabul et",
+    reject: "Reddet",
   },
 
   notFound: {

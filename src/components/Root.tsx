@@ -4,6 +4,7 @@ import { I18nProvider } from "../i18n";
 import { usePageViewTracking } from "../lib/analytics";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { CookieBanner } from "./CookieBanner";
 
 export default function Root() {
   const { pathname, hash } = useLocation();
@@ -46,6 +47,7 @@ export default function Root() {
           <Outlet />
         </main>
         <Footer />
+        <CookieBanner />
       </div>
     </I18nProvider>
   );

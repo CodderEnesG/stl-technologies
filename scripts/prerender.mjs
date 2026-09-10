@@ -489,6 +489,10 @@ async function snapshotBodies(routes) {
       // görüntüde gizli metin gibi görünmemeleri için hepsi görünür yapılıyor.
       document.querySelectorAll("[data-reveal]").forEach((el) => el.classList.add("is-in"));
 
+      // Çerez bandı ziyaretçinin tercihine göre çıkar; statik çıktıya gömülürse
+      // tercihini çoktan yapmış ziyaretçi de bir an için onu görür.
+      document.querySelectorAll("[data-cookie-banner]").forEach((el) => el.remove());
+
       // İhracat haritasının ülke yolları tek başına ~96 KB; dekoratif geometri,
       // arama motoruna hiçbir şey anlatmıyor. Anlık görüntüden çıkarılıyor,
       // React istemcide haritayı zaten yeniden çiziyor.
