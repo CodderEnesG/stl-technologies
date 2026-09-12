@@ -279,7 +279,7 @@ export const tr = {
       about: {
         kicker: "wexta hakkında",
         title: "Fabrikadan çıkan valiz, yolculuğa hazır.",
-        body: "wexta, STL Teknoloji'nin valiz markasıdır. 2016'dan beri İstanbul Arnavutköy'deki 35.000 m² tesisimizde ürettiğimiz valizler, Türkiye'nin önde gelen tekstil markalarının da tercihi. Levha ekstrüzyonundan montaja tüm aşamalar aynı çatı altında; %100 ABS gövde, çelik vidalı aksesuar.",
+        body: "wexta, STL Teknoloji'nin valiz markasıdır. 2016'dan beri İstanbul Arnavutköy'deki 35.000 m² tesisimizde ürettiğimiz valizler, Türkiye'nin önde gelen tekstil markalarının da tercihi. Kabin boy bavuldan büyük boy valize kadar tüm seriler aynı bantta üretiliyor: levha ekstrüzyonundan montaja her aşama aynı çatı altında, %100 ABS gövde ve çelik vidalı aksesuar.",
       },
       stats: [
         { n: "35.000 m²", l: "Üretim tesisi" },
@@ -288,7 +288,7 @@ export const tr = {
       ],
       specBand: [
         { k: "Gövde", v: "%100 ABS" },
-        { k: "Boylar", v: "20 / 24 / 28 inç" },
+        { k: "Boylar", v: "20 inç kabin bavul / 24 / 28 inç" },
         { k: "Montaj", v: "Çelik vida" },
         { k: "Üretim", v: "%100 yerli" },
       ],
