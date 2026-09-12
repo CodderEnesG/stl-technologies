@@ -295,14 +295,12 @@ function renderPage(template, { lang, title, description, url, alternates, og, l
     .replace(/\s*<title>[\s\S]*?<\/title>/, "")
     .replace(/\s*<meta name="description"[^>]*>/g, "")
     .replace(/\s*<meta property="og:(title|description)"[^>]*>/g, "")
-    // Uygulama paketi ilk boyamanın önüne geçmesin.
-    //
-    // Sayfa gövdesi zaten burada, statik HTML olarak: okumak, gezinmek ve
-    // bağlantılara tıklamak JavaScript beklemiyor. Buna rağmen tarayıcı
-    // <script type="module"> ve modulepreload'ları yüksek öncelikle çekip
-    // hero görselinin önüne koyuyordu; mobil bağlantıda LCP görseli ~100 KB
-    // JavaScript'in arkasında sıra bekliyordu. fetchpriority="low" ile sıra
-    // tersine dönüyor, paket boyamadan hemen sonra iniyor.
+    // Denendi ve tutulmadı: <script type="module"> ile modulepreload'lara
+    // fetchpriority="low" vermek. Gerekçe, paketin LCP görselinin önüne
+    // geçmesiydi; ama görseller küçüldükten sonra ölçümde fark kalmadı
+    // (ana sayfa 808'e karşı 800 ms, Fressi 648'e karşı 652 ms — gürültü).
+    // Bölümler zaten Reveal ile JavaScript gelene kadar saydam durduğu için
+    // paketi geciktirmenin görünür içeriği de geciktirme riski vardı.
     .replace("</head>", `  ${head}\n  </head>`);
 }
 
