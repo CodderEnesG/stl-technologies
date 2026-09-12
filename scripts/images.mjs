@@ -26,6 +26,17 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const IMAGES = join(ROOT, "public", "images");
+/**
+ * Logolar da kataloğa giriyor — varyantsız, yalnızca ölçüleriyle.
+ *
+ * SVG'nin doğal boyutu yoktur; tarayıcı dosyayı indirip viewBox'ı okuyana
+ * kadar <img> sıfır yükseklikte durur ve gelince yerleşimi ittirir. Oxyra
+ * sayfasında marka işareti tam da bunu yapıyordu: Lighthouse "boyutu
+ * belirtilmemiş görsel" diyerek sayfanın CLS'inin çoğunu buna yazıyordu.
+ * viewBox'tan okunan oran <Img>'in width/height yazmasına yetiyor, yer
+ * baştan ayrılıyor.
+ */
+const LOGOS = join(ROOT, "public", "logos");
 const MANIFEST = join(ROOT, "src", "data", "imageManifest.ts");
 
 /** Üretilecek genişlikler. Kaynak bundan darsa o genişlik atlanır. */
@@ -256,6 +267,32 @@ for (const file of files) {
   manifest[url] = { w: dim.w, h: dim.h, variants: made, ...(strip.length ? { strip } : {}) };
 }
 
+/** SVG'nin viewBox'ından (yoksa width/height'ından) oranını okur */
+function svgSize(file) {
+  const head = readFileSync(file, "utf8").slice(0, 4000);
+  const tag = /<svg[^>]*>/i.exec(head)?.[0];
+  if (!tag) return null;
+
+  const vb = /viewBox\s*=\s*["']\s*[-\d.]+[,\s]+[-\d.]+[,\s]+([\d.]+)[,\s]+([\d.]+)/i.exec(tag);
+  if (vb) return { w: Math.round(Number(vb[1])), h: Math.round(Number(vb[2])) };
+
+  const w = /\bwidth\s*=\s*["']([\d.]+)/i.exec(tag);
+  const h = /\bheight\s*=\s*["']([\d.]+)/i.exec(tag);
+  if (w && h) return { w: Math.round(Number(w[1])), h: Math.round(Number(h[1])) };
+  return null;
+}
+
+let logos = 0;
+for (const file of walk(LOGOS).filter((f) => extname(f).toLowerCase() === ".svg")) {
+  const size = svgSize(file);
+  if (!size || !size.w || !size.h) {
+    console.warn(`images: viewBox okunamadı, atlandı — ${file}`);
+    continue;
+  }
+  manifest["/logos/" + relative(LOGOS, file).split(/[\\/]/).join("/")] = { ...size, variants: [] };
+  logos++;
+}
+
 const entries = Object.keys(manifest)
   .sort()
   .map((url) => {
@@ -296,6 +333,8 @@ export function stripUrl(src: string, width: number): string {
 `,
   "utf8",
 );
+
+console.log(`${logos} logo SVG'sinin ölçüsü kataloğa yazıldı.`);
 
 const mb = (n) => (n / 1048576).toFixed(2);
 console.log(

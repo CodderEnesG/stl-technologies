@@ -12,7 +12,9 @@
     "images": "node scripts/images.mjs",
     "indexnow": "node scripts/indexnow.mjs",
     "serve": "node scripts/serve-dist.mjs",
-    "fonts": "node scripts/fonts.mjs"
+    "fonts": "node scripts/fonts.mjs",
+    "measure": "node scripts/measure-lcp.mjs",
+    "diagnose": "node scripts/diagnose-page.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
