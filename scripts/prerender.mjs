@@ -326,7 +326,31 @@ function write(routePath, html) {
  */
 const SHELL = join(DIST, ".prerender-shell.html");
 if (!existsSync(SHELL)) writeFileSync(SHELL, readFileSync(join(DIST, "index.html"), "utf8"));
-const template = readFileSync(SHELL, "utf8");
+const rawTemplate = readFileSync(SHELL, "utf8");
+
+/**
+ * Site CSS'i ayrı dosya olarak istenmek yerine sayfaya gömülür.
+ *
+ * Tarayıcı HTML'i alıp <link rel="stylesheet"> satırını görünce duruyor ve
+ * stili ikinci bir istekle çekiyor; o gelene kadar hiçbir şey boyamıyor.
+ * Yani ilk boyamanın önünde arka arkaya iki gidiş dönüş var. Gömülünce ikincisi
+ * kalkıyor, boyama HTML'in kendisiyle başlayabiliyor.
+ *
+ * Dosya sıkıştırılmış hâlde ~13 KB; gömmek için makul boyut. Bedeli, CSS'in
+ * artık ayrı önbelleklenmemesi: ikinci bir sayfaya geçen ziyaretçi aynı baytları
+ * tekrar indiriyor. Ziyaretlerin çoğu aramadan gelip tek sayfada bittiği için
+ * takas ilk boyama lehine.
+ */
+const template = (() => {
+  const link = /<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/.exec(rawTemplate);
+  if (!link) return rawTemplate;
+
+  const file = join(DIST, link[1]);
+  if (!existsSync(file)) return rawTemplate;
+
+  const css = readFileSync(file, "utf8");
+  return rawTemplate.replace(link[0], `<style>${css}</style>`);
+})();
 const written = [];
 const sitemap = [];
 
@@ -573,6 +597,178 @@ async function launchChromium() {
   return { failures };
 }
 
+/**
+ * İlk perdedeki görselleri toplar. Tarayıcı bağlamında çalışır; iki farklı
+ * genişlikte çağrılır (bkz. collectPreloads).
+ */
+const COLLECTOR = () => {
+  const fold = window.innerHeight;
+  const out = [];
+  const seen = new Set();
+
+  const add = (entry) => {
+    const key = `${entry.media ?? ""}|${entry.srcset || entry.href}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push({ ...entry, key });
+  };
+
+  const localPath = (raw) => {
+    if (!raw || raw.startsWith("data:")) return null;
+    const path = new URL(raw, location.href).pathname;
+    return path.startsWith("/images/") || path.startsWith("/logos/") ? path : null;
+  };
+
+  /** Görünen alan; ekran dışı ya da gizli öğe için 0 */
+  const visible = (el) => {
+    const box = el.getBoundingClientRect();
+    if (box.top >= fold || box.bottom <= 0 || box.width < 40 || box.height < 20) return 0;
+    return Math.round(box.width * Math.min(box.height, fold - Math.max(box.top, 0)));
+  };
+
+  const sourcesOf = (picture) =>
+    [...picture.querySelectorAll("source")]
+      .map((el) => {
+        const set = el.getAttribute("srcset");
+        const first = localPath(set?.split(",")[0]?.trim().split(/\s+/)[0]);
+        return first
+          ? {
+              href: first,
+              srcset: set ?? undefined,
+              sizes: el.getAttribute("sizes") ?? undefined,
+              media: el.getAttribute("media") ?? undefined,
+            }
+          : null;
+      })
+      .filter(Boolean);
+
+  // Üst çubuktaki İLK logo her hâlükârda listede kalsın. Yalnızca ilki:
+  // açılır menüdeki marka logoları da header içinde, hepsi sabitlenince
+  // kotayı onlar dolduruyor ve asıl büyük öğe dışarıda kalıyordu.
+  const headerLogo = document.querySelector("header img");
+
+  for (const img of document.images) {
+    if (img.loading === "lazy") continue;
+    const area = visible(img);
+    if (area === 0) continue;
+
+    const href = localPath(img.getAttribute("src"));
+    if (!href) continue;
+
+    const pinned = img === headerLogo;
+    const picture = img.parentElement?.tagName === "PICTURE" ? img.parentElement : null;
+    const sources = picture ? sourcesOf(picture) : [];
+    for (const source of sources) add({ ...source, area, pinned });
+
+    // <picture> yedeği yalnızca kaynakların KAPSAMADIĞI genişliklerde önden
+    // yüklenmeli, yoksa telefon hem dar ekran şeridini hem tam boy kapağı
+    // indirir. Kaynak media'sı basit bir max-width ise tersi alınıyor,
+    // değilse yedek atlanıyor.
+    let fallbackMedia;
+    if (sources.length > 0) {
+      const caps = sources.map((x) => /^\(max-width:\s*(\d+)px\)$/.exec(x.media ?? ""));
+      if (!caps.every(Boolean)) continue;
+      fallbackMedia = `(min-width: ${Math.max(...caps.map((m) => Number(m[1]))) + 1}px)`;
+    }
+
+    add({
+      href,
+      srcset: img.getAttribute("srcset") ?? undefined,
+      sizes: img.getAttribute("sizes") ?? undefined,
+      media: fallbackMedia,
+      area,
+      pinned,
+    });
+  }
+
+  for (const el of document.querySelectorAll("*")) {
+    const area = visible(el);
+    if (area < 6400) continue;
+    const bg = getComputedStyle(el).backgroundImage;
+    if (!bg || bg === "none") continue;
+    for (const m of bg.matchAll(/url\("?([^")]+)"?\)/g)) {
+      const href = localPath(m[1]);
+      if (href) add({ href, area });
+    }
+  }
+
+  return out;
+};
+
+/** En fazla bu kadar adres önden yüklenir; fazlası birbiriyle yarışıp LCP'yi bozar. */
+const PRELOAD_LIMIT = 4;
+const MOBILE = { width: 412, height: 823 };
+const DESKTOP = { width: 1440, height: 1200 };
+
+/**
+ * Bir rotanın önden yüklenecek görsellerini belirler.
+ *
+ * Sayfa iki genişlikte açılıp iki liste çıkarılıyor. Yalnızca telefonda
+ * görünen bir adres `(max-width: 767px)`, yalnızca masaüstünde görünen
+ * `(min-width: 768px)` ile sınırlanıyor; ikisinde de görünen sınırsız kalıyor.
+ * Böylece telefon masaüstü görselini, masaüstü telefon görselini indirmiyor.
+ *
+ * Sıralama alana göre: en büyük öğe LCP adayıdır ve tek o `fetchpriority=high`
+ * alır. Üst çubuk logosu ayrıca korunuyor — ana sayfada en büyük boyama odur,
+ * çünkü marka panelleri giriş animasyonuna saydam başlayıp aday sayılmıyor.
+ */
+async function collectPreloads(page, routePath, port) {
+  const at = async (size) => {
+    await page.setViewportSize(size);
+    await page.goto(`http://127.0.0.1:${port}${routePath}`, { waitUntil: "networkidle" });
+    await page.waitForSelector("#root > *", { timeout: 15000 }).catch(() => {});
+    return page.evaluate(COLLECTOR).catch(() => []);
+  };
+
+  const mobile = await at(MOBILE);
+  const desktop = await at(DESKTOP);
+
+  const byKey = new Map();
+  for (const [list, only] of [
+    [mobile, "(max-width: 767px)"],
+    [desktop, "(min-width: 768px)"],
+  ]) {
+    for (const entry of list) {
+      const seen = byKey.get(entry.key);
+      if (seen) {
+        // İki genişlikte de görünüyor: genişlik sınırı gerekmiyor.
+        seen.only = null;
+        seen.area = Math.max(seen.area, entry.area);
+      } else {
+        byKey.set(entry.key, { ...entry, only });
+      }
+    }
+  }
+
+  const chosen = [...byKey.values()]
+    .sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.area - a.area)
+    .slice(0, PRELOAD_LIMIT);
+
+  // Öğenin kendi media'sı (picture kaynağı) varsa o geçerli; yoksa hangi
+  // genişlikte göründüğünden çıkan sınır uygulanır.
+  const withMedia = chosen.map((x) => ({ ...x, media: x.media ?? x.only ?? undefined }));
+
+  // Yüksek öncelik ekran sınıfı başına veriliyor. Tek bir "en büyük" seçilince
+  // BNK'da masaüstü hero'su kazanıyor ve telefonun gerçek hero'su önceliksiz
+  // kalıyordu; media zaten ikisinden yalnızca birini geçerli kılıyor.
+  const largestOf = (skip) => {
+    const list = withMedia.filter((x) => x.media !== skip);
+    return list.length > 0 ? Math.max(...list.map((x) => x.area)) : -1;
+  };
+  const topMobile = largestOf("(min-width: 768px)");
+  const topDesktop = largestOf("(max-width: 767px)");
+
+  return withMedia.map((x) => ({
+    href: x.href,
+    srcset: x.srcset,
+    sizes: x.sizes,
+    media: x.media,
+    priority:
+      (x.media !== "(min-width: 768px)" && x.area === topMobile) ||
+      (x.media !== "(max-width: 767px)" && x.area === topDesktop),
+  }));
+}
+
 async function snapshotBodies(routes) {
   // Tarayıcı yoksa derleme çökmemeli: head'ler zaten yazıldı, site çalışır.
   // Ama gövde ön-render'ı olmadan JavaScript çalıştırmayan tarayıcılar sayfayı
@@ -590,16 +786,20 @@ async function snapshotBodies(routes) {
   }
 
   const { server, port } = await serveDist();
-  const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
+  const page = await browser.newPage({ viewport: DESKTOP });
+  // Önden yükleme listesi ayrı bir sekmede çıkarılıyor: anlık görüntü alınan
+  // sayfa yeniden boyutlandırılırsa React duyarlı bileşenleri yeniden çiziyor
+  // ve temizlenmiş sınıflar geri gelebiliyor.
+  const collector = await browser.newPage({ viewport: MOBILE });
 
   // İçerik anlık görüntüsü her zaman koddaki metinlerden üretilsin: admin
   // panelindeki metinler tarayıcıda zaten üzerine biniyor, derleme çıktısının
   // hangi ana ait olduğu belirsiz kalmasın.
-  await page.route("**/rest/v1/site_content*", (r) => r.abort());
+  for (const tab of [page, collector]) {
+    await tab.route("**/rest/v1/site_content*", (r) => r.abort());
+    await tab.route("**://*.googletagmanager.com/**", (r) => r.abort());
+  }
 
-  // Analitik derleme sırasında yüklenmesin: networkidle beklemesini uzatıyor ve
-  // ölçüm kimliğine derleme trafiği düşmesine yol açabiliyor.
-  await page.route("**://*.googletagmanager.com/**", (r) => r.abort());
 
   let done = 0;
   for (const routePath of routes) {
@@ -654,41 +854,42 @@ async function snapshotBodies(routes) {
     // boyaması (LCP) hero zemini olan pattern-1.svg'ydi: dosya 13 KB olmasına
     // rağmen ölçümde 2,6 saniyede iniyordu, çünkü sıraya en sonda giriyordu.
     //
-    // Adresler head'in başına <link rel="preload"> olarak yazılıyor, ama
-    // fetchpriority verilmeden. İlk denemede fetchpriority="high" vardı ve
-    // boyamayı bloklayan CSS'in önüne geçip ilk boyamayı geciktiriyordu;
-    // stil sayfasının arkasına alınca bu sefer görsel geç inip LCP bozuldu.
-    // Önceliksiz preload ikisini de çözüyor: adres hemen keşfediliyor, sıra
-    // yine de CSS'in (Highest) arkasında kalıyor.
+    // İlk perdedeki görseller <link rel="preload"> olarak head'e yazılıyor.
     //
-    // En fazla iki tane: fazlası ilk perdedeki gerçek görsellerle bant
-    // genişliği için yarışır ve LCP'yi geri bozar.
-    await page.evaluate(() => {
-      const fold = window.innerHeight;
-      const urls = new Set();
+    // İki ayrı sorunu kapatıyor. Biri, CSS arka planları: tarayıcı bunları
+    // ancak stil çözülüp yerleşim hesaplandıktan sonra keşfediyor. Diğeri,
+    // site CSS'inin sayfaya gömülmesiyle çıktı: ayrıştırıcı 78 KB'lik <style>
+    // bloğunu bitirmeden gövdeye ulaşamıyor, <img> etiketleri de geç
+    // keşfediliyor. Ölçümde Oxyra'nın hero'su 1084 yerine 2779 ms'de iniyordu.
+    //
+    // Liste ayrı bir sekmede, hem telefon hem masaüstü genişliğinde toplanıp
+    // birleştiriliyor (bkz. collectPreloads). Anlık görüntü masaüstünde
+    // alındığı için tek başına masaüstü ölçüsüne bakmak yanlış sonuç veriyordu:
+    // BNK'nın hero'su telefonda başka bir dosya, ön-render masaüstündekini
+    // önden yükleyince telefon iki görseli birden indiriyor ve LCP 1808'den
+    // 2332 ms'ye çıkıyordu.
+    const preloads = await collectPreloads(collector, routePath, port);
 
-      for (const el of document.querySelectorAll("*")) {
-        if (urls.size >= 2) break;
-        const box = el.getBoundingClientRect();
-        if (box.top >= fold || box.bottom <= 0 || box.width < 80 || box.height < 80) continue;
-        const bg = getComputedStyle(el).backgroundImage;
-        if (!bg || bg === "none") continue;
-        for (const m of bg.matchAll(/url\("?([^")]+)"?\)/g)) {
-          const raw = m[1];
-          if (raw.startsWith("data:")) continue;
-          const path = new URL(raw, location.href).pathname;
-          if (path.startsWith("/images/") || path.startsWith("/logos/")) urls.add(path);
-        }
-      }
-
-      for (const href of [...urls].reverse()) {
+    await page.evaluate((entries) => {
+      // Etiketler viewport meta'sının ARDINA yazılıyor, head'in başına değil.
+      // Ön tarama media sorgularını o meta'yı görmeden değerlendiriyor ve
+      // genişliği 980 piksel sayıyor: telefonda (max-width: 767px) tutmuyor,
+      // (min-width: 768px) tutuyordu. Ölçümde ana sayfa dar ekran şeridinin
+      // yanında 163 KB'lik masaüstü kapağını da indiriyordu.
+      const anchor = document.head.querySelector('meta[name="viewport"]');
+      for (const entry of [...entries].reverse()) {
         const link = document.createElement("link");
         link.rel = "preload";
         link.as = "image";
-        link.href = href;
-        document.head.prepend(link);
+        link.href = entry.href;
+        if (entry.priority) link.setAttribute("fetchpriority", "high");
+        if (entry.srcset) link.setAttribute("imagesrcset", entry.srcset);
+        if (entry.sizes) link.setAttribute("imagesizes", entry.sizes);
+        if (entry.media) link.setAttribute("media", entry.media);
+        if (anchor) anchor.after(link);
+        else document.head.prepend(link);
       }
-    });
+    }, preloads);
 
     await page.waitForTimeout(250);
 

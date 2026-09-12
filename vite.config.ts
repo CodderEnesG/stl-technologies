@@ -15,6 +15,14 @@ export default defineConfig(({ mode }) => {
     build: {
       sourcemap: emitSourcemaps ? 'inline' : false,
       minify: !emitSourcemaps,
+      // Tek CSS dosyası: stiller parçalara dağıtılmasın.
+      //
+      // Bölünmüş hâlde her dinamik parça kendi CSS bağımlılığını taşıyor ve
+      // Vite'ın yükleyicisi çalışma anında <link rel="stylesheet"> ekliyor.
+      // Ön-render bu etiketi anlık görüntüye alıyordu; CSS zaten sayfaya
+      // gömülü olduğu hâlde ikinci bir istek doğuyor ve boyamayı bloklamaya
+      // devam ediyordu (bkz. scripts/prerender.mjs, CSS gömme).
+      cssCodeSplit: false,
     },
     plugins: [
       react(),
