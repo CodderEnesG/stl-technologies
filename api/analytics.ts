@@ -148,7 +148,9 @@ export default async function handler(req: Request): Promise<Response> {
       }),
       runReport(token, propertyId, {
         dateRanges: range,
-        dimensions: [{ name: "pagePath" }],
+        // Başlık okunaklı, yol kesin: ikisi birlikte alınıp panelde başlık
+        // gösteriliyor, yol ipucu olarak veriliyor.
+        dimensions: [{ name: "pageTitle" }, { name: "pagePath" }],
         metrics: [{ name: "screenPageViews" }],
         orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
         limit: 8,
@@ -162,10 +164,12 @@ export default async function handler(req: Request): Promise<Response> {
       }),
       runReport(token, propertyId, {
         dateRanges: range,
-        dimensions: [{ name: "country" }],
+        // countryId ISO 3166-1 alpha-2 döndürüyor; panelde dünya haritasını
+        // boyamak için gerekiyor (src/data/worldPaths.ts aynı anahtarı kullanır).
+        dimensions: [{ name: "countryId" }, { name: "country" }],
         metrics: [{ name: "activeUsers" }],
         orderBys: [{ metric: { metricName: "activeUsers" }, desc: true }],
-        limit: 6,
+        limit: 20,
       }),
     ]);
 
@@ -181,9 +185,9 @@ export default async function handler(req: Request): Promise<Response> {
         avgSessionSeconds: t ? Math.round(num(t, 3)) : 0,
       },
       trend: (byDay.rows ?? []).map((r) => ({ date: dim(r), users: num(r) })),
-      topPages: (topPages.rows ?? []).map((r) => ({ path: dim(r), views: num(r) })),
+      topPages: (topPages.rows ?? []).map((r) => ({ title: dim(r, 0), path: dim(r, 1), views: num(r) })),
       channels: (channels.rows ?? []).map((r) => ({ name: dim(r), sessions: num(r) })),
-      countries: (countries.rows ?? []).map((r) => ({ name: dim(r), users: num(r) })),
+      countries: (countries.rows ?? []).map((r) => ({ code: dim(r, 0), name: dim(r, 1), users: num(r) })),
     });
   } catch (err) {
     return json({ error: "upstream", detail: String(err).slice(0, 300) }, 502);

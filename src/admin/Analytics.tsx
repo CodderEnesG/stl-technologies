@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { WORLD_VIEWBOX, worldPaths } from "../data/worldPaths";
 import { supabase } from "./supabase";
 
 /**
@@ -15,9 +16,9 @@ type Summary = {
   updatedAt: string;
   totals: { users: number; sessions: number; pageViews: number; avgSessionSeconds: number };
   trend: { date: string; users: number }[];
-  topPages: { path: string; views: number }[];
+  topPages: { title: string; path: string; views: number }[];
   channels: { name: string; sessions: number }[];
-  countries: { name: string; users: number }[];
+  countries: { code: string; name: string; users: number }[];
 };
 
 type State =
@@ -55,7 +56,7 @@ function Sparkline({ points }: { points: { date: string; users: number }[] }) {
   const last = points[points.length - 1];
 
   return (
-    <figure className="mt-4">
+    <figure>
       <svg viewBox={`0 0 ${w} ${h}`} className="w-full" role="img" aria-label="Günlük kullanıcı eğilimi" preserveAspectRatio="none">
         <path d={area} fill="#e10000" fillOpacity="0.08" />
         <path d={line} fill="none" stroke="#e10000" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
@@ -70,25 +71,84 @@ function Sparkline({ points }: { points: { date: string; users: number }[] }) {
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+/**
+ * Ziyaretçi haritası. Ülke yolları ihracat haritasıyla aynı kaynaktan
+ * (src/data/worldPaths.ts, ISO 3166-1 alpha-2 anahtarlı); GA4'ün countryId
+ * boyutu da aynı kodu döndürdüğü için doğrudan eşleşiyor.
+ *
+ * Renk yoğunluğu ülkenin toplam içindeki payına göre; veri olmayan ülkeler
+ * nötr gri kalıyor.
+ */
+function WorldMap({ rows }: { rows: { code: string; name: string; users: number }[] }) {
+  const withData = rows.filter((r) => worldPaths[r.code]);
+  if (withData.length === 0) return null;
+
+  const max = Math.max(...withData.map((r) => r.users), 1);
+  const byCode = new Map(withData.map((r) => [r.code, r]));
+
   return (
-    <div>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">{label}</p>
-      <p className="mt-1 font-display text-2xl font-bold tabular-nums text-stl-ink">{value}</p>
-    </div>
+    <figure>
+      <svg viewBox={WORLD_VIEWBOX} className="w-full" role="img" aria-label="Ziyaretçilerin ülkelere dağılımı">
+        {Object.entries(worldPaths).map(([code, d]) => {
+          const hit = byCode.get(code);
+          // 0.18 taban: en küçük payı olan ülke de griden ayırt edilebilsin
+          const strength = hit ? 0.18 + 0.82 * (hit.users / max) : 0;
+          return (
+            <path
+              key={code}
+              d={d}
+              fill={hit ? "#e10000" : "#e8e6e6"}
+              fillOpacity={hit ? strength : 1}
+              stroke="#ffffff"
+              strokeWidth={0.4}
+            >
+              {hit && <title>{`${hit.name}: ${nf.format(hit.users)} kullanıcı`}</title>}
+            </path>
+          );
+        })}
+      </svg>
+    </figure>
   );
 }
 
-function List({ title, rows }: { title: string; rows: { label: string; value: number }[] }) {
-  if (rows.length === 0) return null;
+/** Panelin ortak kart kabuğu — her ölçüm kendi kutusunda */
+function Card({
+  title,
+  children,
+  className = "",
+}: {
+  title?: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={`rounded-xl border border-border bg-white p-5 ${className}`}>
+      {title && (
+        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">{title}</p>
+      )}
+      {children}
+    </section>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <Card>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">{label}</p>
+      <p className="mt-1.5 font-display text-3xl font-bold tabular-nums text-stl-ink">{value}</p>
+    </Card>
+  );
+}
+
+function List({ rows }: { rows: { label: string; hint?: string; value: number }[] }) {
+  if (rows.length === 0) return <p className="text-sm text-muted">Veri yok.</p>;
   const max = Math.max(...rows.map((r) => r.value), 1);
   return (
     <div>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">{title}</p>
-      <ul className="mt-2.5 space-y-1.5">
+      <ul className="space-y-1.5">
         {rows.map((r) => (
           <li key={r.label} className="grid grid-cols-[1fr_auto] items-center gap-3 text-sm">
-            <span className="relative truncate text-stl-ink" title={r.label}>
+            <span className="relative truncate text-stl-ink" title={r.hint ? `${r.label} — ${r.hint}` : r.label}>
               <span
                 aria-hidden
                 className="absolute inset-y-0 left-0 -z-10 rounded-sm bg-stl-red/10"
@@ -143,8 +203,8 @@ export function Analytics() {
   }, [days]);
 
   return (
-    <section className="mb-6 rounded-xl border border-border bg-white p-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="mb-6">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -177,48 +237,73 @@ export function Analytics() {
       </div>
 
       {!open ? null : state.kind === "loading" ? (
-        <p className="mt-4 text-sm text-muted">Yükleniyor…</p>
+        <Card>
+          <p className="text-sm text-muted">Yükleniyor…</p>
+        </Card>
       ) : state.kind === "unconfigured" ? (
-        <p className="mt-4 text-sm leading-relaxed text-muted">
-          Analitik bağlantısı henüz kurulmadı. Vercel ortam değişkenlerine{" "}
-          <code className="rounded bg-stl-surface px-1 py-0.5 text-xs">GOOGLE_SERVICE_ACCOUNT_JSON</code> ve{" "}
-          <code className="rounded bg-stl-surface px-1 py-0.5 text-xs">GA4_PROPERTY_ID</code> eklenince
-          buraya ziyaret sayıları gelir.
-        </p>
+        <Card>
+          <p className="text-sm leading-relaxed text-muted">
+            Analitik bağlantısı henüz kurulmadı. Vercel ortam değişkenlerine{" "}
+            <code className="rounded bg-stl-surface px-1 py-0.5 text-xs">GOOGLE_SERVICE_ACCOUNT_JSON</code> ve{" "}
+            <code className="rounded bg-stl-surface px-1 py-0.5 text-xs">GA4_PROPERTY_ID</code> eklenince
+            buraya ziyaret sayıları gelir.
+          </p>
+        </Card>
       ) : state.kind === "error" ? (
-        <p className="mt-4 text-sm text-muted">Veri alınamadı. {state.message}</p>
+        <Card>
+          <p className="text-sm text-muted">Veri alınamadı. {state.message}</p>
+        </Card>
       ) : (
-        <>
-          <div className="mt-4 grid grid-cols-2 gap-5 sm:grid-cols-4">
+        <div className="grid gap-4">
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             <Stat label="Kullanıcı" value={nf.format(state.data.totals.users)} />
             <Stat label="Oturum" value={nf.format(state.data.totals.sessions)} />
             <Stat label="Sayfa görüntüleme" value={nf.format(state.data.totals.pageViews)} />
             <Stat label="Ort. oturum" value={duration(state.data.totals.avgSessionSeconds)} />
           </div>
 
-          <Sparkline points={state.data.trend} />
+          <Card title="Günlük kullanıcı">
+            <Sparkline points={state.data.trend} />
+          </Card>
 
-          <div className="mt-6 grid gap-6 md:grid-cols-3">
-            <List
-              title="En çok görüntülenen"
-              rows={state.data.topPages.map((p) => ({ label: p.path, value: p.views }))}
-            />
-            <List
-              title="Trafik kaynağı"
-              rows={state.data.channels.map((c) => ({ label: c.name, value: c.sessions }))}
-            />
-            <List
-              title="Ülke"
-              rows={state.data.countries.map((c) => ({ label: c.name, value: c.users }))}
-            />
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card title="En çok görüntülenen sayfa">
+              <List
+                rows={state.data.topPages.map((p) => ({
+                  label: p.title || p.path,
+                  hint: p.path,
+                  value: p.views,
+                }))}
+              />
+            </Card>
+
+            <Card title="Trafik kaynağı">
+              <List rows={state.data.channels.map((c) => ({ label: c.name, value: c.sessions }))} />
+            </Card>
           </div>
 
-          <p className="mt-5 text-[11px] text-muted">
+          <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+            <Card title="Ziyaretçi haritası">
+              <WorldMap rows={state.data.countries} />
+            </Card>
+
+            <Card title="Ülke">
+              <List
+                rows={state.data.countries
+                  .slice(0, 8)
+                  // GA4 konumu çözemediğinde "(not set)" döndürüyor; panelde
+                  // olduğu gibi göstermek yerine anlaşılır bir etiket veriliyor.
+                  .map((c) => ({ label: c.name === "(not set)" ? "Belirlenemedi" : c.name, value: c.users }))}
+              />
+            </Card>
+          </div>
+
+          <p className="text-[11px] text-muted">
             Kaynak: Google Analytics 4 · Son {state.data.days} gün ·{" "}
             {new Date(state.data.updatedAt).toLocaleString("tr-TR")}
           </p>
-        </>
+        </div>
       )}
-    </section>
+    </div>
   );
 }
