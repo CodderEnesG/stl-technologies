@@ -11,6 +11,8 @@ import { Img } from "./Img";type LogoSlotProps = {
   /** Use light strokes for dark backgrounds. */
   onDark?: boolean;
   className?: string;
+  /** Üst çubuktaki logo için açın — ilk perdede, yüksek öncelikli indirilsin */
+  priority?: boolean;
 };
 
 /**
@@ -24,6 +26,7 @@ export function LogoSlot({
   ratio = 2.6,
   onDark = false,
   className = "",
+  priority = false,
 }: LogoSlotProps) {
   if (src) {
     return (
@@ -32,6 +35,7 @@ export function LogoSlot({
         alt={label}
         style={{ height }}
         className={`w-auto object-contain ${className}`}
+        fetchPriority={priority ? "high" : undefined}
       />
     );
   }

@@ -84,7 +84,11 @@ export function HeroAccordion() {
               // Telefonda panel yatık bir şerit; dikey kaynağın satırlarının
               // çoğu kadraj dışında kalıyordu (bkz. Img `wide`).
               wide={!b.heroBlend}
-              fetchPriority={i === 0 ? "high" : undefined}
+              // Dört panelin dördü de ilk perdede: telefonda alt alta, geniş
+              // ekranda yan yana. Yalnızca ilkine yüksek öncelik verilince
+              // diğerleri paket ve yazı tiplerinin arkasına düşüyor ve en
+              // büyük boyama 21 KB'lik bir görseli 2,4 saniye bekliyordu.
+              fetchPriority="high"
               className={
                 b.heroBlend
                   ? // Yükseklik animasyonu her karede layout hesaplatıyordu (büyüme + titreme);

@@ -303,8 +303,6 @@ function renderPage(template, { lang, title, description, url, alternates, og, l
     // hero görselinin önüne koyuyordu; mobil bağlantıda LCP görseli ~100 KB
     // JavaScript'in arkasında sıra bekliyordu. fetchpriority="low" ile sıra
     // tersine dönüyor, paket boyamadan hemen sonra iniyor.
-    .replace(/<script type="module"/g, '<script type="module" fetchpriority="low"')
-    .replace(/<link rel="modulepreload"/g, '<link rel="modulepreload" fetchpriority="low"')
     .replace("</head>", `  ${head}\n  </head>`);
 }
 
@@ -658,7 +656,13 @@ async function snapshotBodies(routes) {
     // boyaması (LCP) hero zemini olan pattern-1.svg'ydi: dosya 13 KB olmasına
     // rağmen ölçümde 2,6 saniyede iniyordu, çünkü sıraya en sonda giriyordu.
     //
-    // Bulunan adresler head'in başına <link rel="preload"> olarak yazılıyor.
+    // Adresler head'in başına <link rel="preload"> olarak yazılıyor, ama
+    // fetchpriority verilmeden. İlk denemede fetchpriority="high" vardı ve
+    // boyamayı bloklayan CSS'in önüne geçip ilk boyamayı geciktiriyordu;
+    // stil sayfasının arkasına alınca bu sefer görsel geç inip LCP bozuldu.
+    // Önceliksiz preload ikisini de çözüyor: adres hemen keşfediliyor, sıra
+    // yine de CSS'in (Highest) arkasında kalıyor.
+    //
     // En fazla iki tane: fazlası ilk perdedeki gerçek görsellerle bant
     // genişliği için yarışır ve LCP'yi geri bozar.
     await page.evaluate(() => {
@@ -684,7 +688,6 @@ async function snapshotBodies(routes) {
         link.rel = "preload";
         link.as = "image";
         link.href = href;
-        link.setAttribute("fetchpriority", "high");
         document.head.prepend(link);
       }
     });

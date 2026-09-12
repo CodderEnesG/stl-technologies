@@ -23,7 +23,9 @@ for (const path of process.argv.slice(2)) {
     window.__d = { lcp:0, lcpUrl:"", lcpEl:"", cls:0, shifts:[] };
     new PerformanceObserver(l=>{for(const e of l.getEntries()){
       window.__d.lcp=e.startTime; window.__d.lcpUrl=e.url||e.element?.currentSrc||"";
-      const n=e.element; window.__d.lcpEl=n?`${n.tagName.toLowerCase()}.${String(n.className||"").split(" ").slice(0,3).join(".")}`:"?";
+      const n=e.element; const r=n?.getBoundingClientRect?.();
+      window.__d.lcpEl=n?`${n.tagName.toLowerCase()}.${String(n.className||"").split(" ").slice(0,2).join(".")} ${r?Math.round(r.width)+"x"+Math.round(r.height):""} alan=${e.size}`:"?";
+      window.__d.cands=window.__d.cands||[]; window.__d.cands.push(`${Math.round(e.startTime)}ms alan=${e.size} ${e.url?e.url.split("/").pop():n?.tagName}`);
     }}).observe({type:"largest-contentful-paint",buffered:true});
     new PerformanceObserver(l=>{for(const e of l.getEntries()){
       if(e.hadRecentInput) continue;
@@ -38,6 +40,7 @@ for (const path of process.argv.slice(2)) {
   const d = await page.evaluate(()=>window.__d);
   console.log(`\n### ${path}  LCP ${Math.round(d.lcp)} ms  CLS ${d.cls.toFixed(3)}`);
   console.log(`   LCP öğesi: ${d.lcpEl}  ${d.lcpUrl.replace(BASE,"")}`);
+  for (const c of (d.cands||[])) console.log("   aday:", c);
   for (const s of d.shifts.slice(0,6)) console.log(`   kayma ${s.v} @${s.t}ms  ${s.el}\n      ${s.from} -> ${s.to}`);
   await ctx.close();
 }

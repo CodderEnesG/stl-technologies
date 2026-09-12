@@ -96,9 +96,10 @@ export function Navbar() {
               label={active.name}
               height={30}
               onDark={onDark}
+              priority
             />
           ) : (
-            <StlLogo size={46} />
+            <StlLogo size={46} priority />
           )}
         </Link>
 
