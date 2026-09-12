@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Playwrite+NO:wght@400&family=Figtree:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+/* Google Fonts artık buradan @import edilmiyor: index.html'de <link> ile
+   yükleniyor. @import zincirleme istek yaratıyordu — tarayıcı önce bu CSS'i
+   indirip ayrıştırmadan font CSS'ini istemeye başlamıyor, üstelik istek
+   üçüncü bir kaynağa gidiyor. <link> + preconnect ile paralel başlıyor. */
 @import 'tailwindcss';
 
 /* STL Teknoloji kurumsal fontu: Gilroy — kurumsal logodaki wordmark'ın fontu.
@@ -146,7 +149,12 @@
 }
 
 /* Kaydırmayla giriş — bkz. components/Reveal.tsx. Şimdilik sadece landing. */
-[data-reveal] {
+/* Başlangıçtaki gizlilik yalnızca JavaScript çalışırken geçerli: `js` sınıfını
+   index.html'deki satır içi betik boyamadan önce ekler. JavaScript yoksa —
+   statik HTML'i okuyan arama ve AI tarayıcılarında — içerik görünür kalır,
+   ayrıca ön-render çıktısında sınıfları zorlamaya gerek kalmaz.
+   `:where()` özgüllüğü sıfırladığı için aşağıdaki `.is-in` kuralları üstte kalır. */
+:where(html.js) [data-reveal] {
   --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
   opacity: 0;
   transition:
@@ -154,7 +162,7 @@
     translate 0.8s var(--reveal-ease);
   transition-delay: var(--reveal-delay, 0ms);
 }
-[data-reveal="rise"] {
+:where(html.js) [data-reveal="rise"] {
   translate: 0 28px;
 }
 [data-reveal].is-in {
@@ -162,7 +170,7 @@
   translate: none; /* none: transform kalmaz, içerideki sticky/fixed etkilenmez */
 }
 /* İç kademeleme: bölüm göründükten 120 ms sonra, sırayla 90 ms arayla */
-[data-reveal] [data-reveal-item] {
+:where(html.js) [data-reveal] [data-reveal-item] {
   opacity: 0;
   translate: 0 18px;
   transition:

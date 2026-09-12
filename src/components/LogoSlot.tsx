@@ -1,4 +1,5 @@
-type LogoSlotProps = {
+
+import { Img } from "./Img";type LogoSlotProps = {
   /** Logo image URL/path. When empty, a labelled placeholder is shown. */
   src?: string;
   /** Fallback text shown inside the placeholder box. */
@@ -26,7 +27,7 @@ export function LogoSlot({
 }: LogoSlotProps) {
   if (src) {
     return (
-      <img
+      <Img
         src={src}
         alt={label}
         style={{ height }}

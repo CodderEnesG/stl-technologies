@@ -1,6 +1,7 @@
 import { Arrow } from "../../Arrow";
 import { type BrandCtx, toneStyles } from "../sections";
 
+import { Img } from "../../Img";
 export type ShellCard = {
   title: string;
   text: string;
@@ -46,7 +47,7 @@ export function ShellTrio({ ctx, eyebrow, title, cards }: { ctx: BrandCtx; eyebr
                   className="absolute inset-x-0 bottom-0 h-[38%]"
                   style={{ background: "linear-gradient(to top, rgba(0,0,0,0.07), transparent)" }}
                 />
-                <img
+                <Img
                   src={card.image}
                   alt={card.title}
                   loading="lazy"

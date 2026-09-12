@@ -22,6 +22,12 @@ export const en: SiteContent = {
   footer: {
     tagline: "Four brands, one manufacturing discipline. Made in Istanbul.",
     brandsHeading: "Brands",
+    brandCategories: {
+      wexta: "Luggage and travel",
+      fressi: "Small home appliances",
+      bnk: "Korean skincare",
+      oxyra: "Gaming chairs and gear",
+    },
     corporateHeading: "Corporate",
     contactHeading: "Contact",
     kvkk: "Privacy Notice (KVKK)",
@@ -57,7 +63,7 @@ export const en: SiteContent = {
       title: "Four brands, one manufacturing discipline.",
       paragraphs: [
         "We were founded in Istanbul in 2016, making luggage. Today, at our 35,000 m² facility in Arnavutköy, we run four brands under one manufacturing and design discipline — from gaming equipment to small home appliances, from travel to skincare.",
-        "Our production backbone is local. We make OEM luggage for Türkiye's leading textile brands and export to 20 countries. The quality line we hold for OEM work is the same line we hold for our own brands.",
+        "Our production backbone is local. We manufacture on an OEM basis for corporate brands including Turkish Airlines, AJet, DeFacto, LC Waikiki, Watsons, BİM, Slazenger, Kiğılı and D'S Damat, and we export to 20 countries. The quality line we hold for OEM work is the same line we hold for our own brands.",
       ],
     },
     portfolioEyebrow: "Portfolio",
@@ -490,7 +496,11 @@ export const en: SiteContent = {
     kvkkText: "I consent to the processing of my personal data under the Privacy Notice.",
     kvkkLink: "Privacy Notice",
     submit: "Send",
+    submitting: "Sending…",
     submitNote: "Pressing Send opens your e-mail app; the message goes to info@stlteknoloji.com.",
+    submitNoteDirect: "Your message goes straight to info@stlteknoloji.com. We usually reply within one business day.",
+    successMessage: "Your message has been sent. We will get back to you shortly.",
+    errorMessage: "The message could not be sent. Please try again, or write to info@stlteknoloji.com directly.",
     mapTitle: "STL Teknoloji location",
   },
 

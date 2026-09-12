@@ -5,6 +5,7 @@ import { useI18n } from "../../i18n";
 import { Arrow } from "../Arrow";
 import { LogoSlot } from "../LogoSlot";
 
+import { Img } from "../Img";
 const ROTATE_MS = 6000;
 
 const reducedMotion = () =>
@@ -78,7 +79,7 @@ export function HeroShowcase() {
         </div>
         <div className="relative hidden h-[70%] md:block">
           {brands.map((bb, i) => (
-            <img
+            <Img
               key={bb.slug}
               src={bb.hero}
               alt=""

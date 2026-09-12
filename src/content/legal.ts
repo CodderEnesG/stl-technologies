@@ -24,7 +24,7 @@ export const legalDocs: Record<LegalKey, Record<"tr" | "en", LegalDoc>> = {
     tr: {
       title: "KVKK ve Aydınlatma Metni",
       description:
-        "STL Teknoloji'nin 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamındaki aydınlatma metni: hangi kişisel verileri neden işlediğimiz, kimlerle paylaştığımız ve sahip olduğunuz haklar.",
+        "STL Teknoloji'nin KVKK (6698) aydınlatma metni: hangi kişisel verileri neden işliyoruz, kimlerle paylaşıyoruz ve sahip olduğunuz haklar neler.",
       blocks: [
       { p: "www.stlteknoloji.com KİŞİSEL VERİLERİN KORUNMASI VE İŞLENMESİ" },
       { h: "1. TANIMLAR" },
@@ -56,7 +56,7 @@ export const legalDocs: Record<LegalKey, Record<"tr" | "en", LegalDoc>> = {
     en: {
       title: "GDPR and Clarification Text",
       description:
-        "STL Teknoloji's clarification text under Turkish Personal Data Protection Law No. 6698: which personal data we process and why, who we share it with, and the rights available to you.",
+        "STL Teknoloji's notice under Turkish data protection law (KVKK 6698): what personal data we process, why, who we share it with, and your rights.",
       blocks: [
       { p: "www.stlteknoloji.com PROTECTION AND PROCESSING OF PERSONAL DATA" },
       { h: "1. DEFINITIONS" },
@@ -90,7 +90,7 @@ export const legalDocs: Record<LegalKey, Record<"tr" | "en", LegalDoc>> = {
     tr: {
       title: "Gizlilik ve Çerez Politikası",
       description:
-        "STL Teknoloji gizlilik ve çerez politikası: internet sitemizde hangi bilgilerin toplandığı, nasıl kullanıldığı, üçüncü taraflarla paylaşımı ve çerez tercihlerinizi nasıl yönetebileceğiniz.",
+        "STL Teknoloji gizlilik ve çerez politikası: hangi bilgileri topluyoruz, nasıl kullanıyoruz ve çerez tercihlerinizi nasıl yönetirsiniz.",
       blocks: [
       { h: "GİZLİLİK ŞARTLARI" },
       { p: "1. www.stlteknoloji.com (“Şirket”) tarafından işletilen “www.stlteknoloji.com” adresindeki internet sitesi (“İnternet Sitesi”), İnternet Sitesini herhangi bir şekilde ziyaret eden ve/veya kullanan kişilere (“Kullanıcı”) daha iyi hizmet verebilmek amacıyla bazı kişisel bilgiler (isim, yaş, e-posta adresi, vb.) talep edilmektedir. İnternet Sitesi ile toplanan bu veriler; kampanya çalışmaları veya Kullanıcı’nın hesabına yönelik özel promosyon faaliyetlerinin yapılabilmesi için İnternet Sitesi bünyesinde kullanılmaktadır. Kişisel bilgiler haricinde; İnternet Sitesi üzerinden yapılan işlemlere ait istatistiksel veriler analiz edilmekte ve saklanmaktadır." },
@@ -135,7 +135,7 @@ export const legalDocs: Record<LegalKey, Record<"tr" | "en", LegalDoc>> = {
     en: {
       title: "Privacy and Cookie Policy",
       description:
-        "STL Teknoloji privacy and cookie policy: what information the website collects, how it is used, how it is shared with third parties, and how you can manage your cookie preferences.",
+        "STL Teknoloji privacy and cookie policy: what the site collects, how it is used and shared, and how to manage your cookie preferences.",
       translationNote:
         "The official version of this text is in Turkish. The Turkish text below is authoritative.",
       blocks: [

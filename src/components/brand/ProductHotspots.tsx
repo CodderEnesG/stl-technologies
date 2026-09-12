@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toneStyles, type BrandCtx } from "./sections";
 import { SectionHeader } from "../SectionHeader";
 
+import { Img } from "../Img";
 export type Hotspot = {
   title: string;
   text: string;
@@ -59,7 +60,7 @@ export function ProductHotspots({
             className="pointer-events-none absolute inset-0 blur-3xl"
             style={{ background: `radial-gradient(circle at 50% 55%, ${brand.color}40, transparent 65%)` }}
           />
-          <img src={image} alt="" aria-hidden className="relative w-full object-contain" />
+          <Img src={image} alt="" aria-hidden className="relative w-full object-contain" />
 
           {hotspots.map((h, i) => {
             const on = active === i;

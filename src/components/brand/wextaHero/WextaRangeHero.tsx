@@ -4,6 +4,7 @@ import { useI18n } from "../../../i18n";
 import { Arrow } from "../../Arrow";
 import { type BrandCtx } from "../sections";
 
+import { Img } from "../../Img";
 /**
  * V3 — Ürün gamı hero'su.
  * wexta'nın katalog dili: beyaz sayfa, ince kurallar, majüskül mikro tipografi.
@@ -29,7 +30,7 @@ export function WextaRangeHero({ ctx, channelHref }: { ctx: BrandCtx; channelHre
             {h.label}
           </p>
 
-          <img src="/logos/wexta.svg" alt="wexta" className="mt-7 h-8 w-auto object-contain md:h-9" />
+          <Img src="/logos/wexta.svg" alt="wexta" className="mt-7 h-8 w-auto object-contain md:h-9" />
 
           <h1 className={`mt-6 ${ctx.font} text-4xl font-bold leading-[1.06] tracking-tightest md:text-6xl`}>
             {h.title}
@@ -56,7 +57,7 @@ export function WextaRangeHero({ ctx, channelHref }: { ctx: BrandCtx; channelHre
               style={{ background: `radial-gradient(circle at 50% 60%, ${ctx.brand.color}33, transparent 66%)` }}
             />
             {models.map((m, i) => (
-              <img
+              <Img
                 key={m.name}
                 src={m.image}
                 alt={m.name}

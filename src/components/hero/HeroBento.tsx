@@ -4,6 +4,7 @@ import { useI18n } from "../../i18n";
 import { Arrow } from "../Arrow";
 import { LogoSlot } from "../LogoSlot";
 
+import { Img } from "../Img";
 /**
  * V3 — Kurumsal Bento: sol büyük STL üretim bloğu (gerçek istatistikler),
  * sağda 2x2 marka kartı. En sakin, en kurumsal varyant.
@@ -14,7 +15,7 @@ export function HeroBento() {
     <section className="mx-auto grid max-w-[1400px] gap-4 px-5 py-6 md:h-[calc(100svh-var(--nav-h))] md:min-h-[560px] md:grid-cols-[1.1fr_1fr] md:px-8">
       {/* STL bloğu */}
       <div className="group relative flex min-h-[380px] flex-col justify-end overflow-hidden rounded-3xl">
-        <img
+        <Img
           src={stlImages.factory}
           alt={t.about.facilityAlt}
           fetchPriority="high"
@@ -49,7 +50,7 @@ export function HeroBento() {
               className="group relative flex min-h-[180px] flex-col justify-between overflow-hidden rounded-3xl p-5 outline-none transition-transform hover:-translate-y-1 focus-visible:ring-4 focus-visible:ring-[var(--accent)]/40 md:p-6"
               style={{ background: b.panelBg, color: b.panelText }}
             >
-              <img
+              <Img
                 src={b.hero}
                 alt=""
                 aria-hidden

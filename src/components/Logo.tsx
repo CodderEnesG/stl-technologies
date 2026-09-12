@@ -1,5 +1,6 @@
 import { stlLogo } from "../data/brands";
 
+import { Img } from "./Img";
 /**
  * STL Teknoloji kurumsal logosu — kırmızı "STL" ve altında antrasit "TEKNOLOJİ".
  * Açık zeminler için; koyu zeminde kullanılacaksa beyaz varyant gerekir.
@@ -14,7 +15,7 @@ export function StlLogo({
   style?: React.CSSProperties;
 }) {
   return (
-    <img
+    <Img
       src={stlLogo.dark}
       alt="STL Teknoloji"
       style={{ height: size, ...style }}

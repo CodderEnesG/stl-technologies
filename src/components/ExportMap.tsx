@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { company } from "../data/company";
 import { useI18n } from "../i18n";
 import { WORLD_VIEWBOX, worldPaths } from "../data/worldPaths";
@@ -15,6 +17,13 @@ export function ExportMap({ ctx }: { ctx: BrandCtx }) {
   const m = t.home.exportMap;
   const accent = ctx.brand.color;
   const markets = new Set(company.exportMarkets);
+
+  // Ülke yolları ilk render'da boş bırakılır, hemen ardından efektle doldurulur.
+  // Sebep: yolların tamamı ~96 KB ve dekoratif; ön-render anlık görüntüsünde
+  // `d` öznitelikleri ayıklanıyor (scripts/prerender.mjs). hydrateRoot'un
+  // statik HTML ile ilk render'ı birebir eşleşsin diye burada da boş başlıyor.
+  const [paths, setPaths] = useState(false);
+  useEffect(() => setPaths(true), []);
 
   return (
     <section className="mx-auto max-w-[1400px] px-5 py-24 md:px-8">
@@ -56,7 +65,7 @@ export function ExportMap({ ctx }: { ctx: BrandCtx }) {
               return (
                 <path
                   key={code}
-                  d={d}
+                  d={paths ? d : undefined}
                   fill={home ? "#2b2828" : market ? accent : "#dedbdb"}
                   stroke={s.bg}
                   strokeWidth={0.8}

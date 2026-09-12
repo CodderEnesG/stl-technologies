@@ -21,6 +21,19 @@ export const tr = {
   footer: {
     tagline: "Dört marka, tek üretim disiplini. İstanbul'da üretiyoruz.",
     brandsHeading: "Markalar",
+    /**
+     * Alt bilgideki marka bağlantılarına eklenen kategori. Ekranda görünmez
+     * (sr-only), ekran okuyucu ve arama motoru için bağlantı metnine dahildir.
+     * Bağlantılar eskiden yalnızca marka adını taşıyordu; "valiz", "küçük ev
+     * aletleri" gibi kategori kelimeleri sitede hiçbir iç bağlantı metninde
+     * geçmiyordu.
+     */
+    brandCategories: {
+      wexta: "Valiz ve seyahat",
+      fressi: "Küçük ev aletleri",
+      bnk: "Kore cilt bakımı",
+      oxyra: "Oyuncu koltuğu ve gaming ekipmanları",
+    },
     corporateHeading: "Kurumsal",
     contactHeading: "İletişim",
     kvkk: "KVKK ve Aydınlatma Metni",
@@ -56,7 +69,7 @@ export const tr = {
       title: "Dört marka, tek üretim disiplini.",
       paragraphs: [
         "2016 yılında İstanbul'da valiz üretimiyle kurulduk. Bugün Arnavutköy'deki 35.000 m² tesisimizde oyun ekipmanından küçük ev aletlerine, seyahatten cilt bakımına uzanan dört markayı aynı üretim ve tasarım disiplini altında yönetiyoruz.",
-        "Üretim omurgamız yerli. Türkiye'nin önde gelen tekstil markalarına OEM valiz üretiyor, ürünlerimizi 20 ülkeye ihraç ediyoruz. OEM işimizde geçerli olan kalite çizgisi, kendi markalarımız için de aynen geçerli.",
+        "Üretim omurgamız yerli. Turkish Airlines, AJet, DeFacto, LC Waikiki, Watsons, BİM, Slazenger, Kiğılı ve D'S Damat gibi kurumsal markalar için OEM üretim yapıyor, ürünlerimizi 20 ülkeye ihraç ediyoruz. OEM işimizde geçerli olan kalite çizgisi, kendi markalarımız için de aynen geçerli.",
       ],
     },
     portfolioEyebrow: "Portföy",
@@ -490,7 +503,13 @@ export const tr = {
     kvkkText: "Kişisel verilerimin Aydınlatma Metni kapsamında işlenmesini kabul ediyorum.",
     kvkkLink: "Aydınlatma Metni",
     submit: "Gönder",
+    submitting: "Gönderiliyor…",
+    /** Form yapılandırılmamışken: eski mailto davranışı */
     submitNote: "Gönder'e bastığınızda e-posta uygulamanız açılır; mesaj info@stlteknoloji.com adresine iletilir.",
+    /** Doğrudan gönderim açıkken */
+    submitNoteDirect: "Mesajınız doğrudan info@stlteknoloji.com adresine iletilir. Genelde bir iş günü içinde dönüyoruz.",
+    successMessage: "Mesajınız iletildi. En kısa sürede dönüş yapacağız.",
+    errorMessage: "Mesaj gönderilemedi. Lütfen tekrar deneyin ya da doğrudan info@stlteknoloji.com adresine yazın.",
     mapTitle: "STL Teknoloji konumu",
   },
 

@@ -28,7 +28,21 @@ export const fressiReviewStats = {
   distribution: { 5: 180, 4: 37, 3: 25, 2: 10, 1: 43 },
 };
 
-const LIVE_URL = "https://fressihome.com/apps/reviews/api/list?shop=fressihome.myshopify.com&limit=100";
+/**
+ * Mağazadaki yorumların tamamı çekilir. Uç nokta sayfa başına en fazla 50 kayıt
+ * döndürüyor (`limit` daha büyük verilse de 50'de sabitliyor) ama `page` ve
+ * `hasMore` alanlarıyla sayfalama sunuyor; toplam 295 yorum var.
+ *
+ * Vitrinde hepsi gösterilmez: `pickReviews` havuzdan rastgele bir alt küme
+ * seçer, böylece sayfayı yenileyen farklı gerçek yorumlar görür.
+ */
+const LIVE_BASE = "https://fressihome.com/apps/reviews/api/list?shop=fressihome.myshopify.com";
+const PAGE_SIZE = 50;
+/** Güvenlik sınırı: uç nokta bozulursa sonsuz sayfalamaya girmeyelim */
+const MAX_PAGES = 10;
+
+/** Vitrinde aynı anda gösterilen en fazla yorum sayısı */
+export const REVIEW_SHOWCASE_SIZE = 12;
 
 /** Ürün deneyimi olmayan yorumlar (stok/kargo/sipariş soruları) vitrine girmez */
 const NOISE = /stok|stoğ|kargo|sipariş|siparis|ne zaman|yanlış ürün|gelmedi|ulaşamıyor/i;
@@ -58,18 +72,31 @@ const tidyProduct = (title: string) =>
     .trim();
 
 /**
- * Entrfy ucundan canlı yorumları çeker ve vitrin için süzer. Ağ/CORS/şifre
- * hatasında `null` döner; çağıran taraf statik listeye düşer.
+ * Entrfy ucundan yorumların tamamını çeker ve vitrine uygun olanları süzer.
+ * Dönen değer havuzdur, gösterilecek liste değil — seçimi `pickReviews` yapar.
+ * Ağ/CORS/şifre hatasında `null` döner; çağıran taraf statik listeye düşer.
  */
 export async function fetchLiveFressiReviews(signal?: AbortSignal): Promise<FressiReview[] | null> {
   try {
-    const res = await fetch(LIVE_URL, { signal, mode: "cors" });
-    if (!res.ok) return null;
-    const data = (await res.json()) as { ok?: boolean; items?: EntrfyItem[] };
-    if (!data.ok || !Array.isArray(data.items)) return null;
-    const picked = data.items
+    const items: EntrfyItem[] = [];
+
+    for (let page = 1; page <= MAX_PAGES; page++) {
+      const res = await fetch(`${LIVE_BASE}&limit=${PAGE_SIZE}&page=${page}`, { signal, mode: "cors" });
+      if (!res.ok) break;
+      const data = (await res.json()) as {
+        ok?: boolean;
+        items?: EntrfyItem[];
+        hasMore?: boolean;
+      };
+      if (!data.ok || !Array.isArray(data.items) || data.items.length === 0) break;
+      items.push(...data.items);
+      if (!data.hasMore) break;
+    }
+
+    if (items.length === 0) return null;
+
+    const pool = items
       .filter((r) => r.rating >= 4 && r.body.trim().length >= 40 && !NOISE.test(`${r.title} ${r.body}`))
-      .slice(0, 12)
       .map<FressiReview>((r) => ({
         rating: r.rating,
         title: r.title.trim() || undefined,
@@ -78,7 +105,8 @@ export async function fetchLiveFressiReviews(signal?: AbortSignal): Promise<Fres
         product: tidyProduct(r.productTitle),
         verified: r.verifiedPurchase,
       }));
-    return picked.length >= 3 ? picked : null;
+
+    return pool.length >= 3 ? pool : null;
   } catch {
     return null;
   }
@@ -180,3 +208,31 @@ export const fressiReviews: FressiReview[] = [
     verified: true,
   },
 ];
+
+/**
+ * Havuzdan rastgele, tekrarsız bir alt küme seçer.
+ *
+ * Fisher-Yates: kopya üzerinde karıştırılır, kaynak dizi bozulmaz. `exclude`
+ * verilirse o yorumlar öncelikli olarak elenir; periyodik döndürmede arka arkaya
+ * aynı kartın çıkmasını engeller. Havuz istenen sayıdan küçükse elinde ne varsa
+ * onu döndürür.
+ */
+export function pickReviews(
+  pool: FressiReview[],
+  size: number = REVIEW_SHOWCASE_SIZE,
+  exclude: FressiReview[] = [],
+): FressiReview[] {
+  const seen = new Set(exclude.map((r) => `${r.author}|${r.body}`));
+  const fresh = pool.filter((r) => !seen.has(`${r.author}|${r.body}`));
+  // Havuz bir turluk gösterime yetmiyorsa tamamına geri dönülür
+  const source = fresh.length >= size ? fresh : pool;
+
+  const copy = [...source];
+  // Havuz istenen sayıdan küçük olsa bile karıştırılır: sıra da her yüklemede
+  // değişsin, hep aynı yorum başta durmasın.
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, size);
+}

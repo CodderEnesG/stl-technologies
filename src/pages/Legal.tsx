@@ -18,7 +18,7 @@ export default function Legal() {
   const key: LegalKey = pathname === p.privacy ? "privacy" : "kvkk";
   const doc = legalDocs[key][lang];
 
-  usePageMeta(`${doc.title} — ${company.name}`, doc.title);
+  usePageMeta(`${doc.title} — ${company.name}`, doc.description);
 
   return (
     <article className="mx-auto max-w-3xl px-5 pb-24 pt-[calc(var(--nav-h)+3rem)] md:px-8">

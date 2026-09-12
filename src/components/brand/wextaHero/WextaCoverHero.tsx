@@ -3,6 +3,7 @@ import { useI18n } from "../../../i18n";
 import { Arrow } from "../../Arrow";
 import { type BrandCtx } from "../sections";
 
+import { Img } from "../../Img";
 /**
  * Katalog kapağı hero'su (müşteri seçimi, 2026-09-05).
  * Oxyra'daki tam ekran görselli hero'nun (BrandHeroFull) wexta karşılığı:
@@ -28,7 +29,7 @@ export function WextaCoverHero({
 
   return (
     <section className="relative flex min-h-[560px] flex-col justify-end overflow-hidden md:h-[calc(100svh-var(--nav-h))]">
-      <img
+      <Img
         src={image}
         alt=""
         aria-hidden
@@ -58,7 +59,7 @@ export function WextaCoverHero({
       />
 
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-5 pb-14 md:px-8 md:pb-16">
-        <img src="/logos/wexta-light.svg" alt="wexta" className="h-8 w-auto object-contain md:h-10" />
+        <Img src="/logos/wexta-light.svg" alt="wexta" className="h-8 w-auto object-contain md:h-10" />
         <h1 className={`mt-6 max-w-2xl ${ctx.font} text-4xl font-bold leading-[1.06] tracking-tightest text-white md:text-6xl`}>
           {h.title}
         </h1>

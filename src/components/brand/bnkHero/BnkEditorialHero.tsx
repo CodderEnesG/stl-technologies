@@ -1,6 +1,7 @@
 import { Arrow } from "../../Arrow";
 import { toneStyles, type BrandCtx } from "../sections";
 
+import { Img } from "../../Img";
 /**
  * BNK girişi: portre tüm bandı kaplar (hero-wide.webp — fotoğrafın zemini sağa
  * doğru uzatıldı), söylem sağ yarıda görselin üstünde durur. Dar ekranda
@@ -27,14 +28,14 @@ export function BnkEditorialHero({
   return (
     <section className="relative overflow-hidden" style={{ background: "#fdfaf8", color: s.fg }}>
       {/* Masaüstü: tam genişlik arka plan */}
-      <img
+      <Img
         src={image}
         alt=""
         aria-hidden
         className="absolute inset-0 hidden size-full object-cover object-left md:block"
       />
       {/* Mobil: dikey kadraj */}
-      <img src={mobileImage ?? image} alt="" aria-hidden className="aspect-square w-full object-cover object-left-top md:hidden" />
+      <Img src={mobileImage ?? image} alt="" aria-hidden className="aspect-square w-full object-cover object-left-top md:hidden" />
 
       <div className="relative mx-auto grid max-w-[1600px] md:min-h-[600px] md:grid-cols-2 lg:min-h-[660px]">
         <div className="hidden md:block" />

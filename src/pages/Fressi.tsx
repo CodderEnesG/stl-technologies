@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { fressiCategories, getBrand } from "../data/brands";
-import { fetchLiveFressiReviews, fressiReviews, type FressiReview } from "../data/fressiReviews";
+import {
+  fetchLiveFressiReviews,
+  fressiReviews,
+  pickReviews,
+  type FressiReview,
+} from "../data/fressiReviews";
 import { useI18n } from "../i18n";
 import { usePageMeta } from "../hooks/usePageMeta";
 import {
@@ -26,12 +31,16 @@ export default function Fressi() {
 
   const ctx: BrandCtx = { brand: getBrand("fressi"), tone: "cream", font: "font-nunito", bodyFont: "font-nunito", iconWeight: 1.7 };
 
-  // Yorumlar: önce statik anlık görüntü, mağazanın Entrfy ucu erişilebilirse canlı liste
-  const [reviews, setReviews] = useState<FressiReview[]>(fressiReviews);
+  // Yorumlar: mağazadaki uygun yorumların tamamı havuza alınır, vitrinde
+  // havuzdan rastgele en fazla REVIEW_SHOWCASE_SIZE tanesi gösterilir. Seçim her
+  // sayfa yüklemesinde yeniden yapılır, yani yenileyen farklı yorumlar görür.
+  // Mağaza erişilemezse statik anlık görüntüye düşülür.
+  const [reviews, setReviews] = useState<FressiReview[]>(() => pickReviews(fressiReviews));
+
   useEffect(() => {
     const ac = new AbortController();
     fetchLiveFressiReviews(ac.signal).then((live) => {
-      if (live) setReviews(live);
+      if (live) setReviews(pickReviews(live));
     });
     return () => ac.abort();
   }, []);

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { type BrandCtx, toneStyles } from "../sections";
 
+import { Img } from "../../Img";
 export type SizeItem = {
   /** İnç cinsinden boy — kataloğun kendi üç boyu: 20 / 24 / 28 */
   inch: string;
@@ -145,7 +146,7 @@ export function SizeGuide({
                   >
                     {z.inch}″
                   </span>
-                  <img
+                  <Img
                     src={image}
                     alt=""
                     aria-hidden

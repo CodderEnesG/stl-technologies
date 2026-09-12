@@ -8,6 +8,7 @@ import { SectionHeader } from "../SectionHeader";
 import { Icon, type IconName } from "../Icon";
 import { img } from "../../data/brands";
 
+import { Img } from "../Img";
 export type BrandTone = "dark" | "cream" | "light" | "pink" | "mono" | "stl";
 
 export const toneStyles: Record<
@@ -90,7 +91,7 @@ export function BrandHeroFull({
        * Dar ekranda cover kırpması logoyu kestiği için görsel tam genişlikte akışta
        * durur; md ve üzerinde tam ekran arka plana geçer.
        */}
-      <img
+      <Img
         src={background}
         alt={brand.name}
         fetchPriority="high"
@@ -162,7 +163,7 @@ export function BrandHero({
           <p className="mt-6 max-w-md text-xl font-medium md:text-2xl">{tagline}</p>
         </div>
         <div className="relative aspect-[4/5] overflow-hidden rounded-3xl" style={{ background: "rgba(255,255,255,0.35)" }}>
-          <img
+          <Img
             src={image ?? brand.hero}
             alt={brand.name}
             className="size-full object-cover"
@@ -226,7 +227,7 @@ export function BrandIntro({
               className="pointer-events-none absolute left-1/2 top-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
               style={{ background: `radial-gradient(circle, ${brand.color}44, transparent 70%)` }}
             />
-            <img src={mark} alt="" aria-hidden className="relative w-full max-w-[240px] object-contain" />
+            <Img src={mark} alt="" aria-hidden className="relative w-full max-w-[240px] object-contain" />
           </div>
           {heading}
         </div>
@@ -239,7 +240,7 @@ export function BrandIntro({
               className="pointer-events-none absolute inset-0 -z-10 blur-3xl"
               style={{ background: `radial-gradient(circle at 50% 55%, ${brand.color}44, transparent 65%)` }}
             />
-            <img src={resolveImg(image, 900, 900)} alt="" aria-hidden className="w-full object-contain" />
+            <Img src={resolveImg(image, 900, 900)} alt="" aria-hidden className="w-full object-contain" />
           </div>
         </div>
       ) : (
@@ -302,7 +303,7 @@ export function BrandAbout({
             className="pointer-events-none absolute left-1/2 top-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
             style={{ background: `radial-gradient(circle, ${brand.color}55, transparent 70%)` }}
           />
-          <img src={mark} alt="" aria-hidden className="relative w-full max-w-[260px] object-contain" />
+          <Img src={mark} alt="" aria-hidden className="relative w-full max-w-[260px] object-contain" />
         </div>
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: brand.color }}>
@@ -413,7 +414,7 @@ export function CategoryGrid({
               className={`overflow-hidden ${round ? "mx-auto aspect-square rounded-full" : "aspect-[4/5] rounded-2xl"}`}
               style={{ background: "rgba(127,127,127,0.08)" }}
             >
-              <img
+              <Img
                 src={resolveImg(c.image, 500, round ? 500 : 640)}
                 alt={c.label}
                 loading="lazy"
@@ -450,7 +451,7 @@ export function FressiCategoryGrid({
               style={{ background: c.color }}
             >
               <div className="size-full overflow-hidden rounded-full">
-                <img src={c.image} alt={c.label} loading="lazy" className="size-full object-cover" />
+                <Img src={c.image} alt={c.label} sizes="(min-width: 1024px) 350px, 50vw" loading="lazy" className="size-full object-cover" />
               </div>
             </div>
             <h3 className="mt-4 flex items-center justify-center gap-2 font-semibold">
@@ -524,7 +525,7 @@ export function ProductRange({
                 className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-500 group-hover:opacity-100"
                 style={{ background: `radial-gradient(circle at 50% 60%, ${brand.color}33, transparent 62%)` }}
               />
-              <img
+              <Img
                 src={resolveImg(it.image, 800, 600)}
                 alt={it.label}
                 loading="lazy"
@@ -569,8 +570,9 @@ export function ProductVitrine({ ctx, title, products }: { ctx: BrandCtx; title:
               style={{ background: s.card, borderColor: s.cardBorder }}
             >
               <div className="aspect-[4/5] overflow-hidden" style={{ background: p.blend ? "#ffffff" : "rgba(127,127,127,0.08)" }}>
-                <img
+                <Img
                   src={p.image}
+              sizes="(min-width: 1024px) 460px, (min-width: 640px) 50vw, 100vw"
                   alt={p.name}
                   loading="lazy"
                   className="size-full transition-transform duration-700 group-hover:scale-105"
@@ -639,7 +641,7 @@ export function ManufacturingStory({
         </ul>
       </div>
       <div className="relative min-h-[320px] overflow-hidden rounded-3xl" style={{ background: s.card }}>
-        <img src={resolveImg(image, 1100, 900)} alt={title} loading="lazy" className="absolute inset-0 size-full object-cover" />
+        <Img src={resolveImg(image, 1100, 900)} alt={title} loading="lazy" className="absolute inset-0 size-full object-cover" />
       </div>
     </section>
   );
@@ -678,7 +680,7 @@ export function Editorial({
         className={`relative overflow-hidden rounded-2xl ${ratio ?? "aspect-[4/3] md:aspect-auto"} ${reverse ? "md:order-2" : ""}`}
         style={{ background: blend ? "#ffffff" : "rgba(127,127,127,0.08)" }}
       >
-        <img
+        <Img
           src={resolveImg(image, 1000, 800)}
           alt={title}
           loading="lazy"
@@ -722,7 +724,7 @@ export function PullQuote({
     >
       {image && (
         <>
-          <img src={image} alt="" aria-hidden loading="lazy" className="absolute inset-0 size-full object-cover" />
+          <Img src={image} alt="" aria-hidden loading="lazy" className="absolute inset-0 size-full object-cover" />
           <span aria-hidden className="absolute inset-0 bg-black/10" />
         </>
       )}
@@ -749,7 +751,7 @@ export function CatalogRibbon({ left, right, logo }: { left: string; right: stri
     <section className="bg-[#17181a] text-white">
       <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-5 py-4 md:px-8">
         <span className="text-[11px] font-semibold uppercase tracking-[0.4em] opacity-80">{left}</span>
-        <img src={logo} alt="wexta" className="h-5 w-auto object-contain md:h-6" />
+        <Img src={logo} alt="wexta" className="h-5 w-auto object-contain md:h-6" />
         <span className="text-[11px] font-semibold uppercase tracking-[0.4em] opacity-80">{right}</span>
       </div>
     </section>
@@ -761,8 +763,9 @@ export function ImageBand({ images, blend }: { images: string[]; blend?: boolean
     <section className="grid grid-cols-2 gap-1 md:grid-cols-4">
       {images.map((src, i) => (
         <div key={i} className="aspect-square overflow-hidden md:aspect-[3/4]" style={{ background: blend?.[i] ? "#ffffff" : "rgba(127,127,127,0.08)" }}>
-          <img
+          <Img
             src={resolveImg(src, 700, 900)}
+              sizes="(min-width: 1024px) 350px, 50vw"
             alt=""
             aria-hidden
             loading="lazy"
@@ -807,7 +810,7 @@ export function BrandCTA({
     >
       {image && (
         <>
-          <img src={image} alt="" aria-hidden loading="lazy" className="absolute inset-0 size-full object-cover" />
+          <Img src={image} alt="" aria-hidden loading="lazy" className="absolute inset-0 size-full object-cover" />
           <span aria-hidden className="absolute inset-0 bg-black/10" />
         </>
       )}
@@ -965,7 +968,7 @@ export function ProductSpotlight({
                 className="relative aspect-[2/3] w-[72%] shrink-0 snap-center overflow-hidden rounded-2xl sm:w-[46%] md:w-[38%]"
                 style={{ background: "#ffffff", border: `1px solid ${s.cardBorder}` }}
               >
-                <img
+                <Img
                   src={src}
                   alt={alts[i] ?? ""}
                   loading={i === 0 ? "eager" : "lazy"}
@@ -1167,7 +1170,7 @@ export function BrandHeroSlideshow({
           }}
         >
           {slides.map((sl, idx) => (
-            <img
+            <Img
               key={sl.image}
               src={sl.image}
               alt=""
@@ -1201,7 +1204,7 @@ export function BrandHeroSlideshow({
                   }}
                 >
                   {logo && idx === 0 && sl.title && (
-                    <img src={ctx.brand.logoDark} alt="" aria-hidden className="mb-6 h-9 w-auto object-contain object-left" />
+                    <Img src={ctx.brand.logoDark} alt="" aria-hidden className="mb-6 h-9 w-auto object-contain object-left" />
                   )}
                   {/* Sayfada tek bir h1 olmalı: slaytların hepsi aynı anda DOM'da
                       duruyor (opaklıkla geçiş), bu yüzden sadece ilki başlık. */}
@@ -1420,7 +1423,7 @@ export function BrandCategoryBar({
                   className="grid size-[220px] place-items-center rounded-full border-2 bg-white shadow-[0_24px_40px_-24px_rgba(0,0,0,0.3)]"
                   style={{ borderColor: active.color }}
                 >
-                  <img src={active.image} alt="" aria-hidden className="size-[84%] rounded-full object-cover" />
+                  <Img src={active.image} alt="" aria-hidden className="size-[84%] rounded-full object-cover" />
                 </span>
               </div>
             )}
@@ -1519,7 +1522,7 @@ export function CircleRail({
               className="group w-[46%] shrink-0 snap-start text-center sm:w-[31%] lg:w-[23%]"
             >
               <div className="relative aspect-square overflow-hidden rounded-full">
-                <img
+                <Img
                   src={it.image}
                   alt={it.label}
                   loading="lazy"
@@ -1598,8 +1601,9 @@ export function CategoryCircles({
             >
               <div className="relative w-full overflow-hidden rounded-full">
                 <div className="aspect-square">
-                  <img
+                  <Img
                     src={it.circleImage}
+              sizes="(min-width: 1024px) 350px, 50vw"
                     alt=""
                     aria-hidden
                     loading="lazy"
@@ -1613,7 +1617,7 @@ export function CategoryCircles({
                   style={{ color: it.color }}
                 />
               </div>
-              <img
+              <Img
                 src={it.logo}
                 alt={`fressi ${it.key}`}
                 loading="lazy"
@@ -1838,7 +1842,7 @@ export function EditorialIntro({
             className="absolute inset-0 -rotate-2 rounded-[2rem]"
             style={{ background: `${ctx.brand.color}26` }}
           />
-          <img
+          <Img
             src={image}
             alt={imageAlt}
             loading="lazy"
@@ -1909,8 +1913,9 @@ export function BrandGallery({
               key={im.src}
               className={`overflow-hidden rounded-2xl ${im.wide ? "sm:col-span-2" : ""}`}
             >
-              <img
+              <Img
                 src={im.src}
+              sizes="(min-width: 1024px) 460px, (min-width: 640px) 50vw, 100vw"
                 alt={im.alt}
                 loading="lazy"
                 className={`size-full object-cover transition-transform duration-700 hover:scale-[1.03] ${
@@ -1989,7 +1994,7 @@ export function RoutineFace({
       />
 
       <div className="relative mx-auto aspect-[4/5] w-full max-w-[560px] md:max-w-[640px]">
-        <img src={image} alt="" aria-hidden className="size-full rounded-[2rem] object-cover" />
+        <Img src={image} alt="" aria-hidden className="size-full rounded-[2rem] object-cover" />
 
         {/* Noktalardan dairelere giden ince çizgiler — çerçevenin dışına uzayabilir */}
         <svg
@@ -2044,7 +2049,7 @@ export function RoutineFace({
                 className="grid size-24 place-items-center rounded-full border-2 bg-white shadow-[0_24px_40px_-24px_rgba(0,0,0,0.35)] transition-transform duration-300 group-hover:scale-105 md:size-32 lg:size-40"
                 style={{ borderColor: ctx.brand.color }}
               >
-                <img src={st.product} alt={st.label} loading="lazy" className="size-[84%] rounded-full object-cover" />
+                <Img src={st.product} alt={st.label} loading="lazy" className="size-[84%] rounded-full object-cover" />
               </span>
               <span
                 className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full px-2.5 py-1 text-[11px] font-bold lg:text-xs"
@@ -2167,15 +2172,16 @@ export function ProductRail({
             style={{ background: s.card, borderColor: s.cardBorder }}
           >
             <div className="relative overflow-hidden rounded-2xl" style={{ background: "#ffffff" }}>
-              <img
+              <Img
                 src={p.image}
+              sizes="(min-width: 1024px) 460px, (min-width: 640px) 50vw, 100vw"
                 alt={p.name}
                 loading="lazy"
                 className={`aspect-square w-full object-cover transition-transform duration-700 ${p.hoverImage ? "" : "group-hover:scale-[1.04]"}`}
               />
               {/* rhodeskin.com kart etkileşimi: hover'da kullanım karesine çapraz geçiş */}
               {p.hoverImage && (
-                <img
+                <Img
                   src={p.hoverImage}
                   alt=""
                   aria-hidden
@@ -2265,9 +2271,10 @@ export function BlogTeasers({
           const inner = (
             <>
               <div className="overflow-hidden rounded-2xl">
-                <img
+                <Img
                   src={post.image}
-                  alt=""
+                  alt={post.title}
+                  sizes="(min-width: 1024px) 460px, (min-width: 640px) 50vw, 100vw"
                   loading="lazy"
                   className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                 />

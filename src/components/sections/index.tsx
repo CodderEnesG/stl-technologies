@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { brands, stlBrand } from "../../data/brands";
 import { company } from "../../data/company";
+import { contactFormConfigured, sendContactForm } from "../../lib/contactForm";
 import { useI18n } from "../../i18n";
 import { Arrow } from "../Arrow";
 import { Icon, type IconName } from "../Icon";
@@ -19,6 +20,7 @@ import { revealItem } from "../Reveal";
 import { CountUp } from "../CountUp";
 import { toneStyles, type BrandCtx } from "../brand/sections";
 
+import { Img } from "../Img";
 /** Çatı sitenin kendi ctx'i — marka sayfalarındaki ctx literalinin karşılığı. */
 export const stlCtx: BrandCtx = { brand: stlBrand, tone: "stl", font: "font-display", iconWeight: 1.75 };
 
@@ -64,7 +66,7 @@ export function AboutBlock({
       <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-5 py-24 md:grid-cols-[1.05fr_0.95fr] md:gap-16 md:px-8">
         <figure>
           <div className="overflow-hidden rounded-3xl">
-            <img src={image} alt={imageAlt} loading="lazy" className="aspect-square w-full object-cover" />
+            <Img src={image} alt={imageAlt} loading="lazy" className="aspect-square w-full object-cover" />
           </div>
           <figcaption className="mt-3 text-xs" style={{ color: s.muted }}>
             {imageAlt}
@@ -197,7 +199,7 @@ export function Bento({
       />
       <div className="grid gap-4 md:auto-rows-[230px] md:grid-cols-3">
         <article className="group relative min-h-[260px] overflow-hidden rounded-2xl md:col-span-2 md:row-span-2">
-          <img
+          <Img
             src={productionImage}
             alt={productionAlt}
             loading="lazy"
@@ -231,7 +233,7 @@ export function Bento({
         </article>
 
         <article className="group relative min-h-[220px] overflow-hidden rounded-2xl md:col-span-3">
-          <img
+          <Img
             src={oemImage}
             alt={copy.oem.kicker}
             loading="lazy"
@@ -378,8 +380,12 @@ function MarqueeRow({
 }
 
 /**
- * İletişim bölümü — ayrı sayfa yok: başlık, iletişim bilgileri, form ve konum haritası
- * aynı sayfada. Form şimdilik mailto açar (Web3Forms endpoint'i eklenebilir).
+ * İletişim bölümü — ayrı sayfa yok: başlık, iletişim bilgileri, form ve konum
+ * haritası aynı sayfada.
+ *
+ * Form EmailJS ile doğrudan gönderim yapar (src/lib/contactForm.ts). Anahtarlar
+ * tanımlı değilse eski mailto davranışına düşer, böylece yapılandırma gelene
+ * kadar form kırılmaz.
  */
 export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
   const { t, p } = useI18n();
@@ -392,11 +398,31 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
   const [message, setMessage] = useState("");
   const [consent, setConsent] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = `${company.name} — ${name}${firm ? ` (${firm})` : ""}`;
-    const body = `${message}\n\n—\n${name}\n${from}${firm ? `\n${firm}` : ""}`;
-    window.location.href = `mailto:${company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Anahtarlar yoksa eski davranış: posta istemcisini aç.
+    if (!contactFormConfigured) {
+      const subject = `${company.name} — ${name}${firm ? ` (${firm})` : ""}`;
+      const body = `${message}\n\n—\n${name}\n${from}${firm ? `\n${firm}` : ""}`;
+      window.location.href = `mailto:${company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      return;
+    }
+
+    setStatus("sending");
+    const res = await sendContactForm({ name, email: from, company: firm, message });
+    if (res.ok) {
+      setStatus("sent");
+      setName("");
+      setFrom("");
+      setFirm("");
+      setMessage("");
+      setConsent(false);
+    } else {
+      setStatus("error");
+    }
   };
 
   const fieldCls = "w-full border-b bg-transparent py-2.5 outline-none transition-colors focus:border-current";
@@ -548,13 +574,28 @@ export function ContactSection({ ctx, id }: { ctx: BrandCtx; id?: string }) {
 
           <button
             type="submit"
-            className="mt-7 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold transition-transform hover:scale-[1.02]"
+            disabled={status === "sending"}
+            className="mt-7 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
             style={{ background: ctx.brand.color, color: ctx.brand.onColor }}
           >
-            {c.submit} <Icon name="send" size={17} strokeWidth={ctx.iconWeight ?? 1.75} />
+            {status === "sending" ? c.submitting : c.submit}{" "}
+            <Icon name="send" size={17} strokeWidth={ctx.iconWeight ?? 1.75} />
           </button>
-          <p className="mt-3 text-xs" style={{ color: s.muted }}>
-            {c.submitNote}
+
+          {/* Durum, gönderim sonrası buton altında; alan boyutları değişmiyor */}
+          <p
+            className="mt-3 text-xs"
+            role={status === "error" ? "alert" : undefined}
+            aria-live="polite"
+            style={{ color: status === "error" ? "#c8102e" : s.muted }}
+          >
+            {status === "sent"
+              ? c.successMessage
+              : status === "error"
+                ? c.errorMessage
+                : contactFormConfigured
+                  ? c.submitNoteDirect
+                  : c.submitNote}
           </p>
         </form>
       </div>

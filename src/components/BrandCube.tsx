@@ -8,6 +8,7 @@ import { SectionHeader } from "./SectionHeader";
 import { BrandGrid } from "./sections";
 import { toneStyles, type BrandCtx } from "./brand/sections";
 
+import { Img } from "./Img";
 /**
  * Küp yerine düz ızgaraya düşülecek durumlar:
  * hareket azaltma tercihi, veya dar ekran (yüz 768px altında okunmayacak kadar sıkışıyor).
@@ -285,7 +286,7 @@ function Cube({
                   transition: "filter 400ms ease, opacity 300ms ease",
                 }}
               >
-                <img
+                <Img
                   src={b.hero}
                   alt=""
                   aria-hidden

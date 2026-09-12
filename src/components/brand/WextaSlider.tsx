@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { stlImages } from "../../data/brands";
 import { useI18n } from "../../i18n";
 
+import { Img } from "../Img";
 const ROTATE_MS = 6000;
 
 const reducedMotion = () =>
@@ -78,7 +79,7 @@ export function WextaSlider({ channelHref }: { channelHref: string }) {
         >
           {sl.variant === "photo" ? (
             <>
-              <img
+              <Img
                 src={sl.image}
                 alt=""
                 aria-hidden
@@ -91,7 +92,7 @@ export function WextaSlider({ channelHref }: { channelHref: string }) {
               <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(61,75,92,0.55) 32%, transparent 60%)" }} />
             </>
           ) : (
-            <img
+            <Img
               src={sl.image}
               alt=""
               aria-hidden
@@ -105,7 +106,7 @@ export function WextaSlider({ channelHref }: { channelHref: string }) {
       {/* Metin bloğu */}
       <div className="relative z-10 mx-auto flex h-full max-w-[1400px] items-center px-5 md:px-16">
         <div className="max-w-xl" style={{ color: s.text }}>
-          <img src={s.logo} alt="wexta" className="mb-6 h-7 w-auto object-contain md:h-8" />
+          <Img src={s.logo} alt="wexta" className="mb-6 h-7 w-auto object-contain md:h-8" />
           <h1 key={index} className="font-display text-4xl font-bold leading-[1.08] tracking-tightest md:text-6xl">
             {copy[index]?.title}
           </h1>

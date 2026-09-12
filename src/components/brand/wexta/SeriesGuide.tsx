@@ -5,6 +5,7 @@ import { useI18n } from "../../../i18n";
 import { Arrow } from "../../Arrow";
 import { type BrandCtx, toneStyles } from "../sections";
 
+import { Img } from "../../Img";
 export type SeriesCopy = {
   eyebrow: string;
   title: string;
@@ -122,10 +123,11 @@ export function SeriesGuide({
             style={{ background: `${brand.color}2e` }}
           />
           {series.map((sr, i) => (
-            <img
+            <Img
               key={sr.code}
               src={sr.image}
               alt={`${sr.code} ${copy.items[sr.code]?.name ?? ""}`}
+              sizes="(min-width: 768px) 520px, 100vw"
               loading={i === 0 ? "eager" : "lazy"}
               className="absolute inset-0 size-full object-contain transition-opacity duration-500"
               style={{ opacity: i === active ? 1 : 0, mixBlendMode: sr.blend ? "multiply" : undefined }}

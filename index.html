@@ -10,6 +10,27 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#e10000" />
 
+    <!-- Google Fonts. Eskiden src/index.css'in ilk satırında @import ile geliyordu;
+         o yol isteği zincirliyor (önce site CSS'i inip ayrıştırılacak, ancak sonra
+         font CSS'i istenecek) ve üçüncü taraf el sıkışması da o noktada başlıyordu.
+         preconnect + link ile ikisi paralel başlar. Aileler gerçekten kullanılıyor:
+         Figtree ve Manrope Gilroy'un yedeği, Inter/Nunito/Poppins/Playwrite NO ise
+         marka bloklarında doğrudan. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Playwrite+NO:wght@400&family=Figtree:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+    />
+
+    <!-- Kaydırma animasyonları (Reveal) yalnızca JavaScript varken gizli başlar;
+         kural CSS'te `html.js` ile kapılı. Betik boyamadan önce çalışmalı, yoksa
+         içerik bir kare görünüp sonra kaybolur. JavaScript çalıştırmayan
+         tarayıcıda sınıf hiç eklenmez ve metin görünür kalır. -->
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+
     <!-- Google tag (gtag.js) — betik yalnızca çerez onayından sonra yükleniyor,
          yükleme ve page_view gönderimi src/lib/analytics.ts tarafında. Buradaki
          kuyruk onaya kadar bekler; varsayılan izinler reddedilmiş sayılır. -->

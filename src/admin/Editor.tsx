@@ -6,6 +6,7 @@ import { useContent } from "./useContent";
 import { FieldRow, Toast } from "./fields";
 import { History } from "./History";
 import { StlLogo } from "../components/Logo";
+import { Analytics } from "./Analytics";
 
 const formatSavedAt = (iso: string | null) =>
   iso
@@ -167,6 +168,8 @@ export function Editor({ user }: { user: User }) {
               ))}
             </select>
           </div>
+
+          <Analytics />
 
           <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
             <div>

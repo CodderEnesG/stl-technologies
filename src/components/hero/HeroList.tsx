@@ -4,6 +4,7 @@ import { brands } from "../../data/brands";
 import { useI18n } from "../../i18n";
 import { Arrow } from "../Arrow";
 
+import { Img } from "../Img";
 /**
  * V4 — Tipografik Liste: dev marka isimleri alt alta; hover'da sağ panelde
  * marka görseli + rengi cross-fade. Editoryal / ödül sitesi dili.
@@ -65,7 +66,7 @@ export function HeroList() {
             style={{ background: bb.panelBg, opacity: active === i ? 1 : 0 }}
             aria-hidden={active !== i}
           >
-            <img
+            <Img
               src={bb.hero}
               alt=""
               aria-hidden

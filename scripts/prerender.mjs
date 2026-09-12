@@ -23,6 +23,7 @@
  *
  * Çalıştırma: node --experimental-strip-types scripts/prerender.mjs
  */
+import { execFileSync } from "node:child_process";
 import { createServer } from "node:http";
 import { createReadStream, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, extname, join, normalize } from "node:path";
@@ -37,17 +38,27 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = join(ROOT, "dist");
 const ORIGIN = "https://www.stlteknoloji.com";
 
+/**
+ * IndexNow anahtarı. Gizli değil — protokol gereği aynı değer
+ * https://www.stlteknoloji.com/<anahtar>.txt adresinde de yayınlanır; arama
+ * motoru bildirimin gerçekten site sahibinden geldiğini böyle doğrular.
+ * Bildirimi scripts/indexnow.mjs gönderir (Bing, Yandex, Naver, Seznam).
+ */
+const INDEXNOW_KEY = "2c8f89217cc46a2ca06ba21025e14cf6";
+
 const dict = { tr, en };
 
 /** Sayfa listesi. `meta` içerik dosyasındaki anahtar, `og` paylaşım görseli. */
 const PAGES = [
-  { id: "home", meta: "home", tr: "/", en: "/en", og: "/og/og-home.jpg", priority: "1.0" },
-  { id: "wexta", meta: "wexta", tr: "/wexta", en: "/en/wexta", og: "/og/og-wexta.jpg", priority: "0.9" },
-  { id: "fressi", meta: "fressi", tr: "/fressi", en: "/en/fressi", og: "/og/og-fressi.jpg", priority: "0.9" },
-  { id: "bnk", meta: "bnk", tr: "/bnk", en: "/en/bnk", og: "/og/og-bnk.jpg", priority: "0.9" },
-  { id: "oxyra", meta: "oxyra", tr: "/oxyra", en: "/en/oxyra", og: "/og/og-oxyra.jpg", priority: "0.9" },
-  { id: "kvkk", legal: "kvkk", tr: "/kvkk", en: "/en/gdpr", og: "/og/og-home.jpg", priority: "0.2" },
-  { id: "privacy", legal: "privacy", tr: "/gizlilik", en: "/en/privacy", og: "/og/og-home.jpg", priority: "0.2" },
+  // `sources`: sayfanın içeriğini belirleyen dosyalar. sitemap lastmod bunlara
+  // dokunan son commit tarihinden hesaplanır.
+  { id: "home", meta: "home", tr: "/", en: "/en", og: "/og/og-home.jpg", sources: ["src/pages/Home.tsx", "src/content/tr.ts", "src/content/en.ts", "src/data/company.ts", "src/data/brands.ts"] },
+  { id: "wexta", meta: "wexta", tr: "/wexta", en: "/en/wexta", og: "/og/og-wexta.jpg", sources: ["src/pages/Wexta.tsx", "src/content/tr.ts", "src/content/en.ts", "src/data/brands.ts"] },
+  { id: "fressi", meta: "fressi", tr: "/fressi", en: "/en/fressi", og: "/og/og-fressi.jpg", sources: ["src/pages/Fressi.tsx", "src/content/tr.ts", "src/content/en.ts", "src/data/brands.ts", "src/data/fressiReviews.ts"] },
+  { id: "bnk", meta: "bnk", tr: "/bnk", en: "/en/bnk", og: "/og/og-bnk.jpg", sources: ["src/pages/BNK.tsx", "src/content/tr.ts", "src/content/en.ts", "src/data/brands.ts"] },
+  { id: "oxyra", meta: "oxyra", tr: "/oxyra", en: "/en/oxyra", og: "/og/og-oxyra.jpg", sources: ["src/pages/Oxyra.tsx", "src/content/tr.ts", "src/content/en.ts", "src/data/brands.ts"] },
+  { id: "kvkk", legal: "kvkk", tr: "/kvkk", en: "/en/gdpr", og: "/og/og-home.jpg", sources: ["src/content/legal.ts", "src/pages/Legal.tsx"] },
+  { id: "privacy", legal: "privacy", tr: "/gizlilik", en: "/en/privacy", og: "/og/og-home.jpg", sources: ["src/content/legal.ts", "src/pages/Legal.tsx"] },
 ];
 
 const esc = (s) =>
@@ -73,6 +84,34 @@ const BRANDS = [
   { name: "Oxyra", path: "/oxyra" },
 ];
 
+/**
+ * Kanonik kimlikler.
+ *
+ * Organization dile göre çatallanmamalı: tüzel kişi tektir. Önceden TR ve EN
+ * ana sayfaları iki ayrı `@id` altında (`/#organization` ve `/en#organization`)
+ * tam birer Organization tanımlıyordu; tüketiciler bunu iki ayrı şirket gibi
+ * okuyup varlık birleştirmesini bölüyordu. Artık tek `@id` var, EN sayfaları
+ * da ona referans veriyor.
+ *
+ * Aynı sorun markalarda daha büyüktü: 16 Brand düğümünün hiçbirinde `@id`
+ * yoktu, yani ana sayfadaki "wexta" ile /wexta'daki "wexta"nın aynı varlık
+ * olduğunu hiçbir şey söylemiyordu. Her marka artık tek bir `@id` ile
+ * tanımlanıyor, diğer her yer ona referans veriyor.
+ */
+const ORG_ID = `${ORIGIN}/#organization`;
+const brandId = (path) => `${abs(path)}#brand`;
+
+/** Marka düğümleri yalnızca ana sayfada tam tanımlanır; başka yerde referans. */
+function brandNodes() {
+  return BRANDS.map((b) => ({
+    "@type": "Brand",
+    "@id": brandId(b.path),
+    name: b.name,
+    url: abs(b.path),
+    ...(b.sameAs ? { sameAs: [b.sameAs] } : {}),
+  }));
+}
+
 function organizationLd(lang) {
   const { description } = copyFor(PAGES[0], lang);
   const home = abs(lang === "tr" ? "/" : "/en");
@@ -83,10 +122,10 @@ function organizationLd(lang) {
       {
         // Corporation, Organization'ın geçerli bir alt tipi: STL kayıtlı bir limited şirket
         "@type": ["Organization", "Corporation"],
-        "@id": `${home}#organization`,
+        "@id": ORG_ID,
         name: company.name,
         legalName: company.legalName,
-        url: home,
+        url: abs("/"),
         // Google'ın logo zengin sonucu SVG'de tutarsız davranıyor, kare raster veriliyor
         logo: `${ORIGIN}/logos/stl-logo-512.png`,
         image: `${ORIGIN}/og/og-home.jpg`,
@@ -100,6 +139,23 @@ function organizationLd(lang) {
           postalCode: "34555",
           addressCountry: "TR",
         },
+        // Kuruluş yeri ve hizmet alanı sitedeki doğrulanmış bilgiden geliyor.
+        // Ülke listesi henüz müşteriden gelmediği için ihracat pazarları sayı
+        // olarak değil, yalnızca Türkiye + genel ihracat ifadesiyle veriliyor;
+        // uydurma ülke adı yazılmıyor.
+        foundingLocation: {
+          "@type": "Place",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Arnavutköy",
+            addressRegion: "İstanbul",
+            addressCountry: "TR",
+          },
+        },
+        areaServed: [
+          { "@type": "Country", "name": "TR" },
+          ...company.exportMarkets.map((code) => ({ "@type": "Country", name: code })),
+        ],
         contactPoint: [
           {
             "@type": "ContactPoint",
@@ -110,20 +166,16 @@ function organizationLd(lang) {
           },
         ],
         sameAs: [company.instagram],
-        brand: BRANDS.map((b) => ({
-          "@type": "Brand",
-          name: b.name,
-          url: abs(b.path),
-          ...(b.sameAs ? { sameAs: [b.sameAs] } : {}),
-        })),
+        brand: BRANDS.map((b) => ({ "@id": brandId(b.path) })),
       },
+      ...brandNodes(),
       {
         "@type": "WebSite",
         "@id": `${home}#website`,
         name: company.name,
         url: home,
         inLanguage: lang,
-        publisher: { "@id": `${home}#organization` },
+        publisher: { "@id": ORG_ID },
       },
     ],
   };
@@ -134,11 +186,30 @@ function pageLd(page, lang, url, title, description) {
 
   const home = abs(lang === "tr" ? "/" : "/en");
   const isPartOf = { "@id": `${home}#website` };
-  const publisher = { "@id": `${home}#organization` };
+  const publisher = { "@id": ORG_ID };
 
   if (page.legal) {
+    // Yasal sayfalar da kırıntı taşısın: marka sayfalarında zaten var, burada
+    // yoktu ve desen sitenin geri kalanıyla tutarsız kalıyordu.
     return [
-      { "@context": "https://schema.org", "@type": "WebPage", name: title, description, url, inLanguage: lang, isPartOf, publisher },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: title,
+        description,
+        url,
+        inLanguage: lang,
+        isPartOf,
+        publisher,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: company.name, item: home },
+          { "@type": "ListItem", position: 2, name: title.split(" — ")[0], item: url },
+        ],
+      },
     ];
   }
 
@@ -155,16 +226,8 @@ function pageLd(page, lang, url, title, description) {
       publisher,
       // Brand, Organization'ın alt tipi değil: parentOrganization burada geçersiz.
       // Marka-şirket ilişkisi ana sayfadaki Organization.brand üzerinden kuruluyor.
-      ...(brand
-        ? {
-            about: {
-              "@type": "Brand",
-              name: brand.name,
-              url: abs(brand.path),
-              ...(brand.sameAs ? { sameAs: [brand.sameAs] } : {}),
-            },
-          }
-        : {}),
+      // Marka burada yeniden tanımlanmaz, kanonik @id ile referans verilir.
+      ...(brand ? { about: { "@id": brandId(brand.path) } } : {}),
     },
     {
       "@context": "https://schema.org",
@@ -245,7 +308,19 @@ function write(routePath, html) {
 
 // ---------------------------------------------------------------- çalıştır
 
-const template = readFileSync(join(DIST, "index.html"), "utf8");
+/**
+ * Kabuk şablonu.
+ *
+ * Vite'ın ürettiği boş index.html şablon olarak kullanılır — ama ana sayfa da
+ * aynı dosyaya yazılıyor. Şablon doğrudan dist/index.html'den okunursa betik
+ * ikinci kez çalıştığında kendi çıktısını şablon sanıyor ve enjekte edilen
+ * etiketler üst üste birikiyordu. İlk çalıştırmada temiz kopya ayrı bir dosyaya
+ * alınır; sonraki çalıştırmalar oradan okur. `vite build` dist'i temizlediği
+ * için kopya her derlemede yenilenir.
+ */
+const SHELL = join(DIST, ".prerender-shell.html");
+if (!existsSync(SHELL)) writeFileSync(SHELL, readFileSync(join(DIST, "index.html"), "utf8"));
+const template = readFileSync(SHELL, "utf8");
 const written = [];
 const sitemap = [];
 
@@ -270,7 +345,7 @@ for (const page of PAGES) {
       ld: pageLd(page, lang, url, title, description),
     });
     written.push(write(routePath, html));
-    sitemap.push({ url, alternates, priority: page.priority });
+    sitemap.push({ url, alternates, sources: page.sources });
   }
 }
 
@@ -306,14 +381,46 @@ writeFileSync(
   }),
 );
 
-const today = new Date().toISOString().slice(0, 10);
+const BUILD_DATE = new Date().toISOString().slice(0, 10);
+
+/**
+ * Sayfanın gerçek son değişiklik tarihi: o sayfayı üreten dosyalara dokunan
+ * son commit'in tarihi.
+ *
+ * Önceden bütün adresler derleme tarihini taşıyordu — nadiren değişen yasal
+ * sayfalar bile her dağıtımda "bugün güncellendi" diyordu, bu da lastmod'un
+ * sinyal değerini sıfırlıyor.
+ *
+ * Sığ klonlarda (Vercel varsayılanı) git geçmişi eksik olabilir; o durumda
+ * derleme tarihine düşülür, yani en kötü ihtimalle eski davranış.
+ */
+function lastModified(sources) {
+  const paths = (sources ?? []).filter((f) => existsSync(join(ROOT, f)));
+  if (paths.length === 0) return BUILD_DATE;
+  const dates = [];
+  for (const f of paths) {
+    try {
+      const out = execFileSync("git", ["log", "-1", "--format=%cs", "--", f], {
+        cwd: ROOT,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      }).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(out)) dates.push(out);
+    } catch {
+      // git yok ya da geçmiş eksik — sessizce derleme tarihine düşülür
+    }
+  }
+  return dates.length ? dates.sort().at(-1) : BUILD_DATE;
+}
+
+// <priority> bilerek yazılmıyor: Google 2020'den beri yok sayıyor, 14 adresli
+// bir sitede tarama bütçesine de etkisi yok. changefreq de aynı sebeple yok.
 const urlset = sitemap
   .map(
-    ({ url, alternates, priority }) => `  <url>
+    ({ url, alternates, sources }) => `  <url>
     <loc>${esc(url)}</loc>
 ${alternates.map((a) => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${esc(a.href)}"/>`).join("\n")}
-    <lastmod>${today}</lastmod>
-    <priority>${priority}</priority>
+    <lastmod>${lastModified(sources)}</lastmod>
   </url>`,
   )
   .join("\n");
@@ -331,7 +438,13 @@ writeFileSync(
   join(DIST, "robots.txt"),
   `User-agent: *
 Allow: /
-Disallow: /admin
+
+# /admin bilerek engellenmiyor. Sayfa zaten "noindex, nofollow" taşıyor; taramayı
+# robots.txt ile kapatmak Google'ın o etiketi görmesini de engelliyordu, yani
+# adres dışarıdan keşfedilirse yine de adres olarak dizine girebiliyordu. Şimdi
+# taranabilir ve noindex okunabilir — dizine girmemesi garanti. Panelin önünde
+# gerçek oturum doğrulaması var; robots.txt zaten erişim denetimi değil.
+# Yan fayda: yönetim adresi artık herkese açık bir dosyada ilan edilmiyor.
 
 # Cevap üreten AI tarayıcıları açıkça izinli. Joker kural zaten izin veriyor;
 # ileride "*" grubu daraltılırsa bunlar sessizce dışarıda kalmasın diye ayrıca yazıldı.
@@ -359,6 +472,9 @@ Allow: /
 Sitemap: ${ORIGIN}/sitemap.xml
 `,
 );
+
+// IndexNow doğrulama dosyası: içeriği anahtarın kendisi.
+writeFileSync(join(DIST, `${INDEXNOW_KEY}.txt`), INDEXNOW_KEY);
 
 
 /* ------------------------------------------------- gövde anlık görüntüsü */
@@ -484,24 +600,45 @@ async function snapshotBodies(routes) {
     await page.goto(`http://127.0.0.1:${port}${routePath}`, { waitUntil: "networkidle" });
     await page.waitForSelector("#root > *", { timeout: 15000 });
 
+    // Önce sayfa baştan sona gezilir: tembel yüklenen görseller ve gözlemciye
+    // bağlı bölümler gelsin. Temizlik bundan SONRA yapılmalı — aksi halde
+    // kaydırma, kaldırılan `is-in` sınıfını geri ekliyor.
     await page.evaluate(async () => {
-      // Kaydırmayla açılan bölümler (Reveal) varsayılan olarak saydamsız; anlık
-      // görüntüde gizli metin gibi görünmemeleri için hepsi görünür yapılıyor.
-      document.querySelectorAll("[data-reveal]").forEach((el) => el.classList.add("is-in"));
+      window.scrollTo(0, document.body.scrollHeight);
+      await new Promise((r) => setTimeout(r, 400));
+      window.scrollTo(0, 0);
+      await new Promise((r) => setTimeout(r, 200));
+    });
+
+    await page.evaluate(() => {
+      // Kaydırmayla açılan bölümlerin (Reveal) başlangıçtaki gizliliği CSS'te
+      // `html.js` ile kapılı. Statik çıktıda bu sınıf bulunmamalı: JavaScript
+      // çalıştırmayan tarayıcı içeriği görsün, satır içi betik ise sınıfı
+      // istemcide boyamadan önce geri eklesin.
+      //
+      // `is-in` de temizleniyor: React onu render etmiyor (doğrudan DOM'a
+      // ekleniyor), statik HTML'de kalırsa hydrateRoot uyuşmazlık görür.
+      document.documentElement.classList.remove("js");
+      document.querySelectorAll("[data-reveal]").forEach((el) => el.classList.remove("is-in"));
 
       // Çerez bandı ziyaretçinin tercihine göre çıkar; statik çıktıya gömülürse
       // tercihini çoktan yapmış ziyaretçi de bir an için onu görür.
       document.querySelectorAll("[data-cookie-banner]").forEach((el) => el.remove());
 
+      // Sayaçlar (CountUp) ekran dışındayken 0'a inip görünüme girince sayar;
+      // anlık görüntü sayımın ortasına denk gelebiliyor. Hedef değer
+      // data-countup'ta duruyor, metin bununla sabitleniyor. React'in ilk
+      // render'ı da hedef değeri bastığı için hydration ile çakışmaz.
+      document.querySelectorAll("[data-countup]").forEach((el) => {
+        el.textContent = el.getAttribute("data-countup") ?? el.textContent;
+      });
+
       // İhracat haritasının ülke yolları tek başına ~96 KB; dekoratif geometri,
-      // arama motoruna hiçbir şey anlatmıyor. Anlık görüntüden çıkarılıyor,
-      // React istemcide haritayı zaten yeniden çiziyor.
+      // arama motoruna hiçbir şey anlatmıyor. Anlık görüntüden çıkarılıyor.
+      // ExportMap'in ilk render'ı da `d` yazmıyor, efektle dolduruyor.
       document.querySelectorAll("path[d]").forEach((el) => {
         if ((el.getAttribute("d") ?? "").length > 400) el.removeAttribute("d");
       });
-      window.scrollTo(0, document.body.scrollHeight);
-      await new Promise((r) => setTimeout(r, 250));
-      window.scrollTo(0, 0);
     });
     await page.waitForTimeout(250);
 

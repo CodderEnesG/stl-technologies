@@ -50,6 +50,13 @@ export function Footer() {
                 >
                   <span className="size-2 rounded-full" style={{ background: b.color }} />
                   {b.name}
+                  {/* Kategori bağlantı metnine dahil ama ekranda görünmez:
+                      tasarım aynı kalırken bağlantı hem ekran okuyucu hem
+                      arama motoru için açıklayıcı oluyor. */}
+                  <span className="sr-only">
+                    {" — "}
+                    {t.footer.brandCategories[b.slug as keyof typeof t.footer.brandCategories]}
+                  </span>
                 </Link>
               </li>
             ))}

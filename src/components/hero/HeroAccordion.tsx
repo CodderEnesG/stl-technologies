@@ -5,6 +5,7 @@ import { useI18n } from "../../i18n";
 import { Arrow } from "../Arrow";
 import { LogoSlot } from "../LogoSlot";
 
+import { Img } from "../Img";
 const reducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -76,7 +77,7 @@ export function HeroAccordion() {
             }}
             aria-current={active === i ? "true" : undefined}
           >
-            <img
+            <Img
               src={b.hero}
               alt=""
               aria-hidden
@@ -140,7 +141,7 @@ export function HeroAccordion() {
                 transform: "rotate(90deg) translateY(-50%)",
               }}
             >
-              <img
+              <Img
                 src={b.panelText === "#ffffff" ? (b.logoLightWide ?? b.logoLight) : (b.logoDarkWide ?? b.logoDark)}
                 alt=""
                 className="block h-auto"
@@ -183,7 +184,7 @@ export function HeroAccordion() {
               className="absolute inset-x-0 bottom-0 p-5 md:hidden"
               style={{ opacity: active === i ? 0 : 1 }}
             >
-              <img
+              <Img
                 src={b.panelText === "#ffffff" ? (b.logoLightWide ?? b.logoLight) : (b.logoDarkWide ?? b.logoDark)}
                 alt={b.name}
                 className="h-9 w-auto max-w-[62%] object-contain object-left"

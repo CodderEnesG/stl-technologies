@@ -2,6 +2,7 @@ import { toneStyles, type BrandCtx } from "./brand/sections";
 import { Icon, type IconName } from "./Icon";
 import type { Partner } from "../data/partners";
 
+import { Img } from "./Img";
 /**
  * Referans logo şeridi. Logolar markanın kendi renginde durur.
  *
@@ -68,7 +69,7 @@ export function PartnerLogos({
               className="group grid w-[calc(50%-0.375rem)] place-items-center rounded-xl border transition-colors duration-300 sm:w-[168px] lg:w-[190px]"
               style={{ height: 92, background: s.card, borderColor: s.cardBorder }}
             >
-              <img
+              <Img
                 src={p.src}
                 alt={`${p.name} logosu`}
                 loading="lazy"
