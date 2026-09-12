@@ -17,6 +17,7 @@ import { createServer } from "node:http";
 import { createReadStream, existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createBrotliCompress, createGzip } from "node:zlib";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = join(ROOT, "dist");
@@ -39,6 +40,21 @@ const TYPES = {
   ".pdf": "application/pdf",
 };
 
+/**
+ * Vercel metin yanıtlarını brotli/gzip ile sıkıştırır. Sıkıştırmadan servis
+ * etmek yerel hız ölçümünü kullanılmaz kılıyor: 99 KB'lik ön-render HTML,
+ * gerçekte 20 KB olarak inerken burada tam boyuyla iniyor ve ilk boyama
+ * yapay olarak yarım saniye geç görünüyordu.
+ */
+const COMPRESSIBLE = new Set([".html", ".js", ".css", ".json", ".xml", ".txt", ".svg"]);
+
+function compressorFor(accept, ext) {
+  if (!COMPRESSIBLE.has(ext)) return null;
+  if (/\bbr\b/.test(accept)) return { encoding: "br", stream: createBrotliCompress() };
+  if (/\bgzip\b/.test(accept)) return { encoding: "gzip", stream: createGzip() };
+  return null;
+}
+
 // vercel.json'daki "/(.*)" başlıkları — CSP dahil
 const vercel = JSON.parse(readFileSync(join(ROOT, "vercel.json"), "utf8"));
 const globalHeaders = Object.fromEntries(
@@ -53,15 +69,27 @@ const server = createServer((req, res) => {
 
   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, "index.html");
 
+  const accept = String(req.headers["accept-encoding"] ?? "");
+
+  const send = (status, path, ext) => {
+    const gz = compressorFor(accept, ext);
+    res.writeHead(status, {
+      ...globalHeaders,
+      "content-type": TYPES[ext] ?? "application/octet-stream",
+      ...(gz ? { "content-encoding": gz.encoding, vary: "Accept-Encoding" } : {}),
+    });
+    const src = createReadStream(path);
+    return gz ? src.pipe(gz.stream).pipe(res) : src.pipe(res);
+  };
+
   if (!existsSync(file) || statSync(file).isDirectory()) {
     const notFound = join(DIST, "404.html");
+    if (existsSync(notFound)) return send(404, notFound, ".html");
     res.writeHead(404, { ...globalHeaders, "content-type": TYPES[".html"] });
-    if (existsSync(notFound)) return createReadStream(notFound).pipe(res);
     return res.end("404");
   }
 
-  res.writeHead(200, { ...globalHeaders, "content-type": TYPES[extname(file)] ?? "application/octet-stream" });
-  createReadStream(file).pipe(res);
+  return send(200, file, extname(file));
 });
 
 // Host verilmiyor: hem 127.0.0.1 hem ::1 dinlenir. Yalnız 127.0.0.1'e bağlanınca

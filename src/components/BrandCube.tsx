@@ -290,7 +290,16 @@ function Cube({
                   src={b.hero}
                   alt=""
                   aria-hidden
-                  loading={i === 0 ? "eager" : "lazy"}
+                  // Küpün ön yüzü de tembel yükleniyor. Küp telefonda hiç
+                  // çizilmiyor, ama ön-render anlık görüntüsü masaüstü
+                  // genişliğinde alındığı için etiket statik HTML'de duruyor:
+                  // eager kaldığı sürece telefon, ekranda asla görünmeyecek
+                  // 92 KB'lik kapak fotoğrafını hero'nun önünde indiriyordu.
+                  loading="lazy"
+                  // Yüz en fazla 529 piksel; görsel onun %46'sı. sizes
+                  // yazılmazsa 100vw varsayılıyor ve masaüstünde 243 piksellik
+                  // bir alan için en büyük varyant seçiliyordu.
+                  sizes="(min-width: 1024px) 250px, 175px"
                   className="pointer-events-none absolute bottom-0 right-0 h-[88%] w-[46%] object-cover object-bottom"
                   style={{
                     mixBlendMode: b.heroBlend ? "multiply" : undefined,

@@ -24,7 +24,7 @@ type Summary = {
 type State =
   | { kind: "loading" }
   | { kind: "ready"; data: Summary }
-  | { kind: "unconfigured" }
+  | { kind: "unconfigured"; detail?: string }
   | { kind: "error"; message: string };
 
 const RANGES = [7, 28, 90] as const;
@@ -174,22 +174,41 @@ export function Analytics() {
     setState({ kind: "loading" });
 
     (async () => {
-      const token = (await supabase?.auth.getSession())?.data.session?.access_token;
-      if (!token) {
-        if (alive) setState({ kind: "error", message: "Oturum bulunamadı." });
-        return;
-      }
+      const ask = (token: string) =>
+        fetch(`/api/analytics?days=${days}`, { headers: { Authorization: `Bearer ${token}` } });
 
       try {
-        const res = await fetch(`/api/analytics?days=${days}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const token = (await supabase?.auth.getSession())?.data.session?.access_token;
+        if (!token) {
+          if (alive) setState({ kind: "error", message: "Oturum bulunamadı, yeniden giriş yapın." });
+          return;
+        }
+
+        let res = await ask(token);
+
+        // Erişim jetonunun ömrü bir saat. Panel açık bırakıldığında elimizdeki
+        // jeton bayatlıyor ve uç 401 dönüyordu; kullanıcı sebepsiz bir hata
+        // görüyordu. Bir kez tazeleyip tekrar deniyoruz.
+        if (res.status === 401) {
+          const fresh = (await supabase?.auth.refreshSession())?.data.session?.access_token;
+          if (fresh) res = await ask(fresh);
+        }
+
         if (!alive) return;
 
-        if (res.status === 503) return setState({ kind: "unconfigured" });
+        if (res.status === 503) {
+          const body = (await res.json().catch(() => ({}))) as { detail?: string };
+          return setState({ kind: "unconfigured", detail: body.detail });
+        }
         if (!res.ok) {
           const body = (await res.json().catch(() => ({}))) as { detail?: string };
-          return setState({ kind: "error", message: body.detail ?? `Sunucu ${res.status} döndü.` });
+          return setState({
+            kind: "error",
+            message:
+              res.status === 401
+                ? "Oturum süresi doldu. Sayfayı yenileyip tekrar giriş yapın."
+                : (body.detail ?? `Sunucu ${res.status} döndü.`),
+          });
         }
         setState({ kind: "ready", data: (await res.json()) as Summary });
       } catch {
@@ -248,6 +267,7 @@ export function Analytics() {
             <code className="rounded bg-stl-surface px-1 py-0.5 text-xs">GA4_PROPERTY_ID</code> eklenince
             buraya ziyaret sayıları gelir.
           </p>
+          {state.detail && <p className="mt-2 text-xs text-muted">{state.detail}</p>}
         </Card>
       ) : state.kind === "error" ? (
         <Card>

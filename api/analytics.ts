@@ -12,18 +12,19 @@
  * Bağımlılık yok: Google'ın JWT akışı node:crypto ile elle kuruluyor,
  * google-auth-library derlemeye eklenmiyor.
  *
+ * İmza: Node'un kendi (req, res) çifti. Önceki sürüm Web standardı
+ * Request/Response kullanıyordu ve canlıda her çağrı FUNCTION_INVOCATION_FAILED
+ * ile düşüyordu — panelde "Sunucu 500 döndü" olarak görünüyordu. Node imzası
+ * çalışma zamanının varsayılanı; yorumlanacak bir yanı yok.
+ *
  * Gereken ortam değişkenleri (Vercel > Settings > Environment Variables):
  *   GOOGLE_SERVICE_ACCOUNT_JSON  servis hesabı JSON anahtarının tamamı
  *   GA4_PROPERTY_ID              yalnızca sayı, ör. 493827156
  *   VITE_SUPABASE_URL            jeton doğrulaması için (zaten tanımlı)
+ *   VITE_SUPABASE_ANON_KEY       aynı şekilde (zaten tanımlı)
  */
 import { createSign } from "node:crypto";
-
-/**
- * Node çalışma zamanı zorunlu: imzalama node:crypto ile yapılıyor, Edge
- * çalışma zamanında o modül yok.
- */
-export const config = { runtime: "nodejs" };
+import type { IncomingMessage, ServerResponse } from "node:http";
 
 type ServiceAccount = { client_email: string; private_key: string };
 
@@ -63,19 +64,30 @@ async function getAccessToken(sa: ServiceAccount): Promise<string> {
     }),
   });
 
-  if (!res.ok) throw new Error(`token alınamadı: ${res.status}`);
+  if (!res.ok) throw new Error(`token alınamadı: ${res.status} ${(await res.text()).slice(0, 160)}`);
   const data = (await res.json()) as { access_token?: string };
   if (!data.access_token) throw new Error("token yanıtı boş");
   return data.access_token;
 }
 
-/** Panele giriş yapmış Supabase kullanıcısı mı */
-async function isSignedIn(authHeader: string | undefined, supabaseUrl: string): Promise<boolean> {
+/**
+ * Panele giriş yapmış Supabase kullanıcısı mı.
+ *
+ * `apikey` başlığına projenin anon anahtarı gider, `Authorization` başlığına
+ * kullanıcının jetonu. Önceki sürüm ikisine de jetonu koyuyordu; Supabase'in
+ * ağ geçidi bunu bazen kabul edip bazen 401 döndürüyordu, paneldeki aralıklı
+ * "401 döndü" hatası buradan geliyordu.
+ */
+async function isSignedIn(
+  authHeader: string | undefined,
+  supabaseUrl: string,
+  anonKey: string,
+): Promise<boolean> {
   const token = authHeader?.replace(/^Bearer\s+/i, "").trim();
   if (!token) return false;
   try {
     const res = await fetch(`${supabaseUrl}/auth/v1/user`, {
-      headers: { Authorization: `Bearer ${token}`, apikey: token },
+      headers: { Authorization: `Bearer ${token}`, apikey: anonKey },
     });
     return res.ok;
   } catch {
@@ -99,39 +111,52 @@ async function runReport(token: string, propertyId: string, body: unknown): Prom
 const num = (r: GaRow, i = 0) => Number(r.metricValues?.[i]?.value ?? 0);
 const dim = (r: GaRow, i = 0) => r.dimensionValues?.[i]?.value ?? "";
 
-export default async function handler(req: Request): Promise<Response> {
-  const json = (body: unknown, status = 200) =>
-    new Response(JSON.stringify(body), {
-      status,
-      headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
-    });
+export default async function handler(req: IncomingMessage, res: ServerResponse) {
+  const json = (body: unknown, status = 200) => {
+    res.statusCode = status;
+    res.setHeader("content-type", "application/json; charset=utf-8");
+    res.setHeader("cache-control", "no-store");
+    res.end(JSON.stringify(body));
+  };
 
-  if (req.method !== "GET") return json({ error: "method" }, 405);
-
-  const saRaw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-  const propertyId = process.env.GA4_PROPERTY_ID;
-  const supabaseUrl = process.env.VITE_SUPABASE_URL;
-
-  if (!saRaw || !propertyId || !supabaseUrl) {
-    return json({ error: "unconfigured", detail: "GOOGLE_SERVICE_ACCOUNT_JSON, GA4_PROPERTY_ID veya VITE_SUPABASE_URL tanımlı değil" }, 503);
-  }
-
-  if (!(await isSignedIn(req.headers.get("authorization") ?? undefined, supabaseUrl))) {
-    return json({ error: "unauthorized" }, 401);
-  }
-
-  // Kaç günlük pencere: panel ?days=7|28|90 gönderebilir
-  const days = Math.min(365, Math.max(1, Number(new URL(req.url).searchParams.get("days")) || 28));
-  const range = [{ startDate: `${days}daysAgo`, endDate: "today" }];
-
+  // Hangi hata olursa olsun panel JSON görsün: çıplak bir istisna Vercel'de
+  // FUNCTION_INVOCATION_FAILED'e dönüşüyor ve arayüzde sebebi okunmuyor.
   try {
-    const sa = JSON.parse(saRaw) as ServiceAccount;
+    if (req.method !== "GET") return json({ error: "method" }, 405);
+
+    const saRaw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+    const propertyId = process.env.GA4_PROPERTY_ID;
+    const supabaseUrl = process.env.VITE_SUPABASE_URL;
+    const anonKey = process.env.VITE_SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY;
+
+    const missing = [
+      !saRaw && "GOOGLE_SERVICE_ACCOUNT_JSON",
+      !propertyId && "GA4_PROPERTY_ID",
+      !supabaseUrl && "VITE_SUPABASE_URL",
+      !anonKey && "VITE_SUPABASE_ANON_KEY",
+    ].filter(Boolean);
+
+    if (missing.length > 0) {
+      return json({ error: "unconfigured", detail: `Tanımlı değil: ${missing.join(", ")}` }, 503);
+    }
+
+    const auth = req.headers.authorization;
+    if (!(await isSignedIn(auth, supabaseUrl!, anonKey!))) {
+      return json({ error: "unauthorized", detail: "Oturum doğrulanamadı." }, 401);
+    }
+
+    // Kaç günlük pencere: panel ?days=7|28|90 gönderebilir
+    const query = new URL(req.url ?? "/", "http://localhost").searchParams;
+    const days = Math.min(365, Math.max(1, Number(query.get("days")) || 28));
+    const range = [{ startDate: `${days}daysAgo`, endDate: "today" }];
+
+    const sa = JSON.parse(saRaw!) as ServiceAccount;
     // Vercel ortam değişkeninde satır sonları \n olarak kaçmış olabiliyor
     sa.private_key = sa.private_key.replace(/\\n/g, "\n");
     const token = await getAccessToken(sa);
 
     const [totals, byDay, topPages, channels, countries] = await Promise.all([
-      runReport(token, propertyId, {
+      runReport(token, propertyId!, {
         dateRanges: range,
         metrics: [
           { name: "activeUsers" },
@@ -140,13 +165,13 @@ export default async function handler(req: Request): Promise<Response> {
           { name: "averageSessionDuration" },
         ],
       }),
-      runReport(token, propertyId, {
+      runReport(token, propertyId!, {
         dateRanges: range,
         dimensions: [{ name: "date" }],
         metrics: [{ name: "activeUsers" }],
         orderBys: [{ dimension: { dimensionName: "date" } }],
       }),
-      runReport(token, propertyId, {
+      runReport(token, propertyId!, {
         dateRanges: range,
         // Başlık okunaklı, yol kesin: ikisi birlikte alınıp panelde başlık
         // gösteriliyor, yol ipucu olarak veriliyor.
@@ -155,14 +180,14 @@ export default async function handler(req: Request): Promise<Response> {
         orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
         limit: 8,
       }),
-      runReport(token, propertyId, {
+      runReport(token, propertyId!, {
         dateRanges: range,
         dimensions: [{ name: "sessionDefaultChannelGroup" }],
         metrics: [{ name: "sessions" }],
         orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
         limit: 6,
       }),
-      runReport(token, propertyId, {
+      runReport(token, propertyId!, {
         dateRanges: range,
         // countryId ISO 3166-1 alpha-2 döndürüyor; panelde dünya haritasını
         // boyamak için gerekiyor (src/data/worldPaths.ts aynı anahtarı kullanır).

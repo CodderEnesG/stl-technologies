@@ -31,13 +31,67 @@ const MANIFEST = join(ROOT, "src", "data", "imageManifest.ts");
 /** Üretilecek genişlikler. Kaynak bundan darsa o genişlik atlanır. */
 const WIDTHS = [480, 960, 1440];
 
+/**
+ * WebP kalitesi. 82'den 78'e indirildi ve -sharp_yuv eklendi: keskin YUV
+ * dönüşümü renk kenarlarındaki bozulmayı kapattığı için daha düşük kalitede
+ * de fark görünmüyor, dosyalar ~%30 küçülüyor. -m 6 en yavaş ama en verimli
+ * arama; betik elle çalıştığı için süre önemli değil.
+ */
+const QUALITY = "78";
+const ENCODE_OPTS = ["-quiet", "-q", QUALITY, "-sharp_yuv", "-m", "6", "-mt"];
+
+/**
+ * Mobil şerit kırpımları.
+ *
+ * Ana sayfadaki marka panelleri telefonda 412x172 civarı yatık bir şerit;
+ * kaynak fotoğraflar ise dikey (ör. 1254x1600). object-fit: cover kadrajın
+ * dışını atıyor, ama tarayıcı dosyanın tamamını indiriyor: 114 KB'lik bir
+ * görselin piksellerinin yaklaşık %70'i hiç görünmüyordu.
+ *
+ * Burada her panel fotoğrafının 2:1 kırpılmış bir kopyası üretiliyor;
+ * <Img wide> bunu <picture> içinde yalnızca dar ekranlara veriyor. Kırpma
+ * noktası bileşendeki object-position ile aynı (bkz. brands.ts heroFocus),
+ * yoksa telefonda kadraj kayar.
+ */
+// 1.4 ölçülerek seçildi: telefonda accordion'un büyüyen ilk paneli 412x277'ye
+// kadar çıkıyor (oran 1,49). Daha yatık bir kırpım object-fit: cover altında
+// dikeyde büyütülüp bulanıklaşıyordu.
+const STRIP_ASPECT = 1.4;
+const STRIP_WIDTHS = [480, 860, 1280];
+const STRIPS = {
+  "/images/stl/wexta-cover.jpg": { x: 50, y: 45 },
+  "/images/fressi/kettle-kt07-hero.jpg": { x: 52, y: 58 },
+  "/images/bnk/hero-panel.webp": { x: 50, y: 30 },
+  "/images/oxyra/koltuk-oxyra.jpg": { x: 50, y: 50 },
+};
+
+/** Şerit dosyasının adı: ad-strip-860w.webp */
+const stripName = (file, w) => file.replace(/\.(jpe?g|png|webp)$/i, `-strip-${w}w.webp`);
+
+/**
+ * object-position yüzdesini piksel kırpımına çevirir. CSS'te %50 "kalan boşluğu
+ * ikiye böl" demek; burada da aynı: kırpma penceresi kaynağın içinde o oranda
+ * kaydırılıyor ve kenarları taşmayacak şekilde sınırlanıyor.
+ */
+function cropBox(w, h, focus) {
+  let cw = w;
+  let ch = Math.round(w / STRIP_ASPECT);
+  if (ch > h) {
+    ch = h;
+    cw = Math.round(h * STRIP_ASPECT);
+  }
+  const x = Math.min(Math.max(Math.round(((w - cw) * focus.x) / 100), 0), w - cw);
+  const y = Math.min(Math.max(Math.round(((h - ch) * focus.y) / 100), 0), h - ch);
+  return { x, y, w: cw, h: ch };
+}
+
 /** Bu boyutun altındaki dosyalar zaten küçük; varyant üretmeye değmez. */
 const MIN_BYTES = 40 * 1024;
 
 const SOURCE_EXT = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 
 /** Üretilmiş varyantların adı: ad-480w.webp */
-const VARIANT_RE = /-(\d+)w\.webp$/;
+const VARIANT_RE = /-(?:strip-)?(\d+)w\.webp$/;
 
 // ---------------------------------------------------------------- boyut okuma
 
@@ -158,20 +212,56 @@ for (const file of files) {
   for (const w of [...new Set(widths)].sort((a, b) => a - b)) {
     const out = file.replace(/\.(jpe?g|png|webp)$/i, `-${w}w.webp`);
     mkdirSync(dirname(out), { recursive: true });
-    execFileSync("cwebp", ["-quiet", "-q", "82", "-resize", String(w), "0", file, "-o", out]);
+    execFileSync("cwebp", [...ENCODE_OPTS, "-resize", String(w), "0", file, "-o", out]);
     variantBytes += statSync(out).size;
     made.push(w);
     generated++;
   }
 
-  manifest[url] = { w: dim.w, h: dim.h, variants: made };
+  const strip = [];
+  const focus = STRIPS[url];
+  if (focus) {
+    const box = cropBox(dim.w, dim.h, focus);
+    // Kaynak listedeki en büyük genişlikten darsa kendi genişliği son basamak
+    // olur; yoksa DPR 2 telefonda 480 piksellik kopya büyütülüp bulanıklaşır.
+    const stripWidths = [
+      ...new Set([
+        ...STRIP_WIDTHS.filter((w) => w < box.w),
+        Math.min(box.w, Math.max(...STRIP_WIDTHS)),
+      ]),
+    ].sort((a, b) => a - b);
+
+    for (const w of stripWidths) {
+      const out = stripName(file, w);
+      execFileSync("cwebp", [
+        ...ENCODE_OPTS,
+        "-crop",
+        String(box.x),
+        String(box.y),
+        String(box.w),
+        String(box.h),
+        "-resize",
+        String(w),
+        "0",
+        file,
+        "-o",
+        out,
+      ]);
+      variantBytes += statSync(out).size;
+      strip.push(w);
+      generated++;
+    }
+  }
+
+  manifest[url] = { w: dim.w, h: dim.h, variants: made, ...(strip.length ? { strip } : {}) };
 }
 
 const entries = Object.keys(manifest)
   .sort()
   .map((url) => {
     const m = manifest[url];
-    return `  "${url}": { w: ${m.w}, h: ${m.h}, variants: [${m.variants.join(", ")}] },`;
+    const strip = m.strip ? `, strip: [${m.strip.join(", ")}]` : "";
+    return `  "${url}": { w: ${m.w}, h: ${m.h}, variants: [${m.variants.join(", ")}]${strip} },`;
   })
   .join("\n");
 
@@ -182,7 +272,13 @@ writeFileSync(
 // Her görselin gerçek piksel boyutu ve üretilmiş WebP varyantlarının genişlikleri.
 // <Img> bileşeni srcset, sizes, width ve height değerlerini buradan okur.
 
-export type ImageMeta = { w: number; h: number; variants: number[] };
+export type ImageMeta = {
+  w: number;
+  h: number;
+  variants: number[];
+  /** Dar ekranlar için 2:1 kırpılmış kopyaların genişlikleri (varsa) */
+  strip?: number[];
+};
 
 export const imageManifest: Record<string, ImageMeta> = {
 ${entries}
@@ -191,6 +287,11 @@ ${entries}
 /** Varyant dosyasının adresi: /images/a/b.jpg + 480 -> /images/a/b-480w.webp */
 export function variantUrl(src: string, width: number): string {
   return src.replace(/\\.(jpe?g|png|webp)$/i, \`-\${width}w.webp\`);
+}
+
+/** Şerit kırpımının adresi: /images/a/b.jpg + 860 -> /images/a/b-strip-860w.webp */
+export function stripUrl(src: string, width: number): string {
+  return src.replace(/\\.(jpe?g|png|webp)$/i, \`-strip-\${width}w.webp\`);
 }
 `,
   "utf8",

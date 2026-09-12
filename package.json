@@ -11,7 +11,8 @@
     "prerender": "node --experimental-strip-types --no-warnings scripts/prerender.mjs",
     "images": "node scripts/images.mjs",
     "indexnow": "node scripts/indexnow.mjs",
-    "serve": "node scripts/serve-dist.mjs"
+    "serve": "node scripts/serve-dist.mjs",
+    "fonts": "node scripts/fonts.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",

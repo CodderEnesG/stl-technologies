@@ -81,6 +81,9 @@ export function HeroAccordion() {
               src={b.hero}
               alt=""
               aria-hidden
+              // Telefonda panel yatık bir şerit; dikey kaynağın satırlarının
+              // çoğu kadraj dışında kalıyordu (bkz. Img `wide`).
+              wide={!b.heroBlend}
               fetchPriority={i === 0 ? "high" : undefined}
               className={
                 b.heroBlend

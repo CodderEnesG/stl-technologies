@@ -295,6 +295,16 @@ function renderPage(template, { lang, title, description, url, alternates, og, l
     .replace(/\s*<title>[\s\S]*?<\/title>/, "")
     .replace(/\s*<meta name="description"[^>]*>/g, "")
     .replace(/\s*<meta property="og:(title|description)"[^>]*>/g, "")
+    // Uygulama paketi ilk boyamanın önüne geçmesin.
+    //
+    // Sayfa gövdesi zaten burada, statik HTML olarak: okumak, gezinmek ve
+    // bağlantılara tıklamak JavaScript beklemiyor. Buna rağmen tarayıcı
+    // <script type="module"> ve modulepreload'ları yüksek öncelikle çekip
+    // hero görselinin önüne koyuyordu; mobil bağlantıda LCP görseli ~100 KB
+    // JavaScript'in arkasında sıra bekliyordu. fetchpriority="low" ile sıra
+    // tersine dönüyor, paket boyamadan hemen sonra iniyor.
+    .replace(/<script type="module"/g, '<script type="module" fetchpriority="low"')
+    .replace(/<link rel="modulepreload"/g, '<link rel="modulepreload" fetchpriority="low"')
     .replace("</head>", `  ${head}\n  </head>`);
 }
 
@@ -640,6 +650,45 @@ async function snapshotBodies(routes) {
         if ((el.getAttribute("d") ?? "").length > 400) el.removeAttribute("d");
       });
     });
+    // Ekranın ilk perdesindeki CSS arka plan görsellerini önden yükle.
+    //
+    // <img> etiketlerini tarayıcının ön tarama (preload scanner) mekanizması
+    // HTML gelir gelmez buluyor; CSS arka planları ise ancak stil çözülüp
+    // yerleşim hesaplandıktan sonra keşfediliyor. Fressi'de sayfanın en büyük
+    // boyaması (LCP) hero zemini olan pattern-1.svg'ydi: dosya 13 KB olmasına
+    // rağmen ölçümde 2,6 saniyede iniyordu, çünkü sıraya en sonda giriyordu.
+    //
+    // Bulunan adresler head'in başına <link rel="preload"> olarak yazılıyor.
+    // En fazla iki tane: fazlası ilk perdedeki gerçek görsellerle bant
+    // genişliği için yarışır ve LCP'yi geri bozar.
+    await page.evaluate(() => {
+      const fold = window.innerHeight;
+      const urls = new Set();
+
+      for (const el of document.querySelectorAll("*")) {
+        if (urls.size >= 2) break;
+        const box = el.getBoundingClientRect();
+        if (box.top >= fold || box.bottom <= 0 || box.width < 80 || box.height < 80) continue;
+        const bg = getComputedStyle(el).backgroundImage;
+        if (!bg || bg === "none") continue;
+        for (const m of bg.matchAll(/url\("?([^")]+)"?\)/g)) {
+          const raw = m[1];
+          if (raw.startsWith("data:")) continue;
+          const path = new URL(raw, location.href).pathname;
+          if (path.startsWith("/images/") || path.startsWith("/logos/")) urls.add(path);
+        }
+      }
+
+      for (const href of [...urls].reverse()) {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.as = "image";
+        link.href = href;
+        link.setAttribute("fetchpriority", "high");
+        document.head.prepend(link);
+      }
+    });
+
     await page.waitForTimeout(250);
 
     const html = await page.evaluate(() => document.documentElement.outerHTML);

@@ -3,7 +3,13 @@
 // Her görselin gerçek piksel boyutu ve üretilmiş WebP varyantlarının genişlikleri.
 // <Img> bileşeni srcset, sizes, width ve height değerlerini buradan okur.
 
-export type ImageMeta = { w: number; h: number; variants: number[] };
+export type ImageMeta = {
+  w: number;
+  h: number;
+  variants: number[];
+  /** Dar ekranlar için 2:1 kırpılmış kopyaların genişlikleri (varsa) */
+  strip?: number[];
+};
 
 export const imageManifest: Record<string, ImageMeta> = {
   "/images/bnk/blog-nem.webp": { w: 700, h: 834, variants: [480, 700] },
@@ -15,7 +21,7 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/images/bnk/circle-serum.webp": { w: 720, h: 720, variants: [] },
   "/images/bnk/circle-temizleyici.webp": { w: 720, h: 720, variants: [] },
   "/images/bnk/circle-tonik.webp": { w: 720, h: 720, variants: [] },
-  "/images/bnk/hero-panel.webp": { w: 848, h: 1264, variants: [480, 848] },
+  "/images/bnk/hero-panel.webp": { w: 848, h: 1264, variants: [480, 848], strip: [480, 848] },
   "/images/bnk/hero-wide-mobile.webp": { w: 820, h: 820, variants: [480, 820] },
   "/images/bnk/hero-wide.webp": { w: 2000, h: 820, variants: [480, 960, 1440, 2000] },
   "/images/bnk/hover-bb.webp": { w: 900, h: 702, variants: [480, 900] },
@@ -50,7 +56,7 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/images/fressi/home-tk302-sofra.webp": { w: 1024, h: 1024, variants: [480, 960, 1024] },
   "/images/fressi/home-tm26-tost.webp": { w: 1400, h: 1400, variants: [480, 960, 1400] },
   "/images/fressi/kettle-hero.webp": { w: 1300, h: 1300, variants: [480, 960, 1300] },
-  "/images/fressi/kettle-kt07-hero.jpg": { w: 1950, h: 1620, variants: [480, 960, 1440, 1950] },
+  "/images/fressi/kettle-kt07-hero.jpg": { w: 1950, h: 1620, variants: [480, 960, 1440, 1950], strip: [480, 860, 1280] },
   "/images/fressi/kettle-kt07-pour.webp": { w: 1950, h: 1950, variants: [480, 960, 1440, 1950] },
   "/images/fressi/kettle-kt07.webp": { w: 1950, h: 1950, variants: [480, 960, 1440, 1950] },
   "/images/fressi/life-cay-keyfi.webp": { w: 1536, h: 1024, variants: [480, 960, 1440, 1536] },
@@ -62,7 +68,7 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/images/fressi/turk-kahve-tk302.webp": { w: 1024, h: 1024, variants: [480, 960, 1024] },
   "/images/oxyra/headset-oxyra.jpg": { w: 1134, h: 1236, variants: [480, 960, 1134] },
   "/images/oxyra/hero-setup.jpg": { w: 1920, h: 1044, variants: [480, 960, 1440, 1920] },
-  "/images/oxyra/koltuk-oxyra.jpg": { w: 1400, h: 1384, variants: [480, 960, 1400] },
+  "/images/oxyra/koltuk-oxyra.jpg": { w: 1400, h: 1384, variants: [480, 960, 1400], strip: [480, 860, 1280] },
   "/images/oxyra/koltuk-rampage-1.jpg": { w: 1600, h: 1600, variants: [480, 960, 1440, 1600] },
   "/images/oxyra/koltuk-rampage-2.jpg": { w: 1600, h: 1600, variants: [480, 960, 1440, 1600] },
   "/images/oxyra/koltuk-valja-1.jpg": { w: 1066, h: 1600, variants: [480, 960, 1066] },
@@ -85,7 +91,7 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/images/stl/valiz-wx1001-2.jpg": { w: 1600, h: 1600, variants: [480, 960, 1440, 1600] },
   "/images/stl/valiz-wx300-1.jpg": { w: 1066, h: 1600, variants: [480, 960, 1066] },
   "/images/stl/valiz-wx300-2.jpg": { w: 1066, h: 1600, variants: [480, 960, 1066] },
-  "/images/stl/wexta-cover.jpg": { w: 1254, h: 1600, variants: [480, 960, 1254] },
+  "/images/stl/wexta-cover.jpg": { w: 1254, h: 1600, variants: [480, 960, 1254], strip: [480, 860, 1254] },
   "/images/stl/wexta-lifestyle-1.jpg": { w: 1600, h: 1143, variants: [480, 960, 1440, 1600] },
   "/images/stl/wexta-travel.jpg": { w: 1600, h: 1067, variants: [480, 960, 1440, 1600] },
   "/images/wexta/cover-corridor.webp": { w: 2000, h: 1333, variants: [480, 960, 1440, 2000] },
@@ -102,4 +108,9 @@ export const imageManifest: Record<string, ImageMeta> = {
 /** Varyant dosyasının adresi: /images/a/b.jpg + 480 -> /images/a/b-480w.webp */
 export function variantUrl(src: string, width: number): string {
   return src.replace(/\.(jpe?g|png|webp)$/i, `-${width}w.webp`);
+}
+
+/** Şerit kırpımının adresi: /images/a/b.jpg + 860 -> /images/a/b-strip-860w.webp */
+export function stripUrl(src: string, width: number): string {
+  return src.replace(/\.(jpe?g|png|webp)$/i, `-strip-${width}w.webp`);
 }

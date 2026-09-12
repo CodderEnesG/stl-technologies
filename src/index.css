@@ -1,8 +1,11 @@
-/* Google Fonts artık buradan @import edilmiyor: index.html'de <link> ile
-   yükleniyor. @import zincirleme istek yaratıyordu — tarayıcı önce bu CSS'i
-   indirip ayrıştırmadan font CSS'ini istemeye başlamıyor, üstelik istek
-   üçüncü bir kaynağa gidiyor. <link> + preconnect ile paralel başlıyor. */
 @import 'tailwindcss';
+
+/* Google Fonts kendi sunucumuzda. Eskiden index.html'de fonts.googleapis.com'a
+   giden bir <link rel="stylesheet"> vardı; boyamayı blokluyor ve üçüncü taraf
+   olduğu için DNS + TCP + TLS el sıkışmasını ilk boyamanın önüne koyuyordu.
+   Şimdi @font-face kuralları derlemede bu pakete gömülüyor, ek istek yok.
+   Dosyayı scripts/fonts.mjs üretir (pnpm run fonts). */
+@import './fonts-google.css';
 
 /* STL Teknoloji kurumsal fontu: Gilroy — kurumsal logodaki wordmark'ın fontu.
    general_assets/fressi/Eski/gilroy kaynağından Türkçe alt kümeyle woff2'ye çevrildi. */
@@ -75,14 +78,17 @@
 }
 
 @theme {
-  /* STL kurumsal kimliği: Gilroy — kurumsal logonun kendi fontu */
-  --font-sans: 'Gilroy', 'Figtree', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Gilroy', 'Figtree', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  /* STL kurumsal kimliği: Gilroy — kurumsal logonun kendi fontu.
+     Yedek zinciri sistem fontlarına iniyor: Gilroy kendi sunucumuzdan geldiği
+     ve her sayfada yüklendiği için araya konan Figtree/Manrope hiçbir zaman
+     boyanmıyordu, indirilmeleri boşunaydı. */
+  --font-sans: 'Gilroy', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Gilroy', ui-sans-serif, system-ui, sans-serif;
   /* Oxyra gövde fontu — marka kılavuzunda Manifold'un ikincili */
   --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
   /* Poster/afiş başlıkları — logo lockup'ındaki geniş harf aralığı */
-  --font-expanded: 'Gilroy', 'Manrope', sans-serif;
-  --font-oxyra: 'Manifold Extended CF', 'Manrope', sans-serif;
+  --font-expanded: 'Gilroy', sans-serif;
+  --font-oxyra: 'Manifold Extended CF', sans-serif;
   --font-nunito: 'Nunito', ui-sans-serif, sans-serif;
   --font-script: 'Playwrite NO', cursive;
   /* wexta wordmark'ındaki geometrik sans karakteri */
