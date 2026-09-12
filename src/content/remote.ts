@@ -28,20 +28,35 @@ const flatten = (value: unknown): Overrides => {
   return out;
 };
 
+declare global {
+  interface Window {
+    /** index.html'deki satır içi betiğin başlattığı istek — bkz. aşağıdaki not */
+    __stlContent?: Promise<unknown>;
+  }
+}
+
 /** Kaydedilmiş metinler; env yoksa ya da istek başarısızsa null. */
 export async function fetchContentOverrides(signal?: AbortSignal): Promise<ContentPayload | null> {
   if (!URL_BASE || !ANON_KEY) return null;
   try {
-    const res = await fetch(`${URL_BASE}/rest/v1/site_content?select=page,tr,en`, {
-      signal,
-      headers: {
-        apikey: ANON_KEY,
-        Authorization: `Bearer ${ANON_KEY}`,
-        Accept: "application/json",
-      },
-    });
-    if (!res.ok) return null;
-    const rows = (await res.json()) as unknown;
+    // İstek sayfanın en başında, index.html'deki satır içi betikte başlatılıyor;
+    // burada yalnızca sonucu bekliyoruz. Paket yüklenene kadar geçen süre
+    // (mobilde saniyeler) böylece isteğin önünde değil, yanında geçiyor.
+    // Betik çalışmadıysa istek buradan yapılır.
+    const rows = window.__stlContent
+      ? await window.__stlContent
+      : await (async () => {
+          const res = await fetch(`${URL_BASE}/rest/v1/site_content?select=page,tr,en`, {
+            signal,
+            headers: {
+              apikey: ANON_KEY,
+              Authorization: `Bearer ${ANON_KEY}`,
+              Accept: "application/json",
+            },
+          });
+          return res.ok ? ((await res.json()) as unknown) : null;
+        })();
+
     if (!Array.isArray(rows)) return null;
 
     const payload: ContentPayload = { tr: {}, en: {} };

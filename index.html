@@ -17,6 +17,35 @@
          (src/fonts-google.css, scripts/fonts.mjs üretir), yüz dosyaları
          /fonts/google altında; kritik yolda fazladan istek kalmadı. -->
 
+    <!-- Admin panelinde kaydedilen metinlerin isteği burada, sayfanın en
+         başında başlatılıyor.
+         
+         Eskiden istek React yüklendikten sonra çıkıyordu ve mobil bağlantıda
+         ancak 2,6 saniyede dönüyordu; metin o anda değişince hem yerleşim
+         kayıyor hem de sayfanın en büyük boyaması geriye atılıyordu. Buradan
+         başlatılınca yanıt ilk boyamaya yetişiyor.
+
+         Sözleşme src/content/remote.ts ile aynı: hiçbir koşulda hata
+         fırlatmaz, başarısızlıkta null olur ve site koddaki metinle çalışır.
+         Anon anahtar zaten tarayıcıya gömülü, burada yeni bir şey açılmıyor. -->
+    <link rel="preconnect" href="%VITE_SUPABASE_URL%" crossorigin />
+    <script>
+      (function () {
+        var base = '%VITE_SUPABASE_URL%';
+        var key = '%VITE_SUPABASE_ANON_KEY%';
+        if (!base || !key || base.charAt(0) === '%') return;
+        window.__stlContent = fetch(base + '/rest/v1/site_content?select=page,tr,en', {
+          headers: { apikey: key, Authorization: 'Bearer ' + key, Accept: 'application/json' },
+        })
+          .then(function (r) {
+            return r.ok ? r.json() : null;
+          })
+          .catch(function () {
+            return null;
+          });
+      })();
+    </script>
+
     <!-- Kaydırma animasyonları (Reveal) yalnızca JavaScript varken gizli başlar;
          kural CSS'te `html.js` ile kapılı. Betik boyamadan önce çalışmalı, yoksa
          içerik bir kare görünüp sonra kaybolur. JavaScript çalıştırmayan

@@ -37,12 +37,33 @@ export default function Fressi() {
   // Mağaza erişilemezse statik anlık görüntüye düşülür.
   const [reviews, setReviews] = useState<FressiReview[]>(() => pickReviews(fressiReviews));
 
+  // Canlı yorumlar sayfa boyandıktan SONRA isteniyor.
+  //
+  // Ekranda görünen liste zaten statik havuzdan geliyor; canlı çekim yalnızca
+  // havuzu tazeliyor. Mount anında başlatılınca üçüncü taraf mağazaya giden
+  // istekler ilk perdedeki görsellerle bant genişliği için yarışıyordu.
+  // requestIdleCallback ile sıra boşalınca başlıyor; desteklemeyen tarayıcıda
+  // (Safari) kısa bir zamanlayıcı aynı işi görüyor.
   useEffect(() => {
     const ac = new AbortController();
-    fetchLiveFressiReviews(ac.signal).then((live) => {
-      if (live) setReviews(pickReviews(live));
-    });
-    return () => ac.abort();
+    const start = () => {
+      fetchLiveFressiReviews(ac.signal).then((live) => {
+        if (live) setReviews(pickReviews(live));
+      });
+    };
+
+    // TypeScript requestIdleCallback'i her zaman tanımlı sayıyor; Safari'de
+    // öyle değil, bu yüzden kontrol çalışma zamanında yapılıyor.
+    const idle = typeof window.requestIdleCallback === "function";
+    const handle = idle
+      ? window.requestIdleCallback(start, { timeout: 4000 })
+      : window.setTimeout(start, 1500);
+
+    return () => {
+      ac.abort();
+      if (idle) window.cancelIdleCallback(handle);
+      else window.clearTimeout(handle);
+    };
   }, []);
 
   return (

@@ -76,21 +76,44 @@ const tidyProduct = (title: string) =>
  * Dönen değer havuzdur, gösterilecek liste değil — seçimi `pickReviews` yapar.
  * Ağ/CORS/şifre hatasında `null` döner; çağıran taraf statik listeye düşer.
  */
+type EntrfyPage = { ok?: boolean; items?: EntrfyItem[]; hasMore?: boolean };
+
+/** Tek sayfa; ağ ya da biçim hatasında null */
+async function fetchPage(page: number, signal?: AbortSignal): Promise<EntrfyPage | null> {
+  try {
+    const res = await fetch(`${LIVE_BASE}&limit=${PAGE_SIZE}&page=${page}`, { signal, mode: "cors" });
+    if (!res.ok) return null;
+    const data = (await res.json()) as EntrfyPage;
+    return data.ok && Array.isArray(data.items) ? data : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchLiveFressiReviews(signal?: AbortSignal): Promise<FressiReview[] | null> {
   try {
-    const items: EntrfyItem[] = [];
+    // İlk sayfa tek başına isteniyor: devamı var mı, onu söylüyor. Varsa
+    // kalan sayfalar AYNI ANDA isteniyor.
+    //
+    // Önceki sürüm sayfaları sırayla çekiyordu: her istek bir öncekinin
+    // yanıtını bekliyordu ve 295 yorum altı tura yayılıyordu. Ölçümde bu
+    // zincir sayfa yüklendikten sonra 2,4 ile 4,2 saniye arasında çalışıyor,
+    // mobil bağlantıyı ve ana iş parçacığını meşgul ediyordu.
+    const first = await fetchPage(1, signal);
+    if (!first || first.items!.length === 0) return null;
 
-    for (let page = 1; page <= MAX_PAGES; page++) {
-      const res = await fetch(`${LIVE_BASE}&limit=${PAGE_SIZE}&page=${page}`, { signal, mode: "cors" });
-      if (!res.ok) break;
-      const data = (await res.json()) as {
-        ok?: boolean;
-        items?: EntrfyItem[];
-        hasMore?: boolean;
-      };
-      if (!data.ok || !Array.isArray(data.items) || data.items.length === 0) break;
-      items.push(...data.items);
-      if (!data.hasMore) break;
+    const items: EntrfyItem[] = [...first.items!];
+
+    if (first.hasMore) {
+      const rest = await Promise.all(
+        Array.from({ length: MAX_PAGES - 1 }, (_, i) => fetchPage(i + 2, signal)),
+      );
+      // İlk boş/başarısız sayfada duruluyor: sonrasındakiler zaten boştur,
+      // sıralamayı bozmamak için ötesi alınmıyor.
+      for (const page of rest) {
+        if (!page || page.items!.length === 0) break;
+        items.push(...page.items!);
+      }
     }
 
     if (items.length === 0) return null;

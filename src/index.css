@@ -309,9 +309,13 @@ body {
     opacity: 1;
   }
 }
+/* Süre 1,1 sn + panel başına 120 ms gecikmeden kısaltıldı: dördüncü panel
+   1,46 saniye boyunca saydam kalıyordu. Panel saydamken sayfanın en büyük
+   boyaması sayılmıyor, ölçüm geriye üst çubuktaki logoyu alıyordu. Şimdi
+   toplam 0,68 sn; hareket duruyor, bekleme yarıya iniyor. */
 .hero-panel-in {
-  animation: hero-panel-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--i, 0) * 120ms);
+  animation: hero-panel-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-panel-in {
